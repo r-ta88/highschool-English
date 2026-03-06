@@ -1,0 +1,3715 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="リーディング">
+<meta name="theme-color" content="#f7f3eb">
+<link rel="manifest" href="manifest.json">
+<title>マーク式リーディング練習</title>
+<script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===== CONFIG ===== */
+/* リスト名は下の CONFIG セクションで変更 */
+
+/* ===== THEME: Cream (default) ===== */
+:root, [data-theme="cream"] {
+  --bg: #f7f3eb;
+  --surface: #fffbf3;
+  --surface2: #f0ebe0;
+  --border: #e0d6c4;
+  --border2: #d4c9b5;
+  --text: #3d3229;
+  --text-dim: #6b5d4f;
+  --text-dimmer: #9a8b7a;
+  --accent: #b8860b;
+  --accent-dim: #96700a;
+  --accent-glow: rgba(184,134,11,0.12);
+  --green: #2e7d32;
+  --green-dim: rgba(46,125,50,0.10);
+  --red: #c62828;
+  --red-dim: rgba(198,40,40,0.10);
+  --blue: #1565c0;
+  --blue-dim: rgba(21,101,192,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: rgba(0,0,0,0.08);
+  --passage-font-size: 15px;
+  --passage-line-height: 1.9;
+}
+[data-theme="paper"] {
+  --bg: #f0f0ec; --surface: #ffffff; --surface2: #f5f5f2;
+  --border: #dcdcd8; --border2: #c8c8c4;
+  --text: #1a1a1a; --text-dim: #4a4a4a; --text-dimmer: #8a8a8a;
+  --accent: #2962ff; --accent-dim: #1e4fcc; --accent-glow: rgba(41,98,255,0.10);
+  --green: #2e7d32; --green-dim: rgba(46,125,50,0.10);
+  --red: #c62828; --red-dim: rgba(198,40,40,0.10);
+  --blue: #1565c0; --blue-dim: rgba(21,101,192,0.10);
+  --shadow: rgba(0,0,0,0.06);
+}
+[data-theme="sage"] {
+  --bg: #e8efe5; --surface: #f2f7ef; --surface2: #dde8d8;
+  --border: #c4d4be; --border2: #b0c4a8;
+  --text: #2d3a2d; --text-dim: #4a5c4a; --text-dimmer: #7a8c7a;
+  --accent: #2e7d32; --accent-dim: #1b5e20; --accent-glow: rgba(46,125,50,0.12);
+  --green: #2e7d32; --green-dim: rgba(46,125,50,0.10);
+  --red: #c62828; --red-dim: rgba(198,40,40,0.10);
+  --blue: #1565c0; --blue-dim: rgba(21,101,192,0.10);
+  --shadow: rgba(0,0,0,0.06);
+}
+[data-theme="ocean"] {
+  --bg: #e3edf7; --surface: #eef4fb; --surface2: #d8e6f4;
+  --border: #b8cfea; --border2: #a0bfe0;
+  --text: #1a2a3a; --text-dim: #3a5068; --text-dimmer: #6a8aa8;
+  --accent: #1565c0; --accent-dim: #0d47a1; --accent-glow: rgba(21,101,192,0.12);
+  --green: #2e7d32; --green-dim: rgba(46,125,50,0.10);
+  --red: #c62828; --red-dim: rgba(198,40,40,0.10);
+  --blue: #1565c0; --blue-dim: rgba(21,101,192,0.10);
+  --shadow: rgba(0,0,0,0.06);
+}
+[data-theme="lavender"] {
+  --bg: #ece5f0; --surface: #f5f0f7; --surface2: #e4dce8;
+  --border: #d0c4d8; --border2: #beb0c8;
+  --text: #2d2433; --text-dim: #4f4258; --text-dimmer: #8a7a94;
+  --accent: #6a1b9a; --accent-dim: #4a148c; --accent-glow: rgba(106,27,154,0.12);
+  --green: #2e7d32; --green-dim: rgba(46,125,50,0.10);
+  --red: #c62828; --red-dim: rgba(198,40,40,0.10);
+  --blue: #1565c0; --blue-dim: rgba(21,101,192,0.10);
+  --shadow: rgba(0,0,0,0.06);
+}
+[data-theme="dark"] {
+  --bg: #1a1b1e; --surface: #25262b; --surface2: #2c2e33;
+  --border: #3a3c42; --border2: #4a4c52;
+  --text: #e0e0e0; --text-dim: #a8a8b0; --text-dimmer: #707080;
+  --accent: #7caef8; --accent-dim: #5a9af0; --accent-glow: rgba(124,174,248,0.15);
+  --green: #66bb6a; --green-dim: rgba(102,187,106,0.15);
+  --red: #ef5350; --red-dim: rgba(239,83,80,0.15);
+  --blue: #64b5f6; --blue-dim: rgba(100,181,246,0.15);
+  --shadow: rgba(0,0,0,0.3);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ===== LAYOUT ===== */
+#app { height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+}
+
+.header-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.header-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+.btn-primary:hover { background: var(--accent-dim); color: #fff; border-color: var(--accent-dim); }
+
+.btn-sm { padding: 5px 14px; font-size: 11px; }
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ===== SCREENS ===== */
+.screen { display: none; flex: 1; overflow: hidden; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* === LOGIN === */
+#screen-login {
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 70%),
+    var(--bg);
+}
+
+.login-card {
+  text-align: center;
+  max-width: 440px;
+  padding: 64px 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.login-icon {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.login-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.login-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dimmer);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+}
+
+.login-desc {
+  font-size: 14px;
+  color: var(--text-dim);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* === GALLERY === */
+#screen-gallery { background: var(--bg); overflow: hidden; }
+#screen-gallery .gallery-main { flex: 1; overflow-y: auto; }
+
+.gallery-toolbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.chip-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chip:hover { border-color: var(--accent-dim); color: var(--text); }
+.chip.active {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+}
+
+.gallery-main {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.gallery-stats {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dimmer);
+  margin-bottom: 24px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.passage-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.passage-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.passage-card:hover {
+  border-color: var(--border2);
+  background: var(--surface2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--shadow);
+}
+.passage-card:hover::before { opacity: 1; }
+
+.card-badge-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.badge-type {
+  background: var(--blue-dim);
+  color: var(--blue);
+  border: 1px solid rgba(92,143,224,0.25);
+}
+.badge-year {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border: 1px solid rgba(201,168,76,0.25);
+}
+.badge-num {
+  background: var(--surface2);
+  color: var(--text-dimmer);
+  border: 1px solid var(--border);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.card-excerpt {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.card-q-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dimmer);
+}
+
+.card-arrow {
+  font-size: 16px;
+  color: var(--accent-dim);
+  transition: transform 0.15s;
+}
+.passage-card:hover .card-arrow { transform: translateX(4px); color: var(--accent); }
+
+/* === READING === */
+#screen-reading { background: var(--bg); }
+
+.reading-toolbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.reading-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.reading-progress {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.reading-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Split layout: passage left, questions right */
+.pane-passage {
+  flex: 55;
+  min-width: 0;
+  border-right: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 40px 40px 40px 40px;
+  position: relative;
+}
+
+.pane-divider {
+  width: 6px;
+  cursor: col-resize;
+  background: var(--border);
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.pane-divider:hover, .pane-divider.dragging {
+  background: var(--accent);
+}
+
+.pane-questions {
+  flex: 45;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: none;
+  position: relative;
+}
+
+/* --- Pen drawing overlay --- */
+.draw-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 50;
+  touch-action: auto;
+}
+.draw-canvas.active { pointer-events: auto; cursor: crosshair; touch-action: none; }
+.draw-canvas.eraser { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='10' cy='10' r='8' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E") 10 10, auto; }
+.pen-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  border-left: 1px solid var(--border);
+  padding-left: 12px;
+}
+.pen-tool-btn {
+  padding: 4px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.pen-tool-btn:hover { border-color: var(--accent); color: var(--accent); }
+.pen-tool-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pen-tool-btn.clear-btn { color: var(--text-dimmer); font-size: 11px; }
+
+/* 1問ずつ表示: .question-block は非表示、.active のみ表示 */
+.question-block { display: none; }
+.question-block.active { display: block; }
+
+/* 設問ナビゲーション */
+.q-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.q-nav-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.q-nav-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.q-nav-btn:disabled { opacity: 0.3; cursor: default; }
+.btn-submit-inline { font-size: 12px; padding: 4px 12px; height: 36px; white-space: nowrap; flex-shrink: 0; }
+.btn-submit-inline:disabled { opacity: 0.35; cursor: default; }
+.q-nav-indicator {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.q-nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.q-nav-dot.current { background: var(--accent); transform: scale(1.2); }
+.q-nav-dot.answered-dot { background: var(--green); }
+
+.passage-title-block {
+  margin-bottom: 28px;
+}
+
+.passage-main-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.passage-source {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.passage-text {
+  font-size: var(--passage-font-size, 15px);
+  line-height: var(--passage-line-height, 1.9);
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.passage-text p {
+  margin-bottom: 18px;
+}
+
+/* Translation toggle */
+.translation-toggle {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.toggle-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  background: none;
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.15s;
+}
+.toggle-btn:hover { border-color: var(--border2); color: var(--text-dim); }
+
+.translation-text {
+  display: none;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.9;
+  white-space: pre-wrap;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.translation-text.visible { display: block; }
+
+/* Questions panel */
+.q-panel-header {
+  margin-bottom: 24px;
+}
+.q-panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.q-panel-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.question-block {
+  margin-bottom: 12px;
+  padding: 10px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.15s;
+}
+.question-block.answered { border-color: var(--border2); }
+
+.q-number { display: none; }
+.q-nav-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 600;
+  flex-shrink: 0;
+  min-width: 24px;
+}
+
+.q-text {
+  font-size: var(--passage-font-size, 15px);
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.choice-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: var(--passage-font-size, 15px);
+  color: var(--text-dim);
+  line-height: 1.5;
+  transition: all 0.15s;
+}
+.choice-label:hover { color: var(--text); background: var(--surface2); }
+.choice-label input[type=radio],
+.choice-label input[type=checkbox] { display: none; }
+
+.choice-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-dimmer);
+}
+
+.choice-label.selected {
+  background: var(--accent-glow);
+  color: var(--text);
+}
+.choice-label.selected .choice-num {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* After submit */
+.choice-label.correct {
+  background: var(--green-dim);
+  color: var(--text);
+}
+.choice-label.correct .choice-num { background: var(--green); color: #fff; border-color: var(--green); }
+.choice-label.wrong {
+  background: var(--red-dim);
+  color: var(--text-dim);
+}
+.choice-label.wrong .choice-num { background: var(--red); color: #fff; border-color: var(--red); }
+
+.q-explanation {
+  display: none;
+  margin-top: 14px;
+  padding: 14px;
+  background: var(--surface2);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+.q-explanation.visible { display: block; }
+
+.submit-area {
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* === RESULTS === */
+#screen-results {
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+.results-toolbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.results-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Score hero */
+.results-hero {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 40px;
+}
+
+.results-score-block {
+  text-align: center;
+}
+
+.results-score-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+
+.results-score {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.results-score-denom {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text-dimmer);
+  margin-top: 4px;
+}
+
+.results-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.results-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: var(--text);
+}
+
+.results-submsg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dimmer);
+}
+
+.results-time-block {
+  text-align: center;
+  padding: 16px 24px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.results-time-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--blue);
+}
+
+.results-time-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+}
+
+.save-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  text-align: center;
+}
+
+/* Section heading */
+.section-heading {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Per-question result block */
+.q-result-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.q-result-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.q-result-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.q-result-verdict {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+.q-result-verdict.correct-v {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(76,175,128,0.3);
+}
+.q-result-verdict.wrong-v {
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(224,92,92,0.3);
+}
+
+.q-result-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.q-result-left {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border);
+}
+
+.q-result-right {
+  padding: 20px 24px;
+}
+
+.q-result-stem {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+/* Chart canvas wrapper */
+.chart-wrap {
+  position: relative;
+  height: 180px;
+}
+
+/* Choice legend */
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Explanation */
+.q-explanation-result {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.exp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+/* Time stats chart */
+.time-chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.time-chart-wrap {
+  position: relative;
+  height: 200px;
+  margin-top: 16px;
+}
+
+/* Loading state for class data */
+.class-loading {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dimmer);
+  text-align: center;
+  padding: 24px;
+}
+
+/* Answer summary row */
+.answer-summary {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.answer-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border2);
+  color: var(--text-dim);
+}
+.answer-pill.my-ans {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.answer-pill.correct-ans {
+  background: var(--green-dim);
+  border-color: rgba(76,175,128,0.4);
+  color: var(--green);
+}
+.answer-pill.both-ans {
+  background: linear-gradient(135deg, var(--green-dim), var(--accent-glow));
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* ===== LOADING ===== */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.loading-overlay.active { display: flex; }
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-msg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+  z-index: 2000;
+  transform: translateY(80px);
+  opacity: 0;
+  transition: all 0.3s;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { border-color: var(--green); }
+.toast.error { border-color: var(--red); }
+
+/* Vocab section */
+.vocab-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.vocab-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+.vocab-list {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 2;
+  white-space: pre-wrap;
+}
+
+/* ===== TRANSLATION SCREEN ===== */
+.trans-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+.trans-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+.trans-pane {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  line-height: var(--passage-line-height, 1.9);
+  font-size: var(--passage-font-size, 15px);
+  white-space: pre-wrap;
+}
+.trans-pane-en {
+  border-right: 1px solid var(--border);
+  color: var(--text);
+}
+.trans-pane-ja {
+  color: var(--text-dim);
+}
+.trans-pane-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+@media (max-width: 768px) {
+  .trans-body { flex-direction: column; }
+  .trans-pane-en { border-right: none; border-bottom: 1px solid var(--border); }
+  .trans-pane { padding: 20px 16px; }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dimmer); }
+
+/* ===== ADMIN SCREEN ===== */
+#screen-admin { overflow-y: auto; }
+.admin-toolbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px; border-bottom: 1px solid var(--border);
+  background: var(--surface); flex-wrap: wrap;
+  position: sticky; top: 0; z-index: 10;
+}
+.admin-body { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.admin-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; font-family: 'JetBrains Mono', monospace;
+}
+.admin-table th, .admin-table td {
+  padding: 8px 12px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.admin-table th {
+  background: var(--surface2); color: var(--text-dim);
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.admin-table tr:hover td { background: var(--accent-glow); }
+.admin-filter-row {
+  display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 16px; padding: 12px 16px;
+  background: var(--surface2); border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-dim);
+}
+.admin-filter-row label { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.admin-filter-row select {
+  padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px;
+  background: var(--surface); color: var(--text); font-size: 13px; font-family: inherit;
+}
+.admin-form { max-width: 800px; margin: 0 auto; }
+.admin-form .field { margin-bottom: 16px; }
+.admin-form label {
+  display: block; font-size: 12px; color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.admin-form input, .admin-form textarea, .admin-form select {
+  width: 100%; padding: 8px 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text);
+  font-size: 14px; font-family: inherit;
+}
+.admin-form textarea { min-height: 100px; resize: vertical; }
+.admin-form input:focus, .admin-form textarea:focus, .admin-form select:focus {
+  outline: none; border-color: var(--accent);
+}
+.q-edit-row {
+  display: grid; grid-template-columns: 1fr 60px 1fr; gap: 8px;
+  align-items: start; padding: 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  margin-bottom: 8px; background: var(--surface);
+}
+.q-edit-row .field { margin-bottom: 0; }
+.btn-danger { background: var(--red); color: #fff; border: none; }
+.btn-danger:hover { opacity: 0.85; }
+.import-preview { max-height: 300px; overflow-y: auto; margin: 12px 0; }
+.import-preview table { width: 100%; font-size: 11px; }
+.btn-admin {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 4px 12px; border-radius: 4px;
+  border: 1px solid var(--accent); color: var(--accent);
+  background: transparent; cursor: pointer;
+}
+.btn-admin:hover { background: var(--accent-glow); }
+
+/* ===== COMPLETED CARD ===== */
+.passage-card.completed {
+  border-left: 4px solid var(--green);
+  opacity: 0.75;
+}
+.passage-card.completed .card-footer::after {
+  content: "済";
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 8px;
+}
+
+/* ===== THEME SWITCHER ===== */
+.theme-switcher {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.theme-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.theme-dot:hover { transform: scale(1.15); }
+.theme-dot.active { border-color: var(--text); transform: scale(1.15); }
+.theme-dot[data-theme="cream"] { background: #f7f3eb; }
+.theme-dot[data-theme="paper"] { background: #f0f0ec; }
+.theme-dot[data-theme="sage"] { background: #c4d4be; }
+.theme-dot[data-theme="ocean"] { background: #b8cfea; }
+.theme-dot[data-theme="lavender"] { background: #d0c4d8; }
+.theme-dot[data-theme="dark"] { background: #1a1b1e; }
+
+/* ===== FONT CONTROLS ===== */
+.font-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+}
+.font-ctrl-btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.font-ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+.font-ctrl-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dimmer);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 4px;
+}
+
+/* ===== TIMER ===== */
+.timer-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* Responsive */
+/* Reading画面ではヘッダー非表示 */
+body.reading-active .header { display: none; }
+
+@media (max-width: 768px),
+       (max-width: 1024px) and (orientation: portrait) {
+  .reading-body { flex-direction: column; }
+  .pane-passage { flex: 4; min-height: 0; overflow-y: auto; order: 3; padding: 20px 16px; }
+  .pane-questions {
+    width: 100%;
+    flex: none;
+    display: contents;
+    border-bottom: none;
+    overflow: visible;
+    order: 1;
+  }
+  .pane-questions .q-nav {
+    order: 1;
+    flex-shrink: 0;
+    padding: 10px 12px;
+    margin-bottom: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  .pane-questions #questions-container {
+    order: 2;
+    flex: 1.2;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 12px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .q-text { line-height: 1.45; }
+  .choice-label { line-height: 1.35; }
+  .pane-divider { display: none; }
+  .header { display: none; }
+  .reading-toolbar { padding: 10px 12px; gap: 8px; flex-wrap: wrap; }
+  .font-ctrl-label { display: none; }
+  .results-toolbar { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+  .gallery-toolbar { padding: 12px 16px; }
+  .gallery-main { padding: 16px; }
+}
+.pane-passage.passage-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg);
+  padding: 40px;
+  overflow-y: auto;
+  cursor: zoom-out;
+  max-height: none !important;
+  flex: none !important;
+  border: none !important;
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-msg" id="loading-msg">Loading...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div id="app">
+  <!-- Header -->
+  <header class="header">
+    <div>
+      <div class="header-logo">マーク式リーディング練習</div>
+      <div class="header-sub">Mark-style Reading · English</div>
+    </div>
+    <div class="theme-switcher">
+      <div class="theme-dot active" data-theme="cream" onclick="setTheme('cream')" title="Cream"></div>
+      <div class="theme-dot" data-theme="paper" onclick="setTheme('paper')" title="Paper"></div>
+      <div class="theme-dot" data-theme="sage" onclick="setTheme('sage')" title="Sage"></div>
+      <div class="theme-dot" data-theme="ocean" onclick="setTheme('ocean')" title="Ocean"></div>
+      <div class="theme-dot" data-theme="lavender" onclick="setTheme('lavender')" title="Lavender"></div>
+      <div class="theme-dot" data-theme="dark" onclick="setTheme('dark')" title="Dark"></div>
+    </div>
+    <div class="header-user">
+      <button class="btn-icon" id="btn-fullscreen" onclick="toggleFullscreen()" title="全画面">
+        <svg id="fs-icon-expand" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+        <svg id="fs-icon-shrink" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M4 14h6v6m10-10h-6V4m0 6l7-7M3 21l7-7"/></svg>
+      </button>
+      <span class="user-badge" id="user-badge">—</span>
+      <button class="btn btn-sm" id="btn-logout" onclick="logout()" style="display:none">Sign out</button>
+    </div>
+  </header>
+
+  <!-- LOGIN SCREEN -->
+  <div class="screen active" id="screen-login">
+    <div class="login-card">
+      <div class="login-icon">📖</div>
+      <div class="login-title">マーク式リーディング練習</div>
+      <div class="login-sub">Mark-style Reading · English</div>
+      <div class="login-desc">学校アカウントでサインインして、マーク式英語リーディング問題に取り組みましょう。</div>
+      <button class="btn btn-primary" onclick="login()">Sign in with Microsoft</button>
+    </div>
+  </div>
+
+  <!-- GALLERY SCREEN -->
+  <div class="screen" id="screen-gallery">
+    <div class="gallery-toolbar">
+      <div style="display:flex;align-items:flex-start;gap:12px">
+        <div class="filter-row" style="flex:1">
+          <span class="filter-label">試験区分</span>
+          <div class="chip-group" id="filter-bookid"></div>
+          <div class="filter-divider"></div>
+          <span class="filter-label">年度</span>
+          <div class="chip-group" id="filter-year"></div>
+        </div>
+        <button class="btn-admin" id="btn-admin" style="display:none;flex-shrink:0" onclick="showScreen('admin');adminLoadList()">管理</button>
+      </div>
+    </div>
+    <div class="gallery-main">
+      <div class="gallery-stats" id="gallery-stats">Loading passages...</div>
+      <div class="card-grid" id="card-grid"></div>
+    </div>
+  </div>
+
+  <!-- READING SCREEN -->
+  <div class="screen" id="screen-reading">
+    <div class="reading-toolbar">
+      <button class="btn btn-sm" onclick="goToGallery()">← 一覧に戻る</button>
+      <div class="reading-meta" id="reading-meta"></div>
+      <div class="font-controls">
+        <span class="font-ctrl-label">Size</span>
+        <button class="font-ctrl-btn" onclick="adjustFont('size',-1)">-</button>
+        <button class="font-ctrl-btn" onclick="adjustFont('size',+1)">+</button>
+        <span class="font-ctrl-label" style="margin-left:8px">行間</span>
+        <button class="font-ctrl-btn" onclick="adjustFont('lh',-1)">-</button>
+        <button class="font-ctrl-btn" onclick="adjustFont('lh',+1)">+</button>
+      </div>
+      <div class="pen-toolbar" id="pen-toolbar">
+        <button class="pen-tool-btn" id="btn-finger" onclick="setDrawMode('finger')">指</button>
+        <button class="pen-tool-btn" id="btn-pen" onclick="setDrawMode('pen')">ペン</button>
+        <button class="pen-tool-btn" id="btn-eraser" onclick="setDrawMode('eraser')">消</button>
+        <button class="pen-tool-btn clear-btn" onclick="clearDrawing()">全消去</button>
+      </div>
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="reading-progress" id="reading-progress">0 / 0 answered</div>
+    </div>
+    <div class="reading-body">
+      <div class="pane-passage" id="pane-passage">
+        <div class="passage-title-block">
+          <div class="passage-main-title" id="passage-title">—</div>
+          <div class="passage-source" id="passage-source">—</div>
+        </div>
+        <div class="passage-text" id="passage-text"></div>
+        <div class="translation-toggle" id="translation-toggle" style="display:none">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <button class="toggle-btn" onclick="toggleTranslation()">▾ 全訳を表示</button>
+            <button class="btn btn-sm" onclick="openTranslation()">対訳画面</button>
+          </div>
+          <div class="translation-text" id="translation-text"></div>
+        </div>
+        <div class="vocab-section" id="vocab-section" style="display:none">
+          <div class="vocab-title">Vocabulary</div>
+          <div class="vocab-list" id="vocab-list"></div>
+        </div>
+        <div class="vocab-section" id="explanation-section" style="display:none">
+          <div class="vocab-title">解説</div>
+          <div class="vocab-list" id="explanation-text" style="white-space:pre-wrap"></div>
+        </div>
+      </div>
+
+      <div class="pane-divider" id="pane-divider"></div>
+      <div class="pane-questions" id="pane-questions">
+        <div class="q-nav" id="q-nav">
+          <button class="q-nav-btn" id="q-prev" onclick="navQuestion(-1)">←</button>
+          <span class="q-nav-label" id="q-nav-label">Q1</span>
+          <div class="q-nav-indicator" id="q-nav-dots"></div>
+          <button class="q-nav-btn" id="q-next" onclick="navQuestion(+1)">→</button>
+          <button class="btn btn-primary btn-submit-inline" id="btn-submit" onclick="submitAnswers()" disabled>採点</button>
+        </div>
+        <div id="questions-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screen-results">
+    <div class="results-toolbar">
+      <button class="btn btn-sm" onclick="goToGallery()">← 一覧に戻る</button>
+      <button class="btn btn-sm" onclick="reviewAnswers()">回答を確認</button>
+      <button class="btn btn-sm" onclick="openTranslation()">全訳</button>
+      <div class="reading-meta" id="results-meta"></div>
+      <div class="save-status" id="save-status" style="margin-left:auto"></div>
+    </div>
+    <div class="results-body">
+      <!-- Hero score -->
+      <div class="results-hero">
+        <div class="results-score-block">
+          <div class="results-score-label">Score</div>
+          <div class="results-score" id="results-score">—</div>
+          <div class="results-score-denom" id="results-denom">/ —</div>
+        </div>
+        <div class="results-info">
+          <div class="results-msg" id="results-msg">—</div>
+          <div class="results-submsg" id="results-submsg"></div>
+        </div>
+        <div class="results-time-block">
+          <div class="results-time-val" id="results-time">—</div>
+          <div class="results-time-label">解答時間</div>
+        </div>
+      </div>
+
+      <!-- Per-question charts -->
+      <div>
+        <div class="section-heading">設問別 解答分布</div>
+        <div id="q-results-container">
+          <div class="class-loading" id="class-loading">クラスデータを取得中...</div>
+        </div>
+      </div>
+
+      <!-- Time by score tier -->
+      <div class="time-chart-card" id="time-chart-card" style="display:none">
+        <div class="section-heading">スコア帯別 平均解答時間</div>
+        <div class="time-chart-wrap">
+          <canvas id="time-chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN SCREEN (teacher only) -->
+  <div class="screen" id="screen-admin">
+    <div class="admin-toolbar">
+      <button class="btn btn-sm" onclick="showScreen('gallery')">← 一覧に戻る</button>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-dim)">問題管理</span>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn btn-sm" onclick="adminShowForm(null)">+ 新規追加</button>
+        <button class="btn btn-sm" onclick="adminShowImport()">CSV/JSON インポート</button>
+      </div>
+    </div>
+    <div class="admin-body">
+      <!-- List view -->
+      <div id="admin-list-view">
+        <div class="admin-filter-row" id="admin-filter-row">
+          <label>試験区分 <select id="admin-f-book" onchange="adminFilterChanged()"><option value="">すべて</option></select></label>
+          <label>年度 <select id="admin-f-year" onchange="adminFilterChanged()"><option value="">すべて</option></select></label>
+          <label>問番号 <select id="admin-f-num" onchange="adminFilterChanged()"><option value="">すべて</option></select></label>
+        </div>
+        <table class="admin-table">
+          <thead><tr><th>ID</th><th>試験区分</th><th>年度</th><th>問番号</th><th>タイトル</th><th>設問数</th><th>操作</th></tr></thead>
+          <tbody id="admin-table-body"></tbody>
+        </table>
+      </div>
+      <!-- Form view -->
+      <div id="admin-form-view" style="display:none">
+        <div class="admin-form">
+          <h3 id="admin-form-title" style="margin-bottom:16px;color:var(--text)">新規追加</h3>
+          <input type="hidden" id="af-id">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>BookID (試験区分)</label><input id="af-book-id" placeholder="共通テスト"></div>
+            <div class="field"><label>SubBookID (年度)</label><input id="af-sub-book-id" placeholder="2025"></div>
+            <div class="field"><label>SubSubBookID (問番号)</label><input id="af-sub-sub-book-id" placeholder="1"></div>
+          </div>
+          <div class="field"><label>Episode Title</label><input id="af-episode-title" placeholder="タイトル"></div>
+          <div class="field"><label>Question Text (本文)</label><textarea id="af-question-text" rows="8"></textarea></div>
+          <div class="field"><label>Translation Text (翻訳)</label><textarea id="af-translation-text" rows="6"></textarea></div>
+          <div class="field"><label>Formatted English (整形済み英文)</label><textarea id="af-formatted-english" rows="6"></textarea></div>
+          <div class="field"><label>Vocabulary</label><textarea id="af-vocabulary" rows="4"></textarea></div>
+          <div class="field"><label>解説 (Explanation)</label><textarea id="af-explanation" rows="6"></textarea></div>
+          <div style="margin:20px 0 8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:8px">
+            設問 <button class="btn btn-sm" onclick="adminAddQuestion()">+ 追加</button>
+          </div>
+          <div id="af-questions"></div>
+          <div style="margin-top:20px;display:flex;gap:8px">
+            <button class="btn btn-primary" onclick="adminSaveForm()">保存</button>
+            <button class="btn btn-sm" onclick="adminShowList()">キャンセル</button>
+          </div>
+        </div>
+      </div>
+      <!-- Import view -->
+      <div id="admin-import-view" style="display:none">
+        <div class="admin-form">
+          <h3 style="margin-bottom:16px;color:var(--text)">CSV/JSON インポート</h3>
+          <div class="field">
+            <label>ファイル選択 (.csv or .json)</label>
+            <input type="file" id="import-file" accept=".csv,.json" onchange="adminPreviewImport()">
+          </div>
+          <div id="import-preview-area"></div>
+          <div style="margin-top:16px;display:flex;gap:8px">
+            <button class="btn btn-primary" id="btn-import-exec" onclick="adminExecImport()" disabled>インポート実行</button>
+            <button class="btn btn-sm" onclick="adminShowList()">キャンセル</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSLATION SCREEN -->
+  <div class="screen" id="screen-translation">
+    <div class="trans-toolbar">
+      <button class="btn btn-sm" onclick="goBackFromTranslation()">← 戻る</button>
+      <div class="reading-meta" id="trans-meta"></div>
+    </div>
+    <div class="trans-body">
+      <div class="trans-pane trans-pane-en">
+        <div class="trans-pane-label">English</div>
+        <div id="trans-en-text"></div>
+      </div>
+      <div class="trans-pane trans-pane-ja">
+        <div class="trans-pane-label">Translation</div>
+        <div id="trans-ja-text"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG — D1 Worker API
+// ============================================================
+const CONFIG = {
+  clientId:   "8a7cf5e5-ba72-4037-b94d-b5fd94a41641",
+  tenantId:   "da29e79e-284c-4c77-b3c0-9b96ea0c2a81",
+  apiBase:    "https://vocab-api.ryotishi.workers.dev",
+};
+// ============================================================
+
+const AUTHORITY = `https://login.microsoftonline.com/${CONFIG.tenantId}`;
+const SCOPES    = ["User.Read"];
+
+// ===== MSAL =====
+let msalInstance;
+try {
+  msalInstance = new msal.PublicClientApplication({
+    auth: {
+      clientId:    CONFIG.clientId,
+      authority:   AUTHORITY,
+      redirectUri: window.location.origin,
+    },
+    cache: { cacheLocation: "localStorage" }
+  });
+} catch(e) {
+  console.error("MSAL initialization failed:", e);
+}
+
+// ===== STATE =====
+let state = {
+  allPassages:     [],
+  allQuestions:    {},
+  currentPassage:  null,
+  currentQuestions:[],
+  userAnswers:     {},
+  submitted:       false,
+  startTime:       null,
+  filterBookId:    "all",
+  filterYear:      "all",
+  completedKeys:   new Set(),
+  timerInterval:   null,
+  currentQIdx:     0,
+  chartInstances:  [],
+  isTeacher:       false,
+  myResults:       [],
+};
+
+// ===== THEME =====
+function setTheme(name) {
+  document.documentElement.setAttribute("data-theme", name);
+  document.querySelectorAll(".theme-dot").forEach(d => d.classList.toggle("active", d.dataset.theme === name));
+  localStorage.setItem("rp-theme", name);
+}
+(function restoreTheme() {
+  const saved = localStorage.getItem("rp-theme") || "cream";
+  setTheme(saved);
+})();
+
+// ===== FULLSCREEN =====
+function toggleFullscreen() {
+  if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  } else {
+    // iOS: Fullscreen API 非対応
+    toast("iOSでは「ホーム画面に追加」で全画面になります", "");
+  }
+}
+document.addEventListener("fullscreenchange", () => {
+  const isFs = !!document.fullscreenElement;
+  document.getElementById("fs-icon-expand").style.display = isFs ? "none" : "";
+  document.getElementById("fs-icon-shrink").style.display = isFs ? "" : "none";
+});
+
+// ===== FONT CONTROLS =====
+let fontSizeIdx = parseInt(localStorage.getItem("rp-fontSizeIdx") || "2", 10);
+let lineHeightIdx = parseInt(localStorage.getItem("rp-lineHeightIdx") || "2", 10);
+const FONT_SIZES   = [13, 14, 15, 16, 18, 20, 22, 24, 28];
+const LINE_HEIGHTS  = [1.5, 1.7, 1.9, 2.1, 2.4, 2.8, 3.2, 3.6];
+
+function applyFont() {
+  document.documentElement.style.setProperty("--passage-font-size", FONT_SIZES[fontSizeIdx] + "px");
+  document.documentElement.style.setProperty("--passage-line-height", LINE_HEIGHTS[lineHeightIdx]);
+}
+function adjustFont(type, dir) {
+  if (type === "size") {
+    fontSizeIdx = Math.max(0, Math.min(FONT_SIZES.length - 1, fontSizeIdx + dir));
+    localStorage.setItem("rp-fontSizeIdx", fontSizeIdx);
+  } else {
+    lineHeightIdx = Math.max(0, Math.min(LINE_HEIGHTS.length - 1, lineHeightIdx + dir));
+    localStorage.setItem("rp-lineHeightIdx", lineHeightIdx);
+  }
+  applyFont();
+}
+applyFont();
+
+// ===== TIMER =====
+function startTimer() {
+  stopTimer();
+  state.startTime = Date.now();
+  updateTimerDisplay();
+  state.timerInterval = setInterval(updateTimerDisplay, 1000);
+}
+function stopTimer() {
+  if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+}
+function updateTimerDisplay() {
+  const el = document.getElementById("timer-display");
+  if (!el || !state.startTime) return;
+  const sec = Math.floor((Date.now() - state.startTime) / 1000);
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  el.textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+// ===== QUESTION NAV =====
+function showQuestion(idx) {
+  const total = state.currentQuestions.length;
+  if (total === 0) return;
+  state.currentQIdx = Math.max(0, Math.min(total - 1, idx));
+  // 表示切替
+  document.querySelectorAll("#questions-container .question-block").forEach((b, i) => {
+    b.classList.toggle("active", i === state.currentQIdx);
+  });
+  // ボタン状態
+  document.getElementById("q-prev").disabled = state.currentQIdx === 0;
+  document.getElementById("q-next").disabled = state.currentQIdx === total - 1;
+  // Q番号ラベル
+  document.getElementById("q-nav-label").textContent = `Q${state.currentQIdx + 1}`;
+  // ドット更新
+  updateNavDots();
+}
+function navQuestion(dir) {
+  showQuestion(state.currentQIdx + dir);
+}
+
+// Swipe support for question navigation
+(function() {
+  const el = document.getElementById("questions-container");
+  let startX = 0, startY = 0, tracking = false;
+  el.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    tracking = true;
+  }, { passive: true });
+  el.addEventListener("touchend", e => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx)) return; // too short or vertical
+    navQuestion(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
+
+function buildNavDots() {
+  const container = document.getElementById("q-nav-dots");
+  container.innerHTML = "";
+  state.currentQuestions.forEach((q, i) => {
+    const dot = document.createElement("div");
+    dot.className = "q-nav-dot";
+    dot.onclick = () => showQuestion(i);
+    container.appendChild(dot);
+  });
+}
+function updateNavDots() {
+  const dots = document.querySelectorAll("#q-nav-dots .q-nav-dot");
+  dots.forEach((dot, i) => {
+    const q = state.currentQuestions[i];
+    const answered = q && state.userAnswers[String(q.id)] != null;
+    dot.className = "q-nav-dot"
+      + (i === state.currentQIdx ? " current" : "")
+      + (answered ? " answered-dot" : "");
+  });
+}
+
+// Detect standalone/PWA mode
+const isStandalone = window.navigator.standalone === true
+  || window.matchMedia("(display-mode: standalone)").matches;
+
+// ===== AUTH =====
+async function acquireToken(scopes) {
+  const accounts = msalInstance.getAllAccounts();
+  if (!accounts.length) throw new Error("Not signed in");
+  try {
+    return await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
+  } catch {
+    if (isStandalone) {
+      await msalInstance.acquireTokenRedirect({ scopes });
+      throw new Error("Redirecting for token...");
+    }
+    return await msalInstance.acquireTokenPopup({ scopes, account: accounts[0] });
+  }
+}
+
+async function login() {
+  try {
+    showLoading("Signing in...");
+    if (isStandalone) {
+      await msalInstance.loginRedirect({ scopes: SCOPES });
+    } else {
+      await msalInstance.loginPopup({ scopes: SCOPES });
+    }
+    await initApp();
+  } catch (e) {
+    hideLoading();
+    toast("サインインに失敗しました: " + e.message, "error");
+  }
+}
+
+async function logout() {
+  if (isStandalone) {
+    await msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
+  } else {
+    await msalInstance.logoutPopup({ postLogoutRedirectUri: window.location.origin });
+  }
+  location.reload();
+}
+
+async function getIdToken() {
+  const res = await acquireToken(SCOPES);
+  return res.idToken;
+}
+
+function getAccount() {
+  const accounts = msalInstance.getAllAccounts();
+  return accounts.length ? accounts[0] : null;
+}
+
+// ===== AUTH CHECK =====
+async function checkAuthSilent() {
+  try {
+    const accounts = msalInstance.getAllAccounts();
+    if (!accounts.length) return false;
+    await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accounts[0] });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function forceRefreshIdToken() {
+  const accounts = msalInstance.getAllAccounts();
+  if (!accounts.length) throw new Error("Not signed in");
+  try {
+    const res = await msalInstance.acquireTokenSilent({
+      scopes: SCOPES, account: accounts[0], forceRefresh: true,
+    });
+    return res.idToken;
+  } catch {
+    if (isStandalone) {
+      await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
+      throw new Error("Redirecting for token...");
+    }
+    return (await msalInstance.acquireTokenPopup({ scopes: SCOPES, account: accounts[0] })).idToken;
+  }
+}
+
+// ===== WORKER API =====
+async function apiFetch(path, options = {}) {
+  const url = `${CONFIG.apiBase}${path}`;
+  const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
+  if (options.auth !== false) {
+    const token = await getIdToken();
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  let res = await fetch(url, { ...options, headers });
+
+  // 401 → トークン強制リフレッシュして1回リトライ
+  if (res.status === 401 && options.auth !== false) {
+    try {
+      const freshToken = await forceRefreshIdToken();
+      headers["Authorization"] = `Bearer ${freshToken}`;
+      res = await fetch(url, { ...options, headers });
+    } catch (e) {
+      throw new Error(`API error 401: セッション期限切れ（再ログインが必要です）`);
+    }
+  }
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`API error ${res.status}: ${errText}`);
+  }
+  return res.json();
+}
+
+// ===== INIT =====
+async function initApp() {
+  const account = getAccount();
+  if (!account) return;
+
+  showLoading("Loading passages...");
+  try {
+    // ユーザー表示
+    document.getElementById("user-badge").textContent = account.username;
+    document.getElementById("btn-logout").style.display = "";
+
+    // Passages 一覧取得（認証不要・軽量）
+    const passages = await apiFetch("/api/reading/passages", { auth: false });
+    state.allPassages = passages.map(p => ({
+      id: p.id,
+      BookID: p.book_id,
+      SubBookID: p.sub_book_id,
+      SubSubBookID: p.sub_sub_book_id,
+      EpisodeTitle: p.episode_title,
+      excerpt: p.excerpt,
+      q_count: p.q_count,
+    }));
+
+    // 設問は passage 詳細取得時に取るので、ここでは空
+    state.allQuestions = {};
+
+    // ユーザーの完了済み問題を取得
+    try {
+      await loadCompletedPassages();
+    } catch(e) { console.warn("Could not load completion status:", e); }
+
+    // 教師判定
+    try {
+      const me = await apiFetch("/api/me");
+      console.log("/api/me response:", me);
+      state.isTeacher = me.role === "teacher";
+      if (state.isTeacher) {
+        document.getElementById("btn-admin").style.display = "";
+      }
+    } catch(e) { console.error("Could not check teacher status:", e); }
+
+    buildFilters();
+    renderGallery();
+    showScreen("gallery");
+  } catch(e) {
+    toast("データ取得エラー: " + e.message, "error");
+    console.error(e);
+  } finally {
+    hideLoading();
+  }
+}
+
+async function loadCompletedPassages() {
+  const results = await apiFetch("/api/reading/results/mine");
+  state.myResults = results;
+  state.completedKeys = new Set();
+  for (const r of results) {
+    state.completedKeys.add(`${r.book_id}|${r.sub_book_id}|${r.sub_sub_book_id}`);
+  }
+}
+
+function groupKey(item) {
+  return `${item.BookID}|${item.SubBookID}|${item.SubSubBookID}`;
+}
+
+// ===== FILTERS (CASCADE) =====
+function buildFilters() {
+  const bookIds = [...new Set(state.allPassages.map(p => p.BookID).filter(Boolean))].sort();
+  state.filterBookId = null;
+  state.filterYear = null;
+
+  const bgEl = document.getElementById("filter-bookid");
+  bgEl.innerHTML = "";
+  for (const bid of bookIds) {
+    const btn = document.createElement("button");
+    btn.className = "chip";
+    btn.textContent = bid;
+    btn.dataset.val = bid;
+    btn.onclick = () => setFilter("bookid", bid);
+    bgEl.appendChild(btn);
+  }
+  document.getElementById("filter-year").innerHTML = "";
+}
+
+function rebuildYearChips() {
+  const yrEl = document.getElementById("filter-year");
+  yrEl.innerHTML = "";
+
+  if (!state.filterBookId) return;
+
+  const filtered = state.allPassages.filter(p => p.BookID === state.filterBookId);
+  const years = [...new Set(filtered.map(p => p.SubBookID).filter(Boolean))].sort((a,b) => b - a);
+
+  for (const yr of years) {
+    const btn = document.createElement("button");
+    btn.className = "chip" + (String(state.filterYear) === String(yr) ? " active" : "");
+    btn.textContent = yr;
+    btn.dataset.val = yr;
+    btn.onclick = () => setFilter("year", yr);
+    yrEl.appendChild(btn);
+  }
+}
+
+function setFilter(type, val) {
+  if (type === "bookid") {
+    state.filterBookId = val;
+    state.filterYear = null;
+    document.querySelectorAll("#filter-bookid .chip").forEach(c => c.classList.toggle("active", c.dataset.val === val));
+    rebuildYearChips();
+  } else {
+    state.filterYear = val;
+    document.querySelectorAll("#filter-year .chip").forEach(c => c.classList.toggle("active", String(c.dataset.val) === String(val)));
+  }
+  renderGallery();
+}
+
+function getFilteredPassages() {
+  if (!state.filterBookId) return [];
+  return state.allPassages.filter(p => {
+    if (p.BookID !== state.filterBookId) return false;
+    if (state.filterYear && String(p.SubBookID) !== String(state.filterYear)) return false;
+    return true;
+  });
+}
+
+// ===== GALLERY =====
+function renderGallery() {
+  const passages = getFilteredPassages();
+  document.getElementById("gallery-stats").textContent = `${passages.length} passages`;
+  const grid = document.getElementById("card-grid");
+  grid.innerHTML = "";
+
+  for (const p of passages) {
+    const key = groupKey(p);
+    const qCount = p.q_count || (state.allQuestions[key] || []).length;
+    const excerpt = (p.excerpt || p.QuestionText || "").replace(/\s+/g, " ").trim().substring(0, 120);
+    const title   = p.EpisodeTitle || "Untitled";
+
+    const card = document.createElement("div");
+    const done = state.completedKeys.has(key);
+    card.className = "passage-card" + (done ? " completed" : "");
+    card.innerHTML = `
+      <div class="card-badge-row">
+        <span class="badge badge-type">${escHtml(p.BookID || "—")}</span>
+        <span class="badge badge-year">${escHtml(String(p.SubBookID || "—"))}</span>
+        <span class="badge badge-num">第${escHtml(String(p.SubSubBookID || "—"))}問</span>
+      </div>
+      <div class="card-title">${escHtml(title)}</div>
+      <div class="card-excerpt">${escHtml(excerpt)}…</div>
+      <div class="card-footer">
+        <span class="card-q-count">${qCount} questions</span>
+        <span class="card-arrow">→</span>
+      </div>
+    `;
+    card.onclick = () => done ? viewCompletedResult(p) : startReading(p);
+    grid.appendChild(card);
+  }
+
+  if (!state.filterBookId) {
+    grid.innerHTML = `<div style="color:var(--text-dimmer);font-family:'JetBrains Mono',monospace;font-size:13px">試験区分を選択してください</div>`;
+  } else if (passages.length === 0) {
+    grid.innerHTML = `<div style="color:var(--text-dimmer);font-family:'JetBrains Mono',monospace;font-size:13px">該当する問題がありません</div>`;
+  }
+}
+
+// ===== READING =====
+async function startReading(passage) {
+  // 読解開始前に認証チェック（結果保存に必要）
+  const authOk = await checkAuthSilent();
+  if (!authOk) {
+    toast("セッションが切れています。再ログインしてください。", "error");
+    try {
+      if (isStandalone) {
+        await msalInstance.loginRedirect({ scopes: SCOPES });
+      } else {
+        await msalInstance.loginPopup({ scopes: SCOPES });
+      }
+    } catch(e) {
+      toast("ログインに失敗しました: " + e.message, "error");
+      return;
+    }
+  }
+
+  showLoading("Loading passage...");
+  try {
+    // Fetch full passage + questions from API
+    const data = await apiFetch(`/api/reading/passages/${passage.id}`, { auth: false });
+    const fullPassage = {
+      id: data.passage.id,
+      BookID: data.passage.book_id,
+      SubBookID: data.passage.sub_book_id,
+      SubSubBookID: data.passage.sub_sub_book_id,
+      EpisodeTitle: data.passage.episode_title,
+      QuestionText: data.passage.question_text,
+      TranslationText: data.passage.translation_text,
+      FormattedEnglish: data.passage.formatted_english,
+      Vocabulary: data.passage.vocabulary,
+      Explanation: data.passage.explanation,
+    };
+    const questions = (data.questions || []).map(q => ({
+      id: q.id,
+      MainOrder: q.main_order,
+      QuestionText: q.question_text,
+      CorrectAnswer: q.correct_answer,
+      Explanation: q.explanation,
+    }));
+
+    // Cache questions
+    const key = groupKey(fullPassage);
+    state.allQuestions[key] = questions;
+
+    state.currentPassage   = fullPassage;
+    state.currentQuestions = questions;
+    state.userAnswers      = {};
+    state.submitted        = false;
+    startTimer();
+
+    // Passage pane
+    const title  = fullPassage.EpisodeTitle || "Untitled";
+    const source = `${fullPassage.BookID || ""} ${fullPassage.SubBookID || ""} 年度 第${fullPassage.SubSubBookID || ""}問`;
+
+    document.getElementById("passage-title").textContent  = title;
+    document.getElementById("passage-source").textContent = source;
+    document.getElementById("passage-text").textContent   = cleanText(fullPassage.QuestionText);
+
+    // Translation & Vocab: 初回は非表示、済み問題なら表示
+    const transEl = document.getElementById("translation-text");
+    transEl.textContent = cleanText(fullPassage.TranslationText);
+    transEl.classList.remove("visible");
+    document.getElementById("vocab-list").textContent = cleanText(fullPassage.Vocabulary);
+
+    const alreadyDone = state.completedKeys.has(key);
+    document.getElementById("translation-toggle").style.display = alreadyDone ? "" : "none";
+    document.getElementById("vocab-section").style.display = alreadyDone && fullPassage.Vocabulary ? "" : "none";
+    document.getElementById("explanation-text").textContent = cleanText(fullPassage.Explanation);
+    document.getElementById("explanation-section").style.display = alreadyDone && fullPassage.Explanation ? "" : "none";
+
+    // Reading meta badges
+    const metaEl = document.getElementById("reading-meta");
+    metaEl.innerHTML = `
+      <span class="badge badge-type">${escHtml(fullPassage.BookID||"")}</span>
+      <span class="badge badge-year">${escHtml(String(fullPassage.SubBookID||""))}</span>
+      <span class="badge badge-num">第${escHtml(String(fullPassage.SubSubBookID||""))}問</span>
+    `;
+
+    // Build questions
+    renderQuestions(questions);
+    document.getElementById("q-nav").style.display = "";
+    buildNavDots();
+    showQuestion(0);
+    updateProgress();
+
+    document.getElementById("btn-submit").disabled = true;
+    document.getElementById("btn-submit").style.display = "";
+    showScreen("reading");
+    // Prepare drawing canvases (hidden until stylus or button)
+    requestAnimationFrame(() => ensureCanvases());
+  } catch(e) {
+    toast("読込エラー: " + e.message, "error");
+    console.error(e);
+  } finally {
+    hideLoading();
+  }
+}
+
+function cleanText(text) {
+  let s = (text || "").trim().replace(/^["'""''`\u200B\uFEFF]+|["'""''`\u200B\uFEFF]+$/g, "").replace(/\\n/g, "\n").replace(/\n{2,}/g, "\n");
+  // Decode HTML entities (&gt; &lt; &amp; &quot; &#39; &#number;)
+  const ta = document.createElement("textarea");
+  ta.innerHTML = s;
+  return ta.value;
+}
+
+// ===== VIEW COMPLETED RESULT (直接結果画面へ) =====
+async function viewCompletedResult(passage) {
+  showLoading("結果を取得中...");
+
+  try {
+    // Fetch full passage + questions
+    const passageData = await apiFetch(`/api/reading/passages/${passage.id}`, { auth: false });
+    const fullPassage = {
+      id: passageData.passage.id,
+      BookID: passageData.passage.book_id,
+      SubBookID: passageData.passage.sub_book_id,
+      SubSubBookID: passageData.passage.sub_sub_book_id,
+      EpisodeTitle: passageData.passage.episode_title,
+      QuestionText: passageData.passage.question_text,
+      TranslationText: passageData.passage.translation_text,
+      FormattedEnglish: passageData.passage.formatted_english,
+      Vocabulary: passageData.passage.vocabulary,
+    };
+    const questions = (passageData.questions || []).map(q => ({
+      id: q.id,
+      MainOrder: q.main_order,
+      QuestionText: q.question_text,
+      CorrectAnswer: q.correct_answer,
+      Explanation: q.explanation,
+    }));
+
+    const key = groupKey(fullPassage);
+    state.allQuestions[key] = questions;
+    state.currentPassage   = fullPassage;
+    state.currentQuestions = questions;
+    state.submitted        = true;
+
+    // Find cached result from myResults
+    const myResult = state.myResults.find(r =>
+      r.book_id === fullPassage.BookID &&
+      r.sub_book_id === fullPassage.SubBookID &&
+      r.sub_sub_book_id === fullPassage.SubSubBookID
+    );
+
+    let scorePct = 0, elapsed = 0, sAnswer = "";
+    if (myResult) {
+      scorePct = myResult.score || 0;
+      elapsed  = myResult.time_trial || 0;
+      sAnswer  = myResult.s_answer || "";
+    }
+
+    // Reconstruct userAnswers from sAnswer
+    state.userAnswers = {};
+    const parts = sAnswer.split(";");
+    questions.forEach((q, idx) => {
+      const raw = parts[idx] || "";
+      if (isMultiSelect(q)) {
+        const arr = raw.split(",").map(s => parseInt(s.trim(), 10)).filter(n => n > 0);
+        if (arr.length > 0) state.userAnswers[String(q.id)] = arr;
+      } else {
+        const v = parseInt(raw, 10);
+        if (v >= 1 && v <= 6) state.userAnswers[String(q.id)] = v;
+      }
+    });
+
+    // Calculate correct count from reconstructed answers
+    let correct = 0;
+    questions.forEach(q => {
+      const multi = isMultiSelect(q);
+      const correctAnswers = parseCorrectAnswers(q);
+      const selected = state.userAnswers[String(q.id)];
+      if (multi) {
+        const selArr = Array.isArray(selected) ? selected : [];
+        if (selArr.length === correctAnswers.length && selArr.every(v => correctAnswers.includes(v))) correct++;
+      } else {
+        if (selected === correctAnswers[0]) correct++;
+      }
+    });
+
+    // Prepare the reading pane for review mode
+    setupReadingPaneForReview(fullPassage, questions);
+
+    hideLoading();
+
+    // Show results screen
+    showResultsScreen(correct, questions.length, elapsed);
+    document.getElementById("save-status").textContent = "";
+
+    // Build class charts
+    await buildClassCharts(questions, elapsed, correct, questions.length);
+
+  } catch(e) {
+    hideLoading();
+    console.error("Error loading completed result:", e);
+    toast("結果取得エラー: " + e.message, "error");
+    // Fallback: open in normal reading mode
+    startReading(passage);
+  }
+}
+
+function setupReadingPaneForReview(passage, questions) {
+  // Set up passage text
+  const title  = passage.EpisodeTitle || "Untitled";
+  const source = `${passage.BookID || ""} ${passage.SubBookID || ""} 年度 第${passage.SubSubBookID || ""}問`;
+
+  document.getElementById("passage-title").textContent  = title;
+  document.getElementById("passage-source").textContent = source;
+  document.getElementById("passage-text").textContent   = cleanText(passage.QuestionText);
+
+  // Translation & Vocab: always visible for completed
+  const transEl = document.getElementById("translation-text");
+  transEl.textContent = cleanText(passage.TranslationText);
+  transEl.classList.remove("visible");
+  document.getElementById("vocab-list").textContent = cleanText(passage.Vocabulary);
+  document.getElementById("translation-toggle").style.display = "";
+  document.getElementById("vocab-section").style.display = passage.Vocabulary ? "" : "none";
+  document.getElementById("explanation-text").textContent = cleanText(passage.Explanation);
+  document.getElementById("explanation-section").style.display = passage.Explanation ? "" : "none";
+
+  // Reading meta badges
+  const metaEl = document.getElementById("reading-meta");
+  metaEl.innerHTML = `
+    <span class="badge badge-type">${escHtml(passage.BookID||"")}</span>
+    <span class="badge badge-year">${escHtml(String(passage.SubBookID||""))}</span>
+    <span class="badge badge-num">第${escHtml(String(passage.SubSubBookID||""))}問</span>
+  `;
+
+  // Render questions with answers pre-filled and marked
+  renderQuestions(questions);
+
+  // Mark answers as correct/wrong
+  questions.forEach(q => {
+    const selected = state.userAnswers[String(q.id)];
+    const multi = isMultiSelect(q);
+    const correctAnswers = parseCorrectAnswers(q);
+    const { choices } = parseQuestion(q.QuestionText || "");
+
+    choices.forEach((_, ci) => {
+      const lbl = document.getElementById(`choice-${q.id}-${ci+1}`);
+      if (!lbl) return;
+      const input = lbl.querySelector("input[type=radio], input[type=checkbox]");
+      if (input) {
+        input.disabled = true;
+        const isSelected = multi
+          ? (Array.isArray(selected) && selected.includes(ci+1))
+          : (ci+1 === selected);
+        if (isSelected) input.checked = true;
+      }
+      const isCorrectChoice = correctAnswers.includes(ci+1);
+      const isSelected = multi
+        ? (Array.isArray(selected) && selected.includes(ci+1))
+        : (ci+1 === selected);
+      if (isCorrectChoice) {
+        lbl.classList.add("correct");
+      } else if (isSelected && !isCorrectChoice) {
+        lbl.classList.add("wrong");
+      }
+    });
+
+    const block = document.getElementById(`q-block-${q.id}`);
+    if (block && selected) block.classList.add("answered");
+
+    const expEl = document.getElementById(`explanation-${q.id}`);
+    if (expEl) expEl.classList.add("visible");
+  });
+
+  // Show all questions (review mode), hide nav and submit
+  document.querySelectorAll("#questions-container .question-block").forEach(b => b.classList.add("active"));
+  document.getElementById("q-nav").style.display = "none";
+  document.getElementById("btn-submit").style.display = "none";
+
+  // Stop timer display
+  stopTimer();
+  document.getElementById("timer-display").textContent = "";
+}
+
+function renderQuestions(questions) {
+  const container = document.getElementById("questions-container");
+  container.innerHTML = "";
+
+  questions.forEach((q, idx) => {
+    const { stem, choices } = parseQuestion(q.QuestionText || "");
+    const multi = isMultiSelect(q);
+    const inputType = multi ? "checkbox" : "radio";
+
+    const block = document.createElement("div");
+    block.className = "question-block";
+    block.id = `q-block-${q.id}`;
+
+    const choicesHtml = choices.map((c, ci) => `
+      <label class="choice-label" id="choice-${q.id}-${ci+1}">
+        <input type="${inputType}" name="q-${q.id}" value="${ci+1}" onchange="onAnswer('${q.id}', ${ci+1}, ${multi})">
+        <span class="choice-num">${ci+1}</span>
+        <span>${escHtml(c)}</span>
+      </label>
+    `).join("");
+
+    block.innerHTML = `
+      <div class="q-number">Q${idx+1}${multi ? ' <span style="font-size:.75em;color:var(--accent)">(複数選択)</span>' : ''}</div>
+      <div class="q-text">${escHtml(stem)}</div>
+      <div class="choices">${choicesHtml}</div>
+      <div class="q-explanation" id="explanation-${q.id}">${escHtml(q.Explanation || "")}</div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function parseQuestion(text) {
+  // Extract choices marked with ①②③④⑤⑥
+  const circled = ["①","②","③","④","⑤","⑥"];
+  let stemEnd = text.length;
+
+  for (const c of circled) {
+    const idx = text.indexOf(c);
+    if (idx !== -1 && idx < stemEnd) stemEnd = idx;
+  }
+
+  const stem = text.substring(0, stemEnd).trim();
+  const choices = [];
+
+  for (let i = 0; i < circled.length; i++) {
+    const start = text.indexOf(circled[i]);
+    if (start === -1) continue;
+    // Find next circled number that exists
+    let end = text.length;
+    for (let j = i + 1; j < circled.length; j++) {
+      const nx = text.indexOf(circled[j]);
+      if (nx !== -1) { end = nx; break; }
+    }
+    const choice = text.substring(start + circled[i].length, end).trim();
+    choices.push(choice);
+  }
+
+  // Fallback: if no circled numbers found, return raw text
+  if (choices.length === 0) return { stem: text.trim(), choices: [] };
+  return { stem, choices };
+}
+
+function isMultiSelect(q) {
+  return String(q.CorrectAnswer || q.correct_answer || "").includes(";");
+}
+
+function parseCorrectAnswers(q) {
+  const raw = String(q.CorrectAnswer || q.correct_answer || "");
+  return raw.split(";").map(s => parseInt(s.trim(), 10)).filter(n => n > 0);
+}
+
+// Heartbeat: throttled to once per 100s, triggered by answer selection
+let _hbLastSent = 0;
+function heartbeatOnAnswer() {
+  const now = Date.now();
+  if (now - _hbLastSent >= 100000) {
+    _hbLastSent = now;
+    apiFetch("/api/heartbeat", {
+      method: "POST",
+      body: JSON.stringify({ app: "reading" }),
+    }).catch(() => {});
+  }
+}
+
+function onAnswer(qId, val, multi) {
+  heartbeatOnAnswer();
+  if (multi) {
+    // Multi-select: toggle value in a Set stored as array
+    let selected = state.userAnswers[qId] || [];
+    if (!Array.isArray(selected)) selected = [selected];
+    const idx = selected.indexOf(val);
+    if (idx >= 0) selected.splice(idx, 1);
+    else selected.push(val);
+    selected.sort((a,b) => a - b);
+    state.userAnswers[qId] = selected.length > 0 ? selected : undefined;
+    if (!state.userAnswers[qId]) delete state.userAnswers[qId];
+  } else {
+    state.userAnswers[qId] = val;
+  }
+
+  // Visual update
+  const block = document.getElementById(`q-block-${qId}`);
+  if (block) {
+    const answered = state.userAnswers[qId] !== undefined;
+    block.classList.toggle("answered", answered);
+  }
+
+  // Update choice labels
+  const q = state.currentQuestions.find(q => String(q.id) === String(qId));
+  if (q) {
+    const { choices } = parseQuestion(q.QuestionText || "");
+    choices.forEach((_, ci) => {
+      const lbl = document.getElementById(`choice-${qId}-${ci+1}`);
+      if (lbl) {
+        if (multi) {
+          const sel = state.userAnswers[qId] || [];
+          lbl.classList.toggle("selected", sel.includes(ci+1));
+        } else {
+          lbl.classList.toggle("selected", (ci+1) === state.userAnswers[qId]);
+        }
+      }
+    });
+  }
+
+  updateProgress();
+  updateNavDots();
+}
+
+function updateProgress() {
+  const total    = state.currentQuestions.length;
+  const answered = Object.keys(state.userAnswers).length;
+  document.getElementById("reading-progress").textContent = `${answered} / ${total} answered`;
+
+  const submitBtn = document.getElementById("btn-submit");
+  submitBtn.disabled = answered < total;
+}
+
+function toggleTranslation() {
+  document.getElementById("translation-text").classList.toggle("visible");
+}
+
+// ===== SUBMIT =====
+async function submitAnswers() {
+  if (state.submitted) return;
+
+  // 採点/保存の直前に再チェックして、失効を後回しにしない
+  const authOk = await checkAuthSilent();
+  if (!authOk) {
+    toast("セッションが切れています。先に再ログインしてください。", "error");
+    try {
+      if (isStandalone) {
+        await msalInstance.loginRedirect({ scopes: SCOPES });
+        return;
+      } else {
+        await msalInstance.loginPopup({ scopes: SCOPES });
+      }
+      const authOkAfter = await checkAuthSilent();
+      if (!authOkAfter) {
+        toast("再ログインに失敗しました。もう一度お試しください。", "error");
+        return;
+      }
+    } catch(e) {
+      toast("ログインに失敗しました: " + e.message, "error");
+      return;
+    }
+  }
+
+  state.submitted = true;
+  stopTimer();
+
+  const questions = state.currentQuestions;
+  let correct = 0;
+
+  questions.forEach(q => {
+    const multi = isMultiSelect(q);
+    const correctAnswers = parseCorrectAnswers(q);
+    const selected = state.userAnswers[String(q.id)];
+
+    if (multi) {
+      const selArr = Array.isArray(selected) ? selected : [];
+      // Correct only if exact match
+      const isCorrect = selArr.length === correctAnswers.length &&
+        selArr.every(v => correctAnswers.includes(v));
+      if (isCorrect) correct++;
+    } else {
+      if (selected === correctAnswers[0]) correct++;
+    }
+
+    // Color choices in reading pane
+    const { choices } = parseQuestion(q.QuestionText || "");
+    choices.forEach((_, ci) => {
+      const lbl = document.getElementById(`choice-${q.id}-${ci+1}`);
+      if (!lbl) return;
+      const input = lbl.querySelector("input[type=radio], input[type=checkbox]");
+      if (input) input.disabled = true;
+      const isCorrectChoice = correctAnswers.includes(ci+1);
+      const isSelected = multi
+        ? (Array.isArray(selected) && selected.includes(ci+1))
+        : (ci+1 === selected);
+      if (isCorrectChoice) {
+        lbl.classList.remove("selected");
+        lbl.classList.add("correct");
+      } else if (isSelected && !isCorrectChoice) {
+        lbl.classList.remove("selected");
+        lbl.classList.add("wrong");
+      }
+    });
+
+    const expEl = document.getElementById(`explanation-${q.id}`);
+    if (expEl) expEl.classList.add("visible");
+  });
+
+  document.getElementById("btn-submit").style.display = "none";
+
+  // 採点後に全訳・語彙を公開
+  document.getElementById("translation-toggle").style.display = "";
+  const p = state.currentPassage;
+  if (p && p.Vocabulary) document.getElementById("vocab-section").style.display = "";
+  if (p && p.Explanation) document.getElementById("explanation-section").style.display = "";
+
+  // 採点後は全問表示（レビュー用）
+  document.querySelectorAll("#questions-container .question-block").forEach(b => b.classList.add("active"));
+  document.getElementById("q-nav").style.display = "none";
+
+  const elapsed = Math.round((Date.now() - state.startTime) / 10) / 100; // 小数2桁(秒)
+
+  // Show results screen immediately with own data
+  showResultsScreen(correct, questions.length, elapsed);
+
+  // Save own result first
+  await saveResult(correct, questions.length, elapsed);
+
+  // Then fetch class data and build charts
+  await buildClassCharts(questions, elapsed, correct, questions.length);
+}
+
+function showResultsScreen(correct, total, elapsed) {
+  const p = state.currentPassage;
+  document.getElementById("results-score").textContent  = correct;
+  document.getElementById("results-denom").textContent  = `/ ${total}`;
+
+  const pct = total > 0 ? Math.round(correct / total * 100) : 0;
+  let msg = "";
+  if (pct === 100)    msg = "Perfect!";
+  else if (pct >= 80) msg = "Excellent!";
+  else if (pct >= 60) msg = "Good!";
+  else                msg = "Keep practicing!";
+
+  document.getElementById("results-msg").textContent    = msg;
+  document.getElementById("results-submsg").textContent = `正解率 ${pct}% · 解答時間 ${formatTime(elapsed)}`;
+  document.getElementById("results-time").textContent   = formatTime(elapsed);
+
+  const metaEl = document.getElementById("results-meta");
+  metaEl.innerHTML = `
+    <span class="badge badge-type">${escHtml(p.BookID||"")}</span>
+    <span class="badge badge-year">${escHtml(String(p.SubBookID||""))}</span>
+    <span class="badge badge-num">第${escHtml(String(p.SubSubBookID||""))}問</span>
+  `;
+
+  showScreen("results");
+}
+
+// ===== CLASS DATA & CHARTS =====
+async function buildClassCharts(questions, myElapsed, myCorrect, myTotal) {
+  try {
+    const p = state.currentPassage;
+
+    // Fetch all results for this passage (teacher endpoint or fall back to own results)
+    let allResults = [];
+    try {
+      const classData = await apiFetch(
+        `/api/reading/results/class?book_id=${encodeURIComponent(p.BookID)}&sub_book_id=${encodeURIComponent(p.SubBookID)}&sub_sub_book_id=${encodeURIComponent(p.SubSubBookID)}`
+      );
+      allResults = classData.map(r => ({
+        Score: r.score, timeTrial: r.time_trial, sAnswer: r.s_answer,
+      }));
+    } catch(e) {
+      // Non-teacher: use own results only
+      const mine = state.myResults.filter(r =>
+        r.book_id === p.BookID && r.sub_book_id === p.SubBookID && r.sub_sub_book_id === p.SubSubBookID
+      );
+      allResults = mine.map(r => ({
+        Score: r.score, timeTrial: r.time_trial, sAnswer: r.s_answer,
+      }));
+    }
+
+    // Destroy previous charts
+    destroyCharts();
+
+    // Build per-question stat blocks
+    document.getElementById("class-loading").style.display = "none";
+    const container = document.getElementById("q-results-container");
+
+    questions.forEach((q, idx) => {
+      const { stem, choices } = parseQuestion(q.QuestionText || "");
+      const multi = isMultiSelect(q);
+      const correctAnswers = parseCorrectAnswers(q);
+      const myAns = state.userAnswers[String(q.id)];
+      const isCorrect = multi
+        ? (Array.isArray(myAns) && myAns.length === correctAnswers.length && myAns.every(v => correctAnswers.includes(v)))
+        : (myAns === correctAnswers[0]);
+
+      // Tally choices across all results
+      const numChoices = choices.length || 4;
+      const tally = {};
+      for (let n = 1; n <= numChoices; n++) tally[n] = 0;
+      for (const r of allResults) {
+        const parts = (r.sAnswer || "").split(";");
+        const raw = parts[idx] || "";
+        if (multi) {
+          raw.split(",").forEach(s => { const v = parseInt(s,10); if (v >= 1 && v <= numChoices) tally[v]++; });
+        } else {
+          const v = parseInt(raw, 10);
+          if (v >= 1 && v <= numChoices) tally[v]++;
+        }
+      }
+      const totalResponses = multi
+        ? allResults.length
+        : Object.values(tally).reduce((a,b) => a+b, 0);
+      const rates = Array.from({length: numChoices}, (_, i) => totalResponses > 0 ? Math.round(tally[i+1]/totalResponses*100) : 0);
+
+      const block = document.createElement("div");
+      block.className = "q-result-block";
+      block.style.marginBottom = "20px";
+
+      // Bar colors: correct=green, mine≠correct=gold, others=dim
+      const mySelArr = multi
+        ? (Array.isArray(myAns) ? myAns : [])
+        : (myAns ? [myAns] : []);
+      const colors = Array.from({length: numChoices}, (_, i) => {
+        const n = i + 1;
+        if (correctAnswers.includes(n)) return "#4caf80";
+        if (mySelArr.includes(n))       return "#c9a84c";
+        return "#d0d0d0";
+      });
+      const borderColors = colors.map(c =>
+        c === "#4caf80" ? "#4caf80" :
+        c === "#c9a84c" ? "#c9a84c" : "#ccc"
+      );
+
+      // Answer pills
+      let pillsHtml = "";
+      const correctStr = correctAnswers.join(", ");
+      const myStr = mySelArr.join(", ");
+      if (isCorrect) {
+        pillsHtml = `<span class="answer-pill both-ans">✓ 正解 · 選択肢 ${correctStr}</span>`;
+      } else {
+        pillsHtml = `
+          <span class="answer-pill my-ans">自分 → ${myStr || "未回答"}</span>
+          <span class="answer-pill correct-ans">正解 → ${correctStr}</span>
+        `;
+      }
+
+      const canvasId = `chart-q-${q.id}`;
+      const circledNums = ["①","②","③","④","⑤","⑥"];
+
+      block.innerHTML = `
+        <div class="q-result-header">
+          <span class="q-result-num">Q${idx+1}${multi ? ' (複数選択)' : ''}</span>
+          <span class="q-result-verdict ${isCorrect ? 'correct-v' : 'wrong-v'}">${isCorrect ? '正解' : '不正解'}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dimmer);margin-left:auto">n = ${totalResponses}</span>
+        </div>
+        <div class="q-result-body">
+          <div class="q-result-left">
+            <div class="q-result-stem">${escHtml(stem)}</div>
+            <div class="answer-summary">${pillsHtml}</div>
+            ${choices.map((c,ci) => {
+              const n = ci+1;
+              const isCor = correctAnswers.includes(n);
+              const isMy  = mySelArr.includes(n);
+              return `<div style="font-size:12px;color:${isCor?'var(--green)':isMy&&!isCorrect?'var(--accent)':'var(--text-dimmer)'};line-height:1.6;margin-bottom:4px">
+                <span style="font-family:'JetBrains Mono',monospace">${n}.</span> ${escHtml(c)}
+              </div>`;
+            }).join("")}
+          </div>
+          <div class="q-result-right">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px">選択率 (%)</div>
+            <div class="chart-wrap">
+              <canvas id="${canvasId}"></canvas>
+            </div>
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:#4caf80"></div>正解</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#c9a84c"></div>自分の選択</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#2a2d3a"></div>その他</div>
+            </div>
+          </div>
+        </div>
+        ${q.Explanation ? `
+        <div class="q-explanation-result">
+          <div class="exp-label">解説</div>
+          ${escHtml(q.Explanation)}
+        </div>` : ""}
+      `;
+
+      container.appendChild(block);
+
+      // Draw chart after DOM insert
+      requestAnimationFrame(() => {
+        const ctx = document.getElementById(canvasId);
+        if (!ctx) return;
+        const ch = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: circledNums.slice(0, numChoices),
+            datasets: [{
+              data: rates,
+              backgroundColor: colors,
+              borderColor: borderColors,
+              borderWidth: 1,
+              borderRadius: 4,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label: ctx => ` ${ctx.parsed.y}%`
+                },
+                backgroundColor: "#fff",
+                borderColor: "#ddd",
+                borderWidth: 1,
+                titleColor: "#666",
+                bodyColor: "#333",
+              }
+            },
+            scales: {
+              x: {
+                grid: { color: "rgba(0,0,0,0.06)" },
+                ticks: { color: "#888", font: { family: "'JetBrains Mono',monospace", size: 12 } }
+              },
+              y: {
+                max: 100,
+                grid: { color: "rgba(0,0,0,0.06)" },
+                ticks: {
+                  color: "#555870",
+                  font: { family: "'JetBrains Mono',monospace", size: 10 },
+                  callback: v => v + "%"
+                }
+              }
+            }
+          }
+        });
+        state.chartInstances.push(ch);
+      });
+    });
+
+    // Build time-by-score chart
+    buildTimeChart(allResults);
+
+  } catch(e) {
+    console.error("Class data error:", e);
+    document.getElementById("class-loading").textContent = `クラスデータ取得エラー: ${e.message}`;
+  }
+}
+
+function buildTimeChart(allResults) {
+  const tiers = [
+    { label: "100%",      min: 100, max: 100   },
+    { label: "80–99%",    min: 80,  max: 99.9  },
+    { label: "60–79%",    min: 60,  max: 79.9  },
+    { label: "40–59%",    min: 40,  max: 59.9  },
+    { label: "20–39%",    min: 20,  max: 39.9  },
+    { label: "0–19%",     min: 0,   max: 19.9  },
+  ];
+
+  const tierData = tiers.map(tier => {
+    const recs = allResults.filter(r => {
+      const pct = parseFloat(r.Score) || 0;
+      return pct >= tier.min && pct <= tier.max;
+    });
+    if (!recs.length) return { label: tier.label, avg: 0, n: 0 };
+
+    const times = recs.map(r => parseFloat(r.timeTrial)).filter(t => t > 0);
+    if (!times.length) return { label: tier.label, avg: 0, n: 0 };
+
+    const tmpAvg = times.reduce((a,b) => a+b, 0) / times.length;
+    const filtered = times.filter(t => t > tmpAvg/2 && t < tmpAvg*2);
+    const avg = filtered.length
+      ? Math.round(filtered.reduce((a,b)=>a+b,0) / filtered.length)
+      : 0;
+    return { label: tier.label, avg, n: filtered.length };
+  });
+
+  const hasData = tierData.some(t => t.n > 0);
+  if (!hasData) return;
+
+  document.getElementById("time-chart-card").style.display = "";
+
+  requestAnimationFrame(() => {
+    const ctx = document.getElementById("time-chart");
+    if (!ctx) return;
+    const ch = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: tierData.map(t => `${t.label}\n(n=${t.n})`),
+        datasets: [{
+          label: "平均解答時間 (秒)",
+          data: tierData.map(t => t.avg),
+          backgroundColor: tierData.map(t => {
+            if (t.avg === 0) return "#d0d0d0";
+            if (t.label === "100%") return "#4caf80";
+            if (t.label.startsWith("80")) return "#5c8fe0";
+            return "#c9a84c";
+          }),
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: { label: ctx => ` ${ctx.parsed.y} 秒` },
+            backgroundColor: "#1e2028",
+            borderColor: "#2a2d3a",
+            borderWidth: 1,
+            titleColor: "#8a8fa8",
+            bodyColor: "#e8e9f0",
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: "rgba(0,0,0,0.06)" },
+            ticks: { color: "#888", font: { family: "'JetBrains Mono',monospace", size: 10 } }
+          },
+          y: {
+            grid: { color: "rgba(0,0,0,0.06)" },
+            ticks: {
+              color: "#555870",
+              font: { family: "'JetBrains Mono',monospace", size: 10 },
+              callback: v => v + "s"
+            }
+          }
+        }
+      }
+    });
+    state.chartInstances.push(ch);
+  });
+}
+
+function destroyCharts() {
+  if (!state.chartInstances) state.chartInstances = [];
+  state.chartInstances.forEach(c => { try { c.destroy(); } catch{} });
+  state.chartInstances = [];
+  document.getElementById("q-results-container").innerHTML =
+    `<div class="class-loading" id="class-loading">クラスデータを取得中...</div>`;
+  document.getElementById("time-chart-card").style.display = "none";
+}
+
+function reviewAnswers() {
+  showScreen("reading");
+}
+
+function goToGallery() {
+  showScreen("gallery");
+}
+
+// ===== TRANSLATION SCREEN =====
+let translationFrom = "results"; // track where we came from
+
+function openTranslation() {
+  const p = state.currentPassage;
+  if (!p) return;
+
+  // Remember which screen we came from
+  const activeScreen = document.querySelector(".screen.active");
+  translationFrom = activeScreen?.id === "screen-reading" ? "reading" : "results";
+
+  // Meta badges
+  document.getElementById("trans-meta").innerHTML = `
+    <span class="badge badge-type">${escHtml(p.BookID||"")}</span>
+    <span class="badge badge-year">${escHtml(String(p.SubBookID||""))}</span>
+    <span class="badge badge-num">第${escHtml(String(p.SubSubBookID||""))}問</span>
+  `;
+
+  // Use FormattedEnglish if available, otherwise fall back to passage QuestionText
+  document.getElementById("trans-en-text").textContent = cleanText(p.FormattedEnglish || p.QuestionText);
+  document.getElementById("trans-ja-text").textContent = cleanText(p.TranslationText);
+
+  showScreen("translation");
+}
+
+function goBackFromTranslation() {
+  showScreen(translationFrom);
+}
+
+// ===== SAVE RESULT =====
+async function saveResult(correct, total, elapsed) {
+  try {
+    const p = state.currentPassage;
+
+    // sAnswer: セミコロン区切り（設問順）、複数選択はカンマ区切り
+    const answerList = state.currentQuestions.map(q => {
+      const a = state.userAnswers[String(q.id)];
+      if (Array.isArray(a)) return a.join(",");
+      return a || 0;
+    });
+    const sAnswer = answerList.join(";");
+    const scorePct = total > 0 ? Math.round(correct / total * 100) : 0;
+
+    await apiFetch("/api/reading/results", {
+      method: "POST",
+      body: JSON.stringify({
+        book_id:         p.BookID || "",
+        sub_book_id:     p.SubBookID || "",
+        sub_sub_book_id: p.SubSubBookID || "",
+        score:           scorePct,
+        time_trial:      elapsed,
+        s_answer:        sAnswer,
+      }),
+    });
+
+    document.getElementById("save-status").textContent = "✓ Result saved";
+    state.completedKeys.add(groupKey(p));
+
+    // Add to local results cache
+    state.myResults.push({
+      book_id: p.BookID, sub_book_id: p.SubBookID,
+      sub_sub_book_id: p.SubSubBookID,
+      score: scorePct, time_trial: elapsed, s_answer: sAnswer,
+    });
+  } catch(e) {
+    console.error("Save error:", e);
+    const errMsg = e.message || String(e);
+    const is401 = errMsg.includes("401");
+
+    if (is401) {
+      document.getElementById("save-status").innerHTML =
+        `⚠ 認証切れ <button onclick="reloginAndRetry(${correct},${total},${elapsed})" style="margin-left:6px;padding:2px 8px;border-radius:4px;border:1px solid var(--accent);background:var(--accent-glow);color:var(--accent);cursor:pointer;font-size:11px">再ログインして保存</button>`;
+      toast("認証が切れています。「再ログインして保存」を押してください。", "error");
+    } else {
+      document.getElementById("save-status").textContent = `⚠ 保存失敗`;
+      toast(`結果保存エラー: ${errMsg.substring(0, 200)}`, "error");
+    }
+  }
+}
+
+async function reloginAndRetry(correct, total, elapsed) {
+  try {
+    document.getElementById("save-status").textContent = "ログイン中...";
+    if (isStandalone) {
+      await msalInstance.loginRedirect({ scopes: SCOPES });
+    } else {
+      await msalInstance.loginPopup({ scopes: SCOPES });
+    }
+    document.getElementById("save-status").textContent = "保存中...";
+    await saveResult(correct, total, elapsed);
+  } catch(e) {
+    document.getElementById("save-status").textContent = `⚠ 再ログイン失敗`;
+    toast("再ログインに失敗しました: " + e.message, "error");
+  }
+}
+
+// ===== UTILS =====
+function showScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(`screen-${name}`).classList.add("active");
+  // リーディング中・対訳画面中はヘッダーを隠す
+  document.body.classList.toggle("reading-active", name === "reading" || name === "translation");
+}
+
+function showLoading(msg) {
+  document.getElementById("loading-msg").textContent = msg || "Loading...";
+  document.getElementById("loading").classList.add("active");
+}
+
+function hideLoading() {
+  document.getElementById("loading").classList.remove("active");
+}
+
+function toast(msg, type = "") {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className   = "toast " + type;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 3500);
+}
+
+function formatTime(sec) {
+  const total = Math.round(sec);
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+
+function escHtml(str) {
+  // Decode HTML entities first (e.g. &#39; &gt; &amp;) then re-escape for safe innerHTML
+  const ta = document.createElement("textarea");
+  ta.innerHTML = String(str);
+  const decoded = ta.value;
+  return decoded
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+
+// ===== ADMIN (TEACHER) =====
+let adminImportData = null;
+let adminAllPassages = [];
+
+async function adminLoadList() {
+  const tbody = document.getElementById("admin-table-body");
+  tbody.innerHTML = "<tr><td colspan='7'>Loading...</td></tr>";
+  try {
+    adminAllPassages = await apiFetch("/api/reading/passages", { auth: false });
+    adminBuildFilters();
+    adminFilterChanged();
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan='7'>エラー: ${escHtml(e.message)}</td></tr>`;
+  }
+}
+
+function adminBuildFilters() {
+  const selBook = document.getElementById("admin-f-book");
+  const books = [...new Set(adminAllPassages.map(p => p.book_id))].sort();
+  const prevBook = selBook.value;
+  selBook.innerHTML = '<option value="">すべて</option>' + books.map(b => `<option value="${escHtml(b)}">${escHtml(b)}</option>`).join("");
+  selBook.value = books.includes(prevBook) ? prevBook : "";
+}
+
+function adminFilterChanged() {
+  const bookVal = document.getElementById("admin-f-book").value;
+  const yearSel = document.getElementById("admin-f-year");
+  const numSel  = document.getElementById("admin-f-num");
+
+  // Filter by book first
+  let filtered = adminAllPassages;
+  if (bookVal) filtered = filtered.filter(p => p.book_id === bookVal);
+
+  // Rebuild year options based on current book filter
+  const years = [...new Set(filtered.map(p => String(p.sub_book_id)))].sort();
+  const prevYear = yearSel.value;
+  yearSel.innerHTML = '<option value="">すべて</option>' + years.map(y => `<option value="${escHtml(y)}">${escHtml(y)}</option>`).join("");
+  yearSel.value = years.includes(prevYear) ? prevYear : "";
+
+  // Filter by year
+  const yearVal = yearSel.value;
+  if (yearVal) filtered = filtered.filter(p => String(p.sub_book_id) === yearVal);
+
+  // Rebuild num options based on current book+year filter
+  const nums = [...new Set(filtered.map(p => String(p.sub_sub_book_id)))].sort((a,b) => a - b);
+  const prevNum = numSel.value;
+  numSel.innerHTML = '<option value="">すべて</option>' + nums.map(n => `<option value="${escHtml(n)}">${escHtml(n)}</option>`).join("");
+  numSel.value = nums.includes(prevNum) ? prevNum : "";
+
+  // Filter by num
+  const numVal = numSel.value;
+  if (numVal) filtered = filtered.filter(p => String(p.sub_sub_book_id) === numVal);
+
+  // Render table
+  const tbody = document.getElementById("admin-table-body");
+  tbody.innerHTML = "";
+  for (const p of filtered) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${p.id}</td>
+      <td>${escHtml(p.book_id)}</td>
+      <td>${escHtml(p.sub_book_id)}</td>
+      <td>${escHtml(p.sub_sub_book_id)}</td>
+      <td>${escHtml(p.episode_title || "")}</td>
+      <td>${p.q_count}</td>
+      <td>
+        <button class="btn btn-sm" onclick="adminEditPassage(${p.id})">編集</button>
+        <button class="btn btn-sm btn-danger" onclick="adminDeletePassage(${p.id})">削除</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+  if (filtered.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='7'>該当なし</td></tr>";
+  }
+}
+
+function adminShowList() {
+  document.getElementById("admin-list-view").style.display = "";
+  document.getElementById("admin-form-view").style.display = "none";
+  document.getElementById("admin-import-view").style.display = "none";
+}
+
+function adminShowForm(passageId) {
+  document.getElementById("admin-list-view").style.display = "none";
+  document.getElementById("admin-form-view").style.display = "";
+  document.getElementById("admin-import-view").style.display = "none";
+
+  // Clear form
+  document.getElementById("af-id").value = passageId || "";
+  document.getElementById("af-book-id").value = "";
+  document.getElementById("af-sub-book-id").value = "";
+  document.getElementById("af-sub-sub-book-id").value = "";
+  document.getElementById("af-episode-title").value = "";
+  document.getElementById("af-question-text").value = "";
+  document.getElementById("af-translation-text").value = "";
+  document.getElementById("af-formatted-english").value = "";
+  document.getElementById("af-vocabulary").value = "";
+  document.getElementById("af-explanation").value = "";
+  document.getElementById("af-questions").innerHTML = "";
+  document.getElementById("admin-form-title").textContent = passageId ? "編集" : "新規追加";
+}
+
+function adminShowImport() {
+  document.getElementById("admin-list-view").style.display = "none";
+  document.getElementById("admin-form-view").style.display = "none";
+  document.getElementById("admin-import-view").style.display = "";
+  document.getElementById("import-file").value = "";
+  document.getElementById("import-preview-area").innerHTML = "";
+  document.getElementById("btn-import-exec").disabled = true;
+  adminImportData = null;
+}
+
+async function adminEditPassage(id) {
+  showLoading("Loading...");
+  try {
+    const data = await apiFetch(`/api/reading/passages/${id}`, { auth: false });
+    adminShowForm(id);
+    const p = data.passage;
+    document.getElementById("af-book-id").value = p.book_id || "";
+    document.getElementById("af-sub-book-id").value = p.sub_book_id || "";
+    document.getElementById("af-sub-sub-book-id").value = p.sub_sub_book_id || "";
+    document.getElementById("af-episode-title").value = p.episode_title || "";
+    document.getElementById("af-question-text").value = p.question_text || "";
+    document.getElementById("af-translation-text").value = p.translation_text || "";
+    document.getElementById("af-formatted-english").value = p.formatted_english || "";
+    document.getElementById("af-vocabulary").value = p.vocabulary || "";
+    document.getElementById("af-explanation").value = p.explanation || "";
+
+    const qContainer = document.getElementById("af-questions");
+    qContainer.innerHTML = "";
+    for (const q of (data.questions || [])) {
+      appendQuestionRow(q.main_order, q.question_text || "", q.correct_answer || "", q.explanation || "");
+    }
+  } catch(e) {
+    toast("読込エラー: " + e.message, "error");
+  } finally {
+    hideLoading();
+  }
+}
+
+function adminAddQuestion() {
+  const existing = document.querySelectorAll("#af-questions .q-edit-row");
+  const nextOrder = existing.length + 1;
+  appendQuestionRow(nextOrder, "", "", "");
+}
+
+function appendQuestionRow(order, text, answer, explanation) {
+  const container = document.getElementById("af-questions");
+  const row = document.createElement("div");
+  row.className = "q-edit-row";
+  row.innerHTML = `
+    <div class="field">
+      <label>設問 ${order}</label>
+      <textarea class="qe-text" rows="3" placeholder="問題文">${escHtml(text)}</textarea>
+    </div>
+    <div class="field">
+      <label>正解</label>
+      <select class="qe-answer">
+        <option value="">-</option>
+        <option value="1" ${answer==1?'selected':''}>1</option>
+        <option value="2" ${answer==2?'selected':''}>2</option>
+        <option value="3" ${answer==3?'selected':''}>3</option>
+        <option value="4" ${answer==4?'selected':''}>4</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>解説</label>
+      <textarea class="qe-explanation" rows="3" placeholder="解説">${escHtml(explanation)}</textarea>
+    </div>
+  `;
+  row.dataset.order = order;
+  container.appendChild(row);
+}
+
+async function adminSaveForm() {
+  const id = document.getElementById("af-id").value;
+  const body = {
+    book_id: document.getElementById("af-book-id").value.trim(),
+    sub_book_id: document.getElementById("af-sub-book-id").value.trim(),
+    sub_sub_book_id: document.getElementById("af-sub-sub-book-id").value.trim(),
+    episode_title: document.getElementById("af-episode-title").value.trim(),
+    question_text: document.getElementById("af-question-text").value,
+    translation_text: document.getElementById("af-translation-text").value,
+    formatted_english: document.getElementById("af-formatted-english").value,
+    vocabulary: document.getElementById("af-vocabulary").value,
+    explanation: document.getElementById("af-explanation").value,
+    questions: [],
+  };
+
+  if (!body.book_id || !body.sub_book_id || !body.sub_sub_book_id) {
+    toast("BookID, SubBookID, SubSubBookID は必須です", "error");
+    return;
+  }
+
+  const qRows = document.querySelectorAll("#af-questions .q-edit-row");
+  qRows.forEach((row, idx) => {
+    body.questions.push({
+      main_order: idx + 1,
+      question_text: row.querySelector(".qe-text").value,
+      correct_answer: row.querySelector(".qe-answer").value.trim() || null,
+      explanation: row.querySelector(".qe-explanation").value,
+    });
+  });
+
+  showLoading("Saving...");
+  try {
+    if (id) {
+      await apiFetch(`/api/reading/passages/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(body),
+      });
+    } else {
+      await apiFetch("/api/reading/passages", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
+    }
+    toast("保存しました", "");
+    adminShowList();
+    adminLoadList();
+    // Refresh gallery data
+    refreshPassageList();
+  } catch(e) {
+    toast("保存エラー: " + e.message, "error");
+  } finally {
+    hideLoading();
+  }
+}
+
+async function adminDeletePassage(id) {
+  if (!confirm("この問題を削除しますか？設問も全て削除されます。")) return;
+  showLoading("Deleting...");
+  try {
+    await apiFetch(`/api/reading/passages/${id}`, { method: "DELETE" });
+    toast("削除しました", "");
+    adminLoadList();
+    refreshPassageList();
+  } catch(e) {
+    toast("削除エラー: " + e.message, "error");
+  } finally {
+    hideLoading();
+  }
+}
+
+async function refreshPassageList() {
+  try {
+    const passages = await apiFetch("/api/reading/passages", { auth: false });
+    state.allPassages = passages.map(p => ({
+      id: p.id,
+      BookID: p.book_id,
+      SubBookID: p.sub_book_id,
+      SubSubBookID: p.sub_sub_book_id,
+      EpisodeTitle: p.episode_title,
+      excerpt: p.excerpt,
+      q_count: p.q_count,
+    }));
+    buildFilters();
+    renderGallery();
+  } catch(e) { console.warn("refresh failed:", e); }
+}
+
+// ===== IMPORT =====
+function adminPreviewImport() {
+  const file = document.getElementById("import-file").files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const text = e.target.result;
+    let items = [];
+
+    if (file.name.endsWith(".json")) {
+      try {
+        const data = JSON.parse(text);
+        items = Array.isArray(data) ? data : (data.items || data.passages || []);
+      } catch(err) {
+        toast("JSON パースエラー: " + err.message, "error");
+        return;
+      }
+    } else {
+      // CSV parse
+      const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+      if (lines.length < 2) { toast("CSVが空です", "error"); return; }
+      const headers = lines[0].split(",").map(h => h.trim());
+      for (let i = 1; i < lines.length; i++) {
+        const vals = csvSplitLine(lines[i]);
+        const obj = {};
+        headers.forEach((h, idx) => { obj[h] = vals[idx] || ""; });
+        // Normalize field names
+        items.push({
+          book_id: obj.BookID || obj.book_id || "",
+          sub_book_id: obj.SubBookID || obj.sub_book_id || "",
+          sub_sub_book_id: obj.SubSubBookID || obj.sub_sub_book_id || "",
+          main_order: obj.MainOrder || obj.main_order || "0",
+          episode_title: obj.EpisodeTitle || obj.episode_title || "",
+          question_text: obj.QuestionText || obj.question_text || "",
+          translation_text: obj.TranslationText || obj.translation_text || "",
+          formatted_english: obj.FormattedEnglish || obj.formatted_english || "",
+          correct_answer: obj.CorrectAnswer || obj.correct_answer || "",
+          explanation: obj.Explanation || obj.explanation || "",
+          vocabulary: obj.Vocabulary || obj.vocabulary || "",
+        });
+      }
+    }
+
+    adminImportData = items;
+    const area = document.getElementById("import-preview-area");
+    area.innerHTML = `<div style="font-size:13px;color:var(--text-dim);margin:8px 0">${items.length} 行</div>`;
+    const preview = document.createElement("div");
+    preview.className = "import-preview";
+    const table = document.createElement("table");
+    table.className = "admin-table";
+    const keys = Object.keys(items[0] || {});
+    table.innerHTML = `<thead><tr>${keys.map(k => `<th>${escHtml(k)}</th>`).join("")}</tr></thead>`;
+    const tbody = document.createElement("tbody");
+    items.slice(0, 20).forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = keys.map(k => `<td>${escHtml(String(item[k] || "").substring(0, 40))}</td>`).join("");
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    preview.appendChild(table);
+    if (items.length > 20) {
+      preview.insertAdjacentHTML("beforeend", `<div style="color:var(--text-dimmer);font-size:11px;padding:4px">... 以降省略（計${items.length}行）</div>`);
+    }
+    area.appendChild(preview);
+    document.getElementById("btn-import-exec").disabled = false;
+  };
+  reader.readAsText(file);
+}
+
+function csvSplitLine(line) {
+  const result = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuotes && line[i+1] === '"') { current += '"'; i++; }
+      else { inQuotes = !inQuotes; }
+    } else if (ch === ',' && !inQuotes) {
+      result.push(current.trim()); current = "";
+    } else {
+      current += ch;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+async function adminExecImport() {
+  if (!adminImportData || adminImportData.length === 0) return;
+  if (!confirm(`${adminImportData.length} 行をインポートしますか？`)) return;
+
+  showLoading("Importing...");
+  try {
+    const result = await apiFetch("/api/reading/import", {
+      method: "POST",
+      body: JSON.stringify({ items: adminImportData }),
+    });
+    toast(`${result.imported} 件のパッセージをインポートしました`, "");
+    adminShowList();
+    adminLoadList();
+    refreshPassageList();
+  } catch(e) {
+    toast("インポートエラー: " + e.message, "error");
+  } finally {
+    hideLoading();
+  }
+}
+
+// ===== STARTUP =====
+// ===== PEN DRAWING =====
+const pen = {
+  active: false,
+  mode: null,       // null | "finger" | "pen" | "eraser"
+  drawing: false,
+  canvases: [],      // {pane, canvas, ctx}
+  color: "#e53935",
+  lineWidth: 2,
+  eraserWidth: 20,
+};
+
+function setDrawMode(mode) {
+  // Toggle off if same mode clicked again
+  if (pen.mode === mode) {
+    pen.mode = null;
+    pen.active = false;
+  } else {
+    pen.mode = mode;
+    pen.active = true;
+    ensureCanvases();
+  }
+  // Update button states
+  document.getElementById("btn-finger").classList.toggle("active", pen.mode === "finger");
+  document.getElementById("btn-pen").classList.toggle("active", pen.mode === "pen");
+  document.getElementById("btn-eraser").classList.toggle("active", pen.mode === "eraser");
+  // Update canvas states
+  pen.canvases.forEach(c => {
+    c.canvas.classList.toggle("active", pen.active);
+    c.canvas.classList.toggle("eraser", pen.mode === "eraser");
+  });
+}
+
+// Compat wrapper for goToGallery cleanup
+function togglePenMode() { if (pen.active) setDrawMode(pen.mode); }
+
+function ensureCanvases() {
+  // Create/resize canvases for each pane
+  ["pane-passage", "pane-questions"].forEach(id => {
+    const pane = document.getElementById(id);
+    if (!pane) return;
+    let existing = pen.canvases.find(c => c.pane === pane);
+    if (!existing) {
+      const canvas = document.createElement("canvas");
+      canvas.className = "draw-canvas";
+      if (pen.active) {
+        canvas.classList.add("active");
+        if (pen.tool === "eraser") canvas.classList.add("eraser");
+      }
+      pane.appendChild(canvas);
+      const ctx = canvas.getContext("2d");
+      existing = { pane, canvas, ctx };
+      pen.canvases.push(existing);
+      // Canvas events (when active)
+      canvas.addEventListener("pointerdown", e => penDown(e, existing));
+      canvas.addEventListener("pointermove", e => penMove(e, existing));
+      canvas.addEventListener("pointerup", e => penUp(e));
+      canvas.addEventListener("pointerleave", e => penUp(e));
+    }
+    // Size canvas to full scroll area
+    const w = pane.scrollWidth;
+    const h = pane.scrollHeight;
+    if (existing.canvas.width !== w || existing.canvas.height !== h) {
+      const imgData = existing.ctx.getImageData(0, 0, existing.canvas.width, existing.canvas.height);
+      existing.canvas.width = w;
+      existing.canvas.height = h;
+      existing.ctx.putImageData(imgData, 0, 0);
+    }
+  });
+}
+
+// Finger-scroll state for touch passthrough in pen mode
+let _touchScroll = null;
+
+function penDown(e, c) {
+  if (!pen.active) return;
+  // "ペン" mode: only stylus/mouse draws, finger → scroll passthrough
+  if (pen.mode === "pen" && e.pointerType === "touch") {
+    e.preventDefault();
+    _touchScroll = {
+      pointerId: e.pointerId,
+      startY: e.clientY,
+      startX: e.clientX,
+      scrollTop: c.pane.scrollTop,
+      scrollLeft: c.pane.scrollLeft,
+      pane: c.pane
+    };
+    c.canvas.setPointerCapture(e.pointerId);
+    return;
+  }
+  // "指" mode: only touch/mouse draws, stylus ignored
+  if (pen.mode === "finger" && e.pointerType === "pen") return;
+  e.preventDefault();
+  pen.drawing = true;
+  pen._activePointerId = e.pointerId;
+  c.canvas.setPointerCapture(e.pointerId);
+  const rect = c.canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  c.ctx.beginPath();
+  c.ctx.moveTo(x, y);
+  if (pen.mode === "eraser") {
+    c.ctx.globalCompositeOperation = "destination-out";
+    c.ctx.lineWidth = pen.eraserWidth;
+  } else {
+    c.ctx.globalCompositeOperation = "source-over";
+    c.ctx.strokeStyle = pen.color;
+    c.ctx.lineWidth = pen.lineWidth;
+  }
+  c.ctx.lineCap = "round";
+  c.ctx.lineJoin = "round";
+}
+
+function penMove(e, c) {
+  // Finger scroll passthrough
+  if (_touchScroll && e.pointerId === _touchScroll.pointerId) {
+    _touchScroll.pane.scrollTop = _touchScroll.scrollTop + (_touchScroll.startY - e.clientY);
+    _touchScroll.pane.scrollLeft = _touchScroll.scrollLeft + (_touchScroll.startX - e.clientX);
+    return;
+  }
+  if (!pen.drawing || e.pointerId !== pen._activePointerId) return;
+  e.preventDefault();
+  const rect = c.canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  c.ctx.lineTo(x, y);
+  c.ctx.stroke();
+}
+
+function penUp(e) {
+  if (_touchScroll && e.pointerId === _touchScroll.pointerId) {
+    _touchScroll = null;
+    return;
+  }
+  if (e.pointerId !== pen._activePointerId) return;
+  pen.drawing = false;
+}
+
+function clearDrawing() {
+  pen.canvases.forEach(c => {
+    c.ctx.clearRect(0, 0, c.canvas.width, c.canvas.height);
+  });
+}
+
+/* ===== Draggable pane divider ===== */
+(function() {
+  const divider = document.getElementById("pane-divider");
+  const passage = document.getElementById("pane-passage");
+  const questions = document.getElementById("pane-questions");
+  const body = document.querySelector(".reading-body");
+  if (!divider || !passage || !questions || !body) return;
+
+  let dragging = false;
+
+  divider.addEventListener("pointerdown", e => {
+    // Only activate in side-by-side mode (divider visible)
+    if (getComputedStyle(divider).display === "none") return;
+    e.preventDefault();
+    dragging = true;
+    divider.classList.add("dragging");
+    divider.setPointerCapture(e.pointerId);
+    document.body.style.cursor = "col-resize";
+    // Prevent text selection while dragging
+    document.body.style.userSelect = "none";
+  });
+
+  divider.addEventListener("pointermove", e => {
+    if (!dragging) return;
+    const rect = body.getBoundingClientRect();
+    const totalW = rect.width - divider.offsetWidth;
+    let passageW = e.clientX - rect.left;
+    // Enforce minimums: passage 30%, questions 20%
+    const minPassage = totalW * 0.30;
+    const minQuestions = totalW * 0.20;
+    if (passageW < minPassage) passageW = minPassage;
+    if (passageW > totalW - minQuestions) passageW = totalW - minQuestions;
+    const questionsW = totalW - passageW;
+    passage.style.flex = "0 0 " + passageW + "px";
+    questions.style.flex = "0 0 " + questionsW + "px";
+    // Resize pen canvases after layout change
+    if (typeof ensureCanvases === "function") ensureCanvases();
+  });
+
+  divider.addEventListener("pointerup", e => {
+    if (!dragging) return;
+    dragging = false;
+    divider.classList.remove("dragging");
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+  });
+})();
+
+// Resize canvases when content changes (e.g. translation toggle)
+const _origToggleTranslation = typeof toggleTranslation === "function" ? toggleTranslation : null;
+
+// Clean up canvases when leaving reading screen
+const _origGoToGallery = goToGallery;
+goToGallery = function() {
+  if (pen.active) togglePenMode();
+  pen.canvases.forEach(c => c.canvas.remove());
+  pen.canvases = [];
+  _origGoToGallery();
+};
+
+(async () => {
+  // Handle redirect callback
+  try {
+    await msalInstance.handleRedirectPromise();
+  } catch(e) { console.warn(e); }
+
+  const account = getAccount();
+  if (!account) {
+    // Not logged in — redirect to top page
+    window.location.href = window.location.origin;
+    return;
+  }
+  document.getElementById("user-badge").textContent = account.username;
+  document.getElementById("btn-logout").style.display = "";
+  await initApp();
+})();
+
+// ===== Double-tap / double-click fullscreen toggle for passage pane =====
+(function() {
+  const el = document.getElementById("pane-passage");
+  if (!el) return;
+  let touchToggled = false;
+  function toggle() {
+    el.classList.toggle("passage-expanded");
+  }
+  el.addEventListener("dblclick", function(e) {
+    if (touchToggled) { touchToggled = false; return; }
+    if (e.target.closest("button,a,input,textarea,select,canvas")) return;
+    toggle();
+  });
+  let lastTap = 0;
+  el.addEventListener("touchend", function(e) {
+    if (e.target.closest("button,a,input,textarea,select,canvas")) return;
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      e.preventDefault();
+      touchToggled = true;
+      toggle();
+      lastTap = 0;
+    } else {
+      lastTap = now;
+    }
+  });
+})();
+</script>
+</body>
+</html>

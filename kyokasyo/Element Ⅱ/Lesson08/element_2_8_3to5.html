@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 8 How We Got to Now with Glass 3-5</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 8 How We Got to Now with Glass 3-5</h1>
+
+<!-- ==================== 段落 3 ==================== -->
+<div class="para-num">3</div>
+
+<!-- 3-① -->
+<details>
+<summary><span class="sent-num">3-①</span> Glass changed from decoration to advanced technology during the Roman Empire, when glassmakers figured out ways to make the material stronger and less cloudy than natural glass like that of King Tutankhamen's beetle.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the material</strong> → この文の Glass</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>that</strong> → natural glass（＝天然のガラス）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>King Tutankhamen's beetle</strong> → 2-② a brooch in the shape of a beetle</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 2段落（約1万年前）→ ローマ帝国時代へ進む</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Glass</span><span class="slash-sep">/</span><span class="slash-ja">ガラスは</span></div>
+  <div class="slash-line"><span class="slash-en">changed</span><span class="slash-sep">/</span><span class="slash-ja">変化した</span></div>
+  <div class="slash-line"><span class="slash-en">from decoration</span><span class="slash-sep">/</span><span class="slash-ja">装飾から <span class="slash-core">(変化した)</span></span></div>
+  <div class="slash-line"><span class="slash-en">to advanced technology</span><span class="slash-sep">/</span><span class="slash-ja">先端技術へと <span class="slash-core">(変化した)</span></span></div>
+  <div class="slash-line"><span class="slash-en">during the Roman Empire,</span><span class="slash-sep">/</span><span class="slash-ja">ローマ帝国の時代に</span></div>
+  <div class="slash-line"><span class="slash-en">when glassmakers</span><span class="slash-sep">/</span><span class="slash-ja">その時 ガラス職人が</span></div>
+  <div class="slash-line"><span class="slash-en">figured out</span><span class="slash-sep">/</span><span class="slash-ja">見つけ出した</span></div>
+  <div class="slash-line"><span class="slash-en">ways</span><span class="slash-sep">/</span><span class="slash-ja">方法を</span></div>
+  <div class="slash-line"><span class="slash-en">to make the material</span><span class="slash-sep">/</span><span class="slash-ja">その素材を作る <span class="slash-core">(方法)</span></span></div>
+  <div class="slash-line"><span class="slash-en">stronger and less cloudy</span><span class="slash-sep">/</span><span class="slash-ja">より強くそしてより曇りの少ないものに <span class="slash-core">(作る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">than natural glass</span><span class="slash-sep">/</span><span class="slash-ja">天然のガラスよりも</span></div>
+  <div class="slash-line"><span class="slash-en">like that</span><span class="slash-sep">/</span><span class="slash-ja">それのような <span class="slash-core">(天然のガラス)</span></span></div>
+  <div class="slash-line"><span class="slash-en">of King Tutankhamen's beetle.</span><span class="slash-sep">/</span><span class="slash-ja">ツタンカーメン王の甲虫の <span class="slash-core">(それ)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>Glass<rt>S</rt></ruby>
+  <ruby><span class="v-marker">changed</span><rt>V</rt></ruby>
+  <span class="dim">from decoration to advanced technology</span>
+  <span class="dim">during the Roman Empire,</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">when</span>
+  <ruby>glassmakers<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">figured out</span><rt>v'</rt></ruby>
+  <ruby>ways<rt>o'</rt></ruby>
+  to make the material stronger and less cloudy
+  <span class="dim">than natural glass like that of King Tutankhamen's beetle</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>changed</td><td>変化した</td></tr>
+    <tr><td>形容詞節</td><td>when</td><td>figured out</td><td>見つけ出した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>ways ← to make the material stronger and less cloudy</td><td>その素材をより強くより曇りの少ないものにする(方法)</td><td>形容詞的（to不定詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>changed ← from decoration to advanced technology</td><td>装飾から先端技術へと(変化した)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>changed ← during the Roman Empire</td><td>ローマ帝国の時代に(変化した)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>natural glass ← like that of King Tutankhamen's beetle</td><td>ツタンカーメン王の甲虫のもの（＝ガラス）のような(天然のガラス)</td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 3-② -->
+<details>
+<summary><span class="sent-num">3-②</span> Glass windows were used during this period for the first time, becoming an essential part of houses, buildings, and even tall towers.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this period</strong> → 3-① the Roman Empire（ローマ帝国時代）</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 3-①のガラス技術の進歩に加え、ガラス窓という具体的用途を追加</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Glass windows</span><span class="slash-sep">/</span><span class="slash-ja">ガラスの窓は</span></div>
+  <div class="slash-line"><span class="slash-en">were used</span><span class="slash-sep">/</span><span class="slash-ja">使われた</span></div>
+  <div class="slash-line"><span class="slash-en">during this period</span><span class="slash-sep">/</span><span class="slash-ja">この時代に <span class="slash-core">(使われた)</span></span></div>
+  <div class="slash-line"><span class="slash-en">for the first time,</span><span class="slash-sep">/</span><span class="slash-ja">初めて <span class="slash-core">(使われた)</span></span></div>
+  <div class="slash-line"><span class="slash-en">becoming</span><span class="slash-sep">/</span><span class="slash-ja">（そして）なった</span></div>
+  <div class="slash-line"><span class="slash-en">an essential part</span><span class="slash-sep">/</span><span class="slash-ja">不可欠な一部に <span class="slash-core">(なった)</span></span></div>
+  <div class="slash-line"><span class="slash-en">of houses, buildings, and even tall towers.</span><span class="slash-sep">/</span><span class="slash-ja">家、建物、さらには高い塔の <span class="slash-core">(一部)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Glass <ruby>windows<rt>S</rt></ruby>
+  <ruby><span class="v-marker">were used</span><rt>V</rt></ruby>
+  <span class="dim">during this period</span>
+  <span class="dim">for the first time,</span>
+  becoming an essential part
+  <span class="dim">of houses, buildings, and even tall towers</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>were used</td><td>使われた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>becoming an essential part of houses, buildings, and even tall towers</td><td>家、建物、さらには高い塔の不可欠な一部となった</td><td>副詞的（結果）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>were used ← during this period</td><td>この時代に(使われた)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>were used ← for the first time</td><td>初めて(使われた)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>part ← of houses, buildings, and even tall towers</td><td>家、建物、さらには高い塔の(一部)</td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- ==================== 段落 4 ==================== -->
+<div class="para-num">4</div>
+
+<!-- 4-① -->
+<details>
+<summary><span class="sent-num">4-①</span> In the 12th and 13th centuries, monks working on religious documents used curved glass as a reading aid.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 3段落（ローマ帝国時代）→ 12・13世紀へ進む</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In the 12th and 13th centuries,</span><span class="slash-sep">/</span><span class="slash-ja">12世紀と13世紀に</span></div>
+  <div class="slash-line"><span class="slash-en">monks</span><span class="slash-sep">/</span><span class="slash-ja">修道士が</span></div>
+  <div class="slash-line"><span class="slash-en">working on religious documents</span><span class="slash-sep">/</span><span class="slash-ja">宗教文書に取り組んでいる <span class="slash-core">(修道士)</span></span></div>
+  <div class="slash-line"><span class="slash-en">used</span><span class="slash-sep">/</span><span class="slash-ja">使った</span></div>
+  <div class="slash-line"><span class="slash-en">curved glass</span><span class="slash-sep">/</span><span class="slash-ja">曲面ガラスを</span></div>
+  <div class="slash-line"><span class="slash-en">as a reading aid.</span><span class="slash-sep">/</span><span class="slash-ja">読書補助具として <span class="slash-core">(使った)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In the 12th and 13th centuries,</span>
+  <ruby>monks<rt>S</rt></ruby>
+  working <span class="dim">on religious documents</span>
+  <ruby><span class="v-marker">used</span><rt>V</rt></ruby>
+  curved <ruby>glass<rt>O</rt></ruby>
+  <span class="dim">as a reading aid</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>used</td><td>使った</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>monks ← working on religious documents</td><td>宗教文書に取り組んでいる(修道士)</td><td>形容詞的（現在分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>used ← In the 12th and 13th centuries</td><td>12世紀と13世紀に(使った)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>used ← as a reading aid</td><td>読書補助具として(使った)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 4-② -->
+<details>
+<summary><span class="sent-num">4-②</span> They would move big magnifiers over the page, making the Latin writing larger.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>They</strong> → 4-① monks（修道士たち）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the page</strong> → 4-① religious documents（宗教文書）</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 4-①「reading aid として使った」を具体的に描写</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">They</span><span class="slash-sep">/</span><span class="slash-ja">彼らは</span></div>
+  <div class="slash-line"><span class="slash-en">would move</span><span class="slash-sep">/</span><span class="slash-ja">動かしたものだった</span></div>
+  <div class="slash-line"><span class="slash-en">big magnifiers</span><span class="slash-sep">/</span><span class="slash-ja">大きな拡大鏡を</span></div>
+  <div class="slash-line"><span class="slash-en">over the page,</span><span class="slash-sep">/</span><span class="slash-ja">ページの上で <span class="slash-core">(動かした)</span></span></div>
+  <div class="slash-line"><span class="slash-en">making</span><span class="slash-sep">/</span><span class="slash-ja">（そうすることで）しながら</span></div>
+  <div class="slash-line"><span class="slash-en">the Latin writing</span><span class="slash-sep">/</span><span class="slash-ja">ラテン語の文字を</span></div>
+  <div class="slash-line"><span class="slash-en">larger.</span><span class="slash-sep">/</span><span class="slash-ja">より大きく <span class="slash-core">(しながら)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>They<rt>S</rt></ruby>
+  <ruby><span class="v-marker">would move</span><rt>V</rt></ruby>
+  big <ruby>magnifiers<rt>O</rt></ruby>
+  <span class="dim">over the page,</span>
+  making the Latin writing larger.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would move</td><td>動かしたものだった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>making the Latin writing larger</td><td>ラテン語の文字をより大きくしながら</td><td>副詞的（付帯同時）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>would move ← over the page</td><td>ページの上で(動かした)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 4-③ -->
+<details>
+<summary><span class="sent-num">4-③</span> Around this time in Northern Italy, glassmakers came up with an innovation that would change the way we see the world: shaping glass into small connected disks, therefore creating the world's first glasses.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this time</strong> → 4-① the 12th and 13th centuries</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 4-①②の拡大鏡の使用に加え、眼鏡という新たな発明を導入</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Around this time</span><span class="slash-sep">/</span><span class="slash-ja">この頃</span></div>
+  <div class="slash-line"><span class="slash-en">in Northern Italy,</span><span class="slash-sep">/</span><span class="slash-ja">北イタリアで</span></div>
+  <div class="slash-line"><span class="slash-en">glassmakers</span><span class="slash-sep">/</span><span class="slash-ja">ガラス職人が</span></div>
+  <div class="slash-line"><span class="slash-en">came up with</span><span class="slash-sep">/</span><span class="slash-ja">思いついた</span></div>
+  <div class="slash-line"><span class="slash-en">an innovation</span><span class="slash-sep">/</span><span class="slash-ja">ある革新を</span></div>
+  <div class="slash-line"><span class="slash-en">that would change</span><span class="slash-sep">/</span><span class="slash-ja">変えることになる <span class="slash-core">(革新)</span></span></div>
+  <div class="slash-line"><span class="slash-en">the way</span><span class="slash-sep">/</span><span class="slash-ja">やり方を <span class="slash-core">(変える)</span></span></div>
+  <div class="slash-line"><span class="slash-en">we see the world:</span><span class="slash-sep">/</span><span class="slash-ja">私たちが世界を見る <span class="slash-core">(やり方)</span></span></div>
+  <div class="slash-line"><span class="slash-en">shaping glass</span><span class="slash-sep">/</span><span class="slash-ja">ガラスを成形すること <span class="slash-core">(＝革新)</span></span></div>
+  <div class="slash-line"><span class="slash-en">into small connected disks,</span><span class="slash-sep">/</span><span class="slash-ja">小さなつながった円盤に <span class="slash-core">(成形する)</span></span></div>
+  <div class="slash-line"><span class="slash-en">therefore creating</span><span class="slash-sep">/</span><span class="slash-ja">それゆえ生み出した</span></div>
+  <div class="slash-line"><span class="slash-en">the world's first glasses.</span><span class="slash-sep">/</span><span class="slash-ja">世界初の眼鏡を <span class="slash-core">(生み出した)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">Around this time</span>
+  <span class="dim">in Northern Italy,</span>
+  <ruby>glassmakers<rt>S</rt></ruby>
+  <ruby><span class="v-marker">came up with</span><rt>V</rt></ruby>
+  an <ruby>innovation<rt>O</rt></ruby>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">would change</span><rt>v'</rt></ruby>
+  the <ruby>way<rt>o'</rt></ruby>
+  <span class="adj-cl">&lt;</span><span class="omit">∧</span>
+  <ruby>we<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">see</span><rt>v'</rt></ruby>
+  the <ruby>world<rt>o'</rt></ruby><span class="adj-cl">&gt;</span><span class="adj-cl">&gt;</span>:
+  shaping glass <span class="dim">into small connected disks,</span>
+  therefore creating the world's first glasses.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>came up with</td><td>思いついた</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>would change</td><td>変えることになる</td></tr>
+    <tr><td>形容詞節</td><td>(that) [省略]</td><td>see</td><td>見る</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>innovation ← : shaping glass into small connected disks</td><td>ガラスを小さなつながった円盤に成形すること(革新)</td><td>形容詞的（同格）</td></tr>
+    <tr><td>therefore creating the world's first glasses</td><td>それゆえ世界初の眼鏡を生み出した</td><td>副詞的（結果）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>came up with ← Around this time</td><td>この頃(思いついた)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>came up with ← in Northern Italy</td><td>北イタリアで(思いついた)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- ==================== 段落 5 ==================== -->
+<div class="para-num">5</div>
+
+<!-- 5-① -->
+<details>
+<summary><span class="sent-num">5-①</span> Those early glasses were called "disks for the eyes."</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Those early glasses</strong> → 4-③ the world's first glasses</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> 4-③の glasses を「disks for the eyes」という別称で言い換え</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Those early glasses</span><span class="slash-sep">/</span><span class="slash-ja">それらの初期の眼鏡は</span></div>
+  <div class="slash-line"><span class="slash-en">were called</span><span class="slash-sep">/</span><span class="slash-ja">呼ばれた</span></div>
+  <div class="slash-line"><span class="slash-en">"disks for the eyes."</span><span class="slash-sep">/</span><span class="slash-ja">「目のための円盤」と <span class="slash-core">(呼ばれた)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Those early <ruby>glasses<rt>S</rt></ruby>
+  <ruby><span class="v-marker">were called</span><rt>V</rt></ruby>
+  "<ruby>disks<rt>C</rt></ruby> <span class="dim">for the eyes</span>."
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>were called</td><td>呼ばれた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>disks ← for the eyes</td><td>目のための(円盤)</td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-② -->
+<details>
+<summary><span class="sent-num">5-②</span> For several generations, these new tools were just for religious scholars.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>these new tools</strong> → 5-① Those early glasses / "disks for the eyes"</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 5-①の名称に加え、初期の使用者の限定を述べる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">For several generations,</span><span class="slash-sep">/</span><span class="slash-ja">数世代の間</span></div>
+  <div class="slash-line"><span class="slash-en">these new tools</span><span class="slash-sep">/</span><span class="slash-ja">これらの新しい道具は</span></div>
+  <div class="slash-line"><span class="slash-en">were</span><span class="slash-sep">/</span><span class="slash-ja">～であった</span></div>
+  <div class="slash-line"><span class="slash-en">just for religious scholars.</span><span class="slash-sep">/</span><span class="slash-ja">宗教学者だけのためのもの <span class="slash-core">(であった)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">For several generations,</span>
+  these new <ruby>tools<rt>S</rt></ruby>
+  <ruby><span class="v-marker">were</span><rt>V</rt></ruby>
+  just <span class="dim">for religious</span> <ruby><span class="dim">scholars</span><rt>C</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>were</td><td>～であった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>were ← For several generations</td><td>数世代の間(であった)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>were ← just for religious scholars</td><td>宗教学者だけのためのもの(であった)</td><td>補語（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-③ -->
+<details>
+<summary><span class="sent-num">5-③</span> The condition of farsightedness was very common among people.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 5-④⑤で述べる「眼鏡が普及しなかった理由」の前提（遠視は広く存在したが…）</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The condition</span><span class="slash-sep">/</span><span class="slash-ja">症状は</span></div>
+  <div class="slash-line"><span class="slash-en">of farsightedness</span><span class="slash-sep">/</span><span class="slash-ja">遠視の <span class="slash-core">(症状)</span></span></div>
+  <div class="slash-line"><span class="slash-en">was</span><span class="slash-sep">/</span><span class="slash-ja">～であった</span></div>
+  <div class="slash-line"><span class="slash-en">very common</span><span class="slash-sep">/</span><span class="slash-ja">非常に一般的 <span class="slash-core">(であった)</span></span></div>
+  <div class="slash-line"><span class="slash-en">among people.</span><span class="slash-sep">/</span><span class="slash-ja">人々の間で <span class="slash-core">(一般的)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The <ruby>condition<rt>S</rt></ruby>
+  <span class="dim">of farsightedness</span>
+  <ruby><span class="v-marker">was</span><rt>V</rt></ruby>
+  very <ruby>common<rt>C</rt></ruby>
+  <span class="dim">among people</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>～であった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>condition ← of farsightedness</td><td>遠視の(症状)</td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>common ← among people</td><td>人々の間で(一般的)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-④ -->
+<details>
+<summary><span class="sent-num">5-④</span> Most people, however, didn't notice it because they didn't read.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong> → 5-③ The condition of farsightedness（遠視の症状）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → Most people</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> however により 5-③（遠視は非常に一般的）に対し「しかし気づかなかった」と対比</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> because 以下で気づかなかった理由を提示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Most people,</span><span class="slash-sep">/</span><span class="slash-ja">ほとんどの人は</span></div>
+  <div class="slash-line"><span class="slash-en">however,</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">didn't notice</span><span class="slash-sep">/</span><span class="slash-ja">気づかなかった</span></div>
+  <div class="slash-line"><span class="slash-en">it</span><span class="slash-sep">/</span><span class="slash-ja">それに <span class="slash-core">(＝遠視)</span></span></div>
+  <div class="slash-line"><span class="slash-en">because</span><span class="slash-sep">/</span><span class="slash-ja">なぜなら</span></div>
+  <div class="slash-line"><span class="slash-en">they didn't read.</span><span class="slash-sep">/</span><span class="slash-ja">彼らは読まなかったから</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Most <ruby>people<rt>S</rt></ruby>, however,
+  <ruby><span class="v-marker">didn't notice</span><rt>V</rt></ruby>
+  <ruby>it<rt>O</rt></ruby>
+  <span class="adv-cl">(</span><span class="cl-marker">because</span>
+  <ruby>they<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">didn't read</span><rt>v'</rt></ruby><span class="adv-cl">)</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>didn't notice</td><td>気づかなかった</td></tr>
+    <tr><td>副詞節</td><td>because</td><td>didn't read</td><td>読まなかった</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-⑤ -->
+<details>
+<summary><span class="sent-num">5-⑤</span> Glasses, therefore, remained rare and expensive objects.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Glasses</strong> → 5-①② Those early glasses / these new tools</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> therefore により 5-②③④（宗教学者専用＋多くの人は遠視に気づかず）の結果として結論</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Glasses,</span><span class="slash-sep">/</span><span class="slash-ja">眼鏡は</span></div>
+  <div class="slash-line"><span class="slash-en">therefore,</span><span class="slash-sep">/</span><span class="slash-ja">それゆえ</span></div>
+  <div class="slash-line"><span class="slash-en">remained</span><span class="slash-sep">/</span><span class="slash-ja">～のままであった</span></div>
+  <div class="slash-line"><span class="slash-en">rare and expensive objects.</span><span class="slash-sep">/</span><span class="slash-ja">希少で高価な品物 <span class="slash-core">(のまま)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>Glasses<rt>S</rt></ruby>, therefore,
+  <ruby><span class="v-marker">remained</span><rt>V</rt></ruby>
+  rare and expensive <ruby>objects<rt>C</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>remained</td><td>～のままであった</td></tr>
+  </table>
+</div>
+</details>
+
+</body>
+</html>

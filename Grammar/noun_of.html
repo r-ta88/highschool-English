@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>a NOUN of ～：表現リスト</title>
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f7f9fa; padding: 20px; color: #333; }
+        .container { max-width: 1400px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 4px solid #3498db; padding-bottom: 10px; margin-bottom: 30px; }
+        .controls { position: sticky; top: 0; z-index: 100; margin-bottom: 25px; background: #fffbe6; padding: 15px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 30px; border: 1px solid #ffe58f; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th, td { border: 1px solid #dee2e6; padding: 10px; vertical-align: top; }
+        th { background-color: #34495e; color: white; position: sticky; top: 70px; }
+        .cat-title { background-color: #e3f2fd; font-weight: bold; color: #1565c0; font-size: 1.1em; }
+        .noun-name { font-size: 1em; color: #e67e22; font-weight: bold; text-align: center; background-color: #fffaf0; transition: 0.2s; }
+        .label-container { display: flex; flex-direction: column; gap: 2px; align-items: center; margin-top: 5px; }
+        .label { font-size: 0.7em; padding: 2px 4px; border-radius: 3px; color: white; width: 45px; text-align: center; font-weight: normal; }
+        .label-adj { background-color: #27ae60; } /* 形的 */
+        .label-noun { background-color: #2980b9; } /* 名的 */
+        
+        /* 【修正点】英語を隠す時に .noun-name (LOT, NUMBER等) も隠す設定 */
+        .hide-en .en, 
+        .hide-en .noun-name { color: transparent !important; background-color: #ccc !important; cursor: pointer; border-radius: 3px; }
+        .hide-en .en { display: inline-block; width: 100%; }
+        
+        /* アクティブ（クリック中）は表示 */
+        .hide-en .en:active, 
+        .hide-en .noun-name:active { color: inherit !important; background-color: inherit !important; }
+        /* noun-name専用のアクティブ色 */
+        .hide-en .noun-name:active { color: #e67e22 !important; background-color: #fffaf0 !important; }
+
+        .hide-ja .ja { color: transparent !important; background-color: #ccc !important; cursor: pointer; border-radius: 3px; display: inline-block; width: 100%; }
+        .hide-ja .ja:active { color: #333 !important; background-color: transparent !important; }
+
+        .phrase-list { margin: 0; padding: 0; list-style: none; font-size: 0.9em; }
+        .phrase-list li { display: flex; border-bottom: 1px solid #eee; padding: 6px 0; }
+        .en-col { width: 50%; padding-right: 8px; font-weight: 500; }
+        .ja-col { width: 50%; padding-left: 8px; border-left: 1px solid #f0f0f0; }
+
+        .adv-box { margin-top: 8px; padding: 10px; background-color: #fdf2e9; border-left: 5px solid #e67e22; font-size: 0.85em; }
+        .adv-title { font-weight: bold; color: #a04000; display: block; margin-bottom: 4px; }
+    </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<div class="container">
+    <h1>"a NOUN of" 完全網羅ラベル付対訳リスト</h1>
+    <div class="controls">
+        <strong>暗記モード:</strong>
+        <label><input type="checkbox" id="btnEn"> 英語（名詞タイトル込）を隠す</label>
+        <label style="margin-left: 20px;"><input type="checkbox" id="btnJa"> 日本語を隠す</label>
+    </div>
+
+    <table id="targetTable">
+        <thead>
+            <tr>
+                <th width="12%">名詞・語類</th>
+                <th width="88%">対訳ミニマルフレーズ (Top 5) & 副詞的効果の備考</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr class="cat-title"><td colspan="2">1. 漠然とした「数・量・多様性」のグループ</td></tr>
+            <tr>
+                <td class="noun-name">LOT<div class="label-container"><span class="label label-adj">形的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a lot of things</span><span class="ja ja-col">たくさんのこと</span></li>
+                    <li><span class="en en-col">a lot of questions</span><span class="ja ja-col">山ほどの質問</span></li>
+                    <li><span class="en en-col">a lot of women</span><span class="ja ja-col">大勢の女性</span></li>
+                    <li><span class="en en-col">a lot of ways</span><span class="ja ja-col">様々な方法</span></li>
+                    <li><span class="en en-col">a lot of guys</span><span class="ja ja-col">多くの奴ら</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">NUMBER<div class="label-container"><span class="label label-adj">形的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a number of reasons</span><span class="ja ja-col">いくつかの理由</span></li>
+                    <li><span class="en en-col">a number of things</span><span class="ja ja-col">いくつもの事柄</span></li>
+                    <li><span class="en en-col">a number of ways</span><span class="ja ja-col">いく通りかの方法</span></li>
+                    <li><span class="en en-col">a number of factors</span><span class="ja ja-col">数々の要因</span></li>
+                    <li><span class="en en-col">a number of studies</span><span class="ja ja-col">数多くの研究</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">VARIETY<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a variety of reasons</span><span class="ja ja-col">さまざまな理由</span></li>
+                    <li><span class="en en-col">a variety of ways</span><span class="ja ja-col">多種多様な方法</span></li>
+                    <li><span class="en en-col">a variety of sources</span><span class="ja ja-col">多角的な情報源</span></li>
+                    <li><span class="en en-col">a variety of factors</span><span class="ja ja-col">多様な要因</span></li>
+                    <li><span class="en en-col">a variety of topics</span><span class="ja ja-col">多岐にわたる話題</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">MAJORITY<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a majority of Americans</span><span class="ja ja-col">アメリカ人の大半</span></li>
+                    <li><span class="en en-col">a majority of voters</span><span class="ja ja-col">有権者の過半数</span></li>
+                    <li><span class="en en-col">a majority of students</span><span class="ja ja-col">学生の大部分</span></li>
+                    <li><span class="en en-col">a majority of Republicans</span><span class="ja ja-col">共和党員の多数</span></li>
+                    <li><span class="en en-col">a majority of states</span><span class="ja ja-col">過半数の州</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">HANDFUL<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a handful of states</span><span class="ja ja-col">ほんの数州</span></li>
+                    <li><span class="en en-col">a handful of companies</span><span class="ja ja-col">わずか数社</span></li>
+                    <li><span class="en en-col">a handful of women</span><span class="ja ja-col">ひと握りの女性</span></li>
+                    <li><span class="en en-col">a handful of men</span><span class="ja ja-col">数人の男性</span></li>
+                    <li><span class="en en-col">a handful of cases</span><span class="ja ja-col">ごくわずかな事例</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">RANGE<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a range of issues</span><span class="ja ja-col">幅広い課題</span></li>
+                    <li><span class="en en-col">a range of options</span><span class="ja ja-col">多様な選択肢</span></li>
+                    <li><span class="en en-col">a range of topics</span><span class="ja ja-col">広範なトピック</span></li>
+                    <li><span class="en en-col">a range of services</span><span class="ja ja-col">幅広いサービス</span></li>
+                    <li><span class="en en-col">a range of activities</span><span class="ja ja-col">様々な活動</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">MULTITUDE<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a multitude of sins</span><span class="ja ja-col">数々の罪</span></li>
+                    <li><span class="en en-col">a multitude of ways</span><span class="ja ja-col">多種多様なやり方</span></li>
+                    <li><span class="en en-col">a multitude of reasons</span><span class="ja ja-col">おびたただしい理由</span></li>
+                    <li><span class="en en-col">a multitude of options</span><span class="ja ja-col">無数の選択肢</span></li>
+                    <li><span class="en en-col">a multitude of factors</span><span class="ja ja-col">多くの要因</span></li>
+                </ul></td>
+            </tr>
+
+            <tr class="cat-title"><td colspan="2">2. 「一連の・ひと揃いの」順序、セット、多様性</td></tr>
+            <tr>
+                <td class="noun-name">SERIES<div class="label-container"><span class="label label-adj">形的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a series of questions</span><span class="ja ja-col">一連の質問</span></li>
+                    <li><span class="en en-col">a series of articles</span><span class="ja ja-col">一連の記事</span></li>
+                    <li><span class="en en-col">a series of events</span><span class="ja ja-col">一連の出来事</span></li>
+                    <li><span class="en en-col">a series of meetings</span><span class="ja ja-col">一連の会議</span></li>
+                    <li><span class="en en-col">a series of studies</span><span class="ja ja-col">一連の研究</span></li>
+                </ul>
+                <div class="adv-box"><span class="adv-title">【副詞的効果：相次いで / 立て続けに】</span>
+                    <li><span class="en"><b>a series of</b> unfortunate events happened</span>（不幸な出来事が<b>相次いで</b>起きた）</li>
+                </div></td>
+            </tr>
+            <tr>
+                <td class="noun-name">SET<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a set of rules</span><span class="ja ja-col">一式の規則</span></li>
+                    <li><span class="en en-col">a set of keys</span><span class="ja ja-col">ひと揃いの鍵</span></li>
+                    <li><span class="en en-col">a set of values</span><span class="ja ja-col">体系化された価値観</span></li>
+                    <li><span class="en en-col">a set of principles</span><span class="ja ja-col">一連の原則</span></li>
+                    <li><span class="en en-col">a set of instructions</span><span class="ja ja-col">一通の手引書</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">SEQUENCE<div class="label-container"><span class="label label-adj">形的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a sequence of events</span><span class="ja ja-col">一連の経緯</span></li>
+                    <li><span class="en en-col">a sequence of many numbers</span><span class="ja ja-col">連続する数字</span></li>
+                    <li><span class="en en-col">a sequence of images</span><span class="ja ja-col">連続する画像</span></li>
+                    <li><span class="en en-col">a sequence of actions</span><span class="ja ja-col">一連の動作</span></li>
+                    <li><span class="en en-col">a sequence of steps</span><span class="ja ja-col">順を追った手順</span></li>
+                </ul>
+                <div class="adv-box"><span class="adv-title">【副詞的効果：次々と / 順を追って】</span>
+                    <li><span class="en">show <b>a sequence of</b> images</span>（画像を<b>次々と</b>映し出す）</li>
+                </div></td>
+            </tr>
+            <tr>
+                <td class="noun-name">COLLECTION<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a collection of essays</span><span class="ja ja-col">エッセイ集</span></li>
+                    <li><span class="en en-col">a collection of stories</span><span class="ja ja-col">短編集</span></li>
+                    <li><span class="en en-col">a collection of articles</span><span class="ja ja-col">論文集</span></li>
+                    <li><span class="en en-col">a collection of individuals</span><span class="ja ja-col">個人の集まり</span></li>
+                    <li><span class="en en-col">a collection of poems</span><span class="ja ja-col">詩集</span></li>
+                </ul></td>
+            </tr>
+
+            <tr class="cat-title"><td colspan="2">3. 人・社会・動物の集まりを表すグループ</td></tr>
+            <tr>
+                <td class="noun-name">GROUP<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a group of friends</span><span class="ja ja-col">友人グループ</span></li>
+                    <li><span class="en en-col">a group of men</span><span class="ja ja-col">男たちの一団</span></li>
+                    <li><span class="en en-col">a group of women</span><span class="ja ja-col">女性の集まり</span></li>
+                    <li><span class="en en-col">a group of students</span><span class="ja ja-col">学生の集団</span></li>
+                    <li><span class="en en-col">a group of scientists</span><span class="ja ja-col">科学者グループ</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">CROWD<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a crowd of supporters</span><span class="ja ja-col">支持者の群衆</span></li>
+                    <li><span class="en en-col">a crowd of people</span><span class="ja ja-col">人だかり</span></li>
+                    <li><span class="en en-col">a crowd of fans</span><span class="ja ja-col">ファンの人だかり</span></li>
+                    <li><span class="en en-col">a crowd of men</span><span class="ja ja-col">男たちの群れ</span></li>
+                    <li><span class="en en-col">a crowd of onlookers</span><span class="ja ja-col">見物人の群れ</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">FLOCK<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a flock of birds</span><span class="ja ja-col">鳥の群れ</span></li>
+                    <li><span class="en en-col">a flock of geese</span><span class="ja ja-col">ガチョウの群れ</span></li>
+                    <li><span class="en en-col">a flock of sheep</span><span class="ja ja-col">羊の群れ</span></li>
+                    <li><span class="en en-col">a flock of seagulls</span><span class="ja ja-col">カモメの群れ</span></li>
+                    <li><span class="en en-col">a flock of pigeons</span><span class="ja ja-col">ハトの群れ</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">HERD<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a herd of cattle</span><span class="ja ja-col">牛の群れ</span></li>
+                    <li><span class="en en-col">a herd of elephants</span><span class="ja ja-col">ゾウの群れ</span></li>
+                    <li><span class="en en-col">a herd of buffalo</span><span class="ja ja-col">バッファローの群れ</span></li>
+                    <li><span class="en en-col">a herd of deer</span><span class="ja ja-col">シカの群れ</span></li>
+                    <li><span class="en en-col">a herd of cows</span><span class="ja ja-col">乳牛の群れ</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">SCHOOL<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a school of fish</span><span class="ja ja-col">魚の群れ</span></li>
+                    <li><span class="en en-col">a school of dolphins</span><span class="ja ja-col">イルカの群れ</span></li>
+                    <li><span class="en en-col">a school of whales</span><span class="ja ja-col">クジラの群れ</span></li>
+                    <li><span class="en en-col">a school of sharks</span><span class="ja ja-col">サメの群れ</span></li>
+                    <li><span class="en en-col">a school of tuna</span><span class="ja ja-col">マグロの群れ</span></li>
+                </ul></td>
+            </tr>
+
+            <tr class="cat-title"><td colspan="2">4. 「特定の形状・容器」でまとめるグループ</td></tr>
+            <tr>
+                <td class="noun-name">PAIR<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a pair of shoes</span><span class="ja ja-col">靴一足</span></li>
+                    <li><span class="en en-col">a pair of scissors</span><span class="ja ja-col">ハサミ一挺</span></li>
+                    <li><span class="en en-col">a pair of jeans</span><span class="ja ja-col">ジーンズ一本</span></li>
+                    <li><span class="en en-col">a pair of pants</span><span class="ja ja-col">ズボン一着</span></li>
+                    <li><span class="en en-col">a pair of glasses</span><span class="ja ja-col">メガネ一個</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">BUNCH<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a bunch of guys</span><span class="ja ja-col">男の連中</span></li>
+                    <li><span class="en en-col">a bunch of kids</span><span class="ja ja-col">子供の集まり</span></li>
+                    <li><span class="en en-col">a bunch of things</span><span class="ja ja-col">あれこれの物</span></li>
+                    <li><span class="en en-col">a bunch of flowers</span><span class="ja ja-col">一束の花</span></li>
+                    <li><span class="en en-col">a bunch of idiots</span><span class="ja ja-col">バカな連中</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">PACK<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a pack of cigarettes</span><span class="ja ja-col">タバコ一箱</span></li>
+                    <li><span class="en en-col">a pack of wolves</span><span class="ja ja-col">狼の群れ</span></li>
+                    <li><span class="en en-col">a pack of lies</span><span class="ja ja-col">真っ赤な嘘（嘘八百）</span></li>
+                    <li><span class="en en-col">a pack of cards</span><span class="ja ja-col">トランプ一組</span></li>
+                    <li><span class="en en-col">a pack of dogs</span><span class="ja ja-col">野犬の群れ</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">STACK<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a stack of papers</span><span class="ja ja-col">書類の山</span></li>
+                    <li><span class="en en-col">a stack of books</span><span class="ja ja-col">積み上げられた本</span></li>
+                    <li><span class="en en-col">a stack of letters</span><span class="ja ja-col">手紙の束</span></li>
+                    <li><span class="en en-col">a stack of magazines</span><span class="ja ja-col">雑誌の山</span></li>
+                    <li><span class="en en-col">a stack of pancakes</span><span class="ja ja-col">重ねられたパンケーキ</span></li>
+                </ul></td>
+            </tr>
+            <tr>
+                <td class="noun-name">PILE<div class="label-container"><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a pile of rocks</span><span class="ja ja-col">石の山</span></li>
+                    <li><span class="en en-col">a pile of books</span><span class="ja ja-col">本の山</span></li>
+                    <li><span class="en en-col">a pile of clothes</span><span class="ja ja-col">服の山</span></li>
+                    <li><span class="en en-col">a pile of paper</span><span class="ja ja-col">書類の山</span></li>
+                    <li><span class="en en-col">a pile of leaves</span><span class="ja ja-col">落ち葉の山</span></li>
+                </ul></td>
+            </tr>
+
+            <tr class="cat-title"><td colspan="2">5. 比喩的集合・自然現象（記述的効果の強いもの）</td></tr>
+            <tr>
+                <td class="noun-name">BARRAGE<div class="label-container"><span class="label label-adj">形的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a barrage of questions</span><span class="ja ja-col">質問の集中砲火</span></li>
+                    <li><span class="en en-col">a barrage of criticism</span><span class="ja ja-col">非難の嵐</span></li>
+                    <li><span class="en en-col">a barrage of calls</span><span class="ja ja-col">鳴り止まない電話</span></li>
+                    <li><span class="en en-col">a barrage of insults</span><span class="ja ja-col">浴びせられる罵言</span></li>
+                    <li><span class="en en-col">a barrage of emails</span><span class="ja ja-col">大量のメール</span></li>
+                </ul>
+                <div class="adv-box"><span class="adv-title">【副詞的効果：矢継ぎ早に / 一斉に】</span>
+                    <li><span class="en">fire <b>a barrage of</b> questions</span>（<b>矢継ぎ早に</b>質問を浴びせる）</li>
+                </div></td>
+            </tr>
+            <tr>
+                <td class="noun-name">FLOOD<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a flood of memories</span><span class="ja ja-col">あふれ出す思い出</span></li>
+                    <li><span class="en en-col">a flood of information</span><span class="ja ja-col">情報の氾濫</span></li>
+                    <li><span class="en en-col">a flood of inquiries</span><span class="ja ja-col">殺到する問い合わせ</span></li>
+                    <li><span class="en en-col">a flood of light</span><span class="ja ja-col">差し込む大量の光</span></li>
+                    <li><span class="en en-col">a flood of complaints</span><span class="ja ja-col">苦情の洪水</span></li>
+                </ul>
+                <div class="adv-box"><span class="adv-title">【副詞的効果：どっと / 一気に】</span>
+                    <li><span class="en">return in <b>a flood of</b> memories</span>（思い出が<b>どっと</b>蘇る）</li>
+                </div></td>
+            </tr>
+            <tr>
+                <td class="noun-name">STORM<div class="label-container"><span class="label label-adj">形的</span><span class="label label-noun">名的</span></div></td>
+                <td><ul class="phrase-list">
+                    <li><span class="en en-col">a storm of criticism</span><span class="ja ja-col">非難の嵐</span></li>
+                    <li><span class="en en-col">a storm of protest</span><span class="ja ja-col">抗議の嵐</span></li>
+                    <li><span class="en en-col">a storm of controversy</span><span class="ja ja-col">論争の嵐</span></li>
+                    <li><span class="en en-col">a storm of applause</span><span class="ja ja-col">嵐のような拍手</span></li>
+                    <li><span class="en en-col">a storm of emotion</span><span class="ja ja-col">感情の激動</span></li>
+                </ul></td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const btnEn = document.getElementById('btnEn');
+    const btnJa = document.getElementById('btnJa');
+    const table = document.getElementById('targetTable');
+    btnEn.addEventListener('change', () => table.classList.toggle('hide-en'));
+    btnJa.addEventListener('change', () => table.classList.toggle('hide-ja'));
+</script>
+
+</body>
+</html>

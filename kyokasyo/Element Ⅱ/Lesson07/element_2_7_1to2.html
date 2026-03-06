@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 7 Putting iPS Cells into Practice 1-2</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 7 &mdash; Putting iPS Cells into Practice 1-2</h1>
+
+<!-- ========== 段落 1 ========== -->
+<div class="para-num">1</div>
+
+<!-- 1-① -->
+<details>
+<summary><span class="sent-num">1-①</span> A planarian is a kind of tiny animal that lives in clear water.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item">レッスン冒頭。プラナリアという生物を紹介する導入文。</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">A planarian</span><span class="slash-sep">/</span><span class="slash-ja">プラナリアは</span></div>
+  <div class="slash-line"><span class="slash-en">is</span><span class="slash-sep">/</span><span class="slash-ja">～である</span></div>
+  <div class="slash-line"><span class="slash-en">a kind</span><span class="slash-sep">/</span><span class="slash-ja">一種</span></div>
+  <div class="slash-line"><span class="slash-en">of tiny animal</span><span class="slash-sep">/</span><span class="slash-ja">小さな動物の<span class="slash-core">(一種)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that lives</span><span class="slash-sep">/</span><span class="slash-ja">住んでいる<span class="slash-core">(動物)</span></span></div>
+  <div class="slash-line"><span class="slash-en">in clear water.</span><span class="slash-sep">/</span><span class="slash-ja">きれいな水の中に<span class="slash-core">(住んでいる)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>A planarian<rt>S</rt></ruby>
+  <ruby><span class="v-marker">is</span><rt>V</rt></ruby>
+  <span class="dim">a</span>
+  <ruby>kind<rt>C</rt></ruby>
+  <span class="dim">of tiny animal</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">lives</span><rt>v'</rt></ruby>
+  <span class="dim">in clear water</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is</td><td>～である</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>lives</td><td>住んでいる</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>kind ← of tiny animal</td><td>小さな動物の<span class="slash-core">(一種)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>lives ← in clear water</td><td>きれいな水の中に<span class="slash-core">(住んでいる)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-② -->
+<details>
+<summary><span class="sent-num">1-②</span> It is known for its very high regeneration ability.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>It</strong> → 1-① a planarian</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>its</strong> → 1-① a planarian</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 1-①で紹介したプラナリアの特徴を補足</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It</span><span class="slash-sep">/</span><span class="slash-ja">それ（プラナリア）は</span></div>
+  <div class="slash-line"><span class="slash-en">is known</span><span class="slash-sep">/</span><span class="slash-ja">知られている</span></div>
+  <div class="slash-line"><span class="slash-en">for its very high regeneration ability.</span><span class="slash-sep">/</span><span class="slash-ja">その非常に高い再生能力で<span class="slash-core">(知られている)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>S</rt></ruby>
+  <ruby><span class="v-marker">is known</span><rt>V</rt></ruby>
+  <span class="dim">for its very high regeneration ability</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is known</td><td>知られている</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>is known ← for its very high regeneration ability</td><td>その非常に高い再生能力で<span class="slash-core">(知られている)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-③ -->
+<details>
+<summary><span class="sent-num">1-③</span> You can cut a planarian in half and get two planarians in about two weeks.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 1-②の「高い再生能力」を具体的に説明</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">You</span><span class="slash-sep">/</span><span class="slash-ja">あなたは</span></div>
+  <div class="slash-line"><span class="slash-en">can cut</span><span class="slash-sep">/</span><span class="slash-ja">切ることができる</span></div>
+  <div class="slash-line"><span class="slash-en">a planarian</span><span class="slash-sep">/</span><span class="slash-ja">プラナリアを</span></div>
+  <div class="slash-line"><span class="slash-en">in half</span><span class="slash-sep">/</span><span class="slash-ja">半分に<span class="slash-core">(切る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">and get</span><span class="slash-sep">/</span><span class="slash-ja">そして得ることができる</span></div>
+  <div class="slash-line"><span class="slash-en">two planarians</span><span class="slash-sep">/</span><span class="slash-ja">2匹のプラナリアを</span></div>
+  <div class="slash-line"><span class="slash-en">in about two weeks.</span><span class="slash-sep">/</span><span class="slash-ja">約2週間で<span class="slash-core">(得る)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>You<rt>S</rt></ruby>
+  <ruby><span class="v-marker">can cut</span><rt>V</rt></ruby>
+  <ruby>a planarian<rt>O</rt></ruby>
+  <span class="dim">in half</span>
+  and
+  <ruby><span class="v-marker">(can) get</span><rt>V</rt></ruby>
+  <ruby>two planarians<rt>O</rt></ruby>
+  <span class="dim">in about two weeks</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>can cut</td><td>切ることができる</td></tr>
+    <tr><td>主節</td><td>―</td><td>(can) get</td><td>得ることができる</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>can cut a planarian in half / (can) get two planarians in about two weeks</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>can cut ← in half</td><td>半分に<span class="slash-core">(切る)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>(can) get ← in about two weeks</td><td>約2週間で<span class="slash-core">(得る)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-④ -->
+<details>
+<summary><span class="sent-num">1-④</span> A newt, a kind of amphibian that looks like a lizard, also has the ability to regenerate a lost body part.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> プラナリアに続き、再生能力を持つ別の動物（イモリ）を紹介</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">A newt,</span><span class="slash-sep">/</span><span class="slash-ja">イモリは、</span></div>
+  <div class="slash-line"><span class="slash-en">a kind of amphibian</span><span class="slash-sep">/</span><span class="slash-ja">両生類の一種で</span></div>
+  <div class="slash-line"><span class="slash-en">that looks</span><span class="slash-sep">/</span><span class="slash-ja">見える<span class="slash-core">(両生類)</span></span></div>
+  <div class="slash-line"><span class="slash-en">like a lizard,</span><span class="slash-sep">/</span><span class="slash-ja">トカゲのように<span class="slash-core">(見える)</span></span></div>
+  <div class="slash-line"><span class="slash-en">also has</span><span class="slash-sep">/</span><span class="slash-ja">また持っている</span></div>
+  <div class="slash-line"><span class="slash-en">the ability</span><span class="slash-sep">/</span><span class="slash-ja">能力を</span></div>
+  <div class="slash-line"><span class="slash-en">to regenerate</span><span class="slash-sep">/</span><span class="slash-ja">再生する<span class="slash-core">(能力)</span></span></div>
+  <div class="slash-line"><span class="slash-en">a lost body part.</span><span class="slash-sep">/</span><span class="slash-ja">失われた体の部位を<span class="slash-core">(再生する)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>A newt<rt>S</rt></ruby>, <span class="dim">a kind of amphibian</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">looks</span><rt>v'</rt></ruby>
+  <span class="dim">like a lizard</span><span class="adj-cl">&gt;</span>,
+  also <ruby><span class="v-marker">has</span><rt>V</rt></ruby>
+  the <ruby>ability<rt>O</rt></ruby> to regenerate a lost body part.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>has</td><td>持っている</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>looks</td><td>見える</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>ability ← to regenerate a lost body part</td><td>失われた体の部位を再生する<span class="slash-core">(能力)</span></td><td>形容詞的（同格）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>kind ← of amphibian</td><td>両生類の<span class="slash-core">(一種)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>looks ← like a lizard</td><td>トカゲのように<span class="slash-core">(見える)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-⑤ -->
+<details>
+<summary><span class="sent-num">1-⑤</span> Though it cannot grow a new head like a planarian can, it can grow a new leg.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong>（2か所とも） → 1-④ a newt</div>
+  <div class="context-item"><span class="discourse-tag">譲歩</span> イモリの再生能力の限界を認めつつ、脚の再生が可能であることを述べる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Though</span><span class="slash-sep">/</span><span class="slash-ja">～だけれども</span></div>
+  <div class="slash-line"><span class="slash-en">it</span><span class="slash-sep">/</span><span class="slash-ja">それ（イモリ）は</span></div>
+  <div class="slash-line"><span class="slash-en">cannot grow</span><span class="slash-sep">/</span><span class="slash-ja">生やすことができない</span></div>
+  <div class="slash-line"><span class="slash-en">a new head</span><span class="slash-sep">/</span><span class="slash-ja">新しい頭を</span></div>
+  <div class="slash-line"><span class="slash-en">like a planarian can,</span><span class="slash-sep">/</span><span class="slash-ja">プラナリアができるように<span class="slash-core">(生やす)</span>、</span></div>
+  <div class="slash-line"><span class="slash-en">it</span><span class="slash-sep">/</span><span class="slash-ja">それ（イモリ）は</span></div>
+  <div class="slash-line"><span class="slash-en">can grow</span><span class="slash-sep">/</span><span class="slash-ja">生やすことができる</span></div>
+  <div class="slash-line"><span class="slash-en">a new leg.</span><span class="slash-sep">/</span><span class="slash-ja">新しい脚を</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="adv-cl">(</span><span class="cl-marker">Though</span>
+  <ruby>it<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">cannot grow</span><rt>v'</rt></ruby>
+  <ruby>a new head<rt>o'</rt></ruby>
+  <span class="adv-cl">(</span><span class="cl-marker">like</span>
+  <ruby>a planarian<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">can</span><rt>v'</rt></ruby><span class="adv-cl">)</span><span class="adv-cl">)</span>,
+  <ruby>it<rt>S</rt></ruby>
+  <ruby><span class="v-marker">can grow</span><rt>V</rt></ruby>
+  <ruby>a new leg<rt>O</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>can grow</td><td>生やすことができる</td></tr>
+    <tr><td>副詞節</td><td>Though</td><td>cannot grow</td><td>生やすことができない</td></tr>
+    <tr><td>副詞節</td><td>like</td><td>can (grow)</td><td>できる</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-⑥ -->
+<details>
+<summary><span class="sent-num">1-⑥</span> It would be good if we could grow new limbs or a set of fingers in case of injury, but we can't.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> 動物の再生能力（1-③④⑤）と人間にはそれができないという現実を対比</div>
+  <div class="context-item">仮定法過去（would / could）で「実現しない願望」を表現</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It would be good</span><span class="slash-sep">/</span><span class="slash-ja">よいだろう</span></div>
+  <div class="slash-line"><span class="slash-en">if we could grow</span><span class="slash-sep">/</span><span class="slash-ja">もし私たちが生やすことができたなら</span></div>
+  <div class="slash-line"><span class="slash-en">new limbs</span><span class="slash-sep">/</span><span class="slash-ja">新しい手足を</span></div>
+  <div class="slash-line"><span class="slash-en">or a set of fingers</span><span class="slash-sep">/</span><span class="slash-ja">あるいは一組の指を</span></div>
+  <div class="slash-line"><span class="slash-en">in case of injury,</span><span class="slash-sep">/</span><span class="slash-ja">怪我の場合に<span class="slash-core">(生やす)</span>、</span></div>
+  <div class="slash-line"><span class="slash-en">but we can't.</span><span class="slash-sep">/</span><span class="slash-ja">しかし私たちにはできない</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>S</rt></ruby>
+  <ruby><span class="v-marker">would be</span><rt>V</rt></ruby>
+  <ruby>good<rt>C</rt></ruby>
+  <span class="adv-cl">(</span><span class="cl-marker">if</span>
+  <ruby>we<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">could grow</span><rt>v'</rt></ruby>
+  <ruby>new limbs<rt>o'</rt></ruby> or <ruby>a set<rt>o'</rt></ruby> <span class="dim">of fingers</span>
+  <span class="dim">in case of injury</span><span class="adv-cl">)</span>,
+  but
+  <ruby>we<rt>S</rt></ruby>
+  <ruby><span class="v-marker">can't</span><rt>V</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would be</td><td>だろう</td></tr>
+    <tr><td>副詞節</td><td>if</td><td>could grow</td><td>生やすことができたなら</td></tr>
+    <tr><td>主節</td><td>―</td><td>can't</td><td>できない</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>or</td><td>new limbs / a set of fingers（could grow の目的語）</td></tr>
+    <tr><td>but</td><td>It would be good ... / we can't（主節と主節）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>set ← of fingers</td><td>指の<span class="slash-core">(一組)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>could grow ← in case of injury</td><td>怪我の場合に<span class="slash-core">(生やす)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-⑦ -->
+<details>
+<summary><span class="sent-num">1-⑦</span> But why not?</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>why not</strong> = why can't we (grow new body parts)?（1-⑥の we can't を受ける）</div>
+  <div class="context-item">段落末の修辞疑問。読者の関心を次の段落へ導く。</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">But</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">why not?</span><span class="slash-sep">/</span><span class="slash-ja">なぜできないのか？</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  But why not?<br>
+  ※ 省略文。完全な形: But why can we not (grow new body parts)?
+</div>
+
+</details>
+
+<!-- ========== 段落 2 ========== -->
+<div class="para-num">2</div>
+
+<!-- 2-① -->
+<details>
+<summary><span class="sent-num">2-①</span> The reason that humans and many other animals don't have the same regeneration ability as planarians and newts is not yet clear.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>The reason</strong> → 1-⑦ の「なぜできないのか」に対応する既知情報</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the same regeneration ability</strong> → 1-②④で述べた再生能力を the で回収</div>
+  <div class="context-item">1-⑦の問いかけに対して「理由は未解明」と応答する文</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The reason</span><span class="slash-sep">/</span><span class="slash-ja">理由は</span></div>
+  <div class="slash-line"><span class="slash-en">that humans</span><span class="slash-sep">/</span><span class="slash-ja">人間が<span class="slash-core">(理由)</span></span></div>
+  <div class="slash-line"><span class="slash-en">and many other animals</span><span class="slash-sep">/</span><span class="slash-ja">そして多くの他の動物が</span></div>
+  <div class="slash-line"><span class="slash-en">don't have</span><span class="slash-sep">/</span><span class="slash-ja">持っていないという</span></div>
+  <div class="slash-line"><span class="slash-en">the same regeneration ability</span><span class="slash-sep">/</span><span class="slash-ja">同じ再生能力を</span></div>
+  <div class="slash-line"><span class="slash-en">as planarians and newts</span><span class="slash-sep">/</span><span class="slash-ja">プラナリアやイモリと同じ<span class="slash-core">(能力)</span></span></div>
+  <div class="slash-line"><span class="slash-en">is not yet clear.</span><span class="slash-sep">/</span><span class="slash-ja">まだ明らかではない</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The <ruby>reason<rt>S</rt></ruby>
+  <span class="noun-cl">[</span><span class="cl-marker">that</span>
+  <ruby>humans and many other animals<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">don't have</span><rt>v'</rt></ruby>
+  <ruby>the same regeneration ability<rt>o'</rt></ruby>
+  <span class="dim">as planarians and newts</span><span class="noun-cl">]</span>
+  <ruby><span class="v-marker">is</span><rt>V</rt></ruby>
+  not yet <ruby>clear<rt>C</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is</td><td>～である（明らかではない）</td></tr>
+    <tr><td>名詞節（同格）</td><td>that</td><td>don't have</td><td>持っていない</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 2-② -->
+<details>
+<summary><span class="sent-num">2-②</span> However, our bodies are made up of highly sophisticated systems, so in order to avoid any mistakes, the body has become careful about regenerating parts so actively.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> <strong>However</strong> → 2-①「理由は不明」に対し、部分的な説明を提示</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> <strong>so</strong> → 体が精巧なシステムからなる → だから再生に慎重になった</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>our bodies / the body</strong> → 2-①の humans の体</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">However,</span><span class="slash-sep">/</span><span class="slash-ja">しかしながら、</span></div>
+  <div class="slash-line"><span class="slash-en">our bodies</span><span class="slash-sep">/</span><span class="slash-ja">私たちの体は</span></div>
+  <div class="slash-line"><span class="slash-en">are made up</span><span class="slash-sep">/</span><span class="slash-ja">構成されている</span></div>
+  <div class="slash-line"><span class="slash-en">of highly sophisticated systems,</span><span class="slash-sep">/</span><span class="slash-ja">非常に精巧なシステムから<span class="slash-core">(構成されている)</span>、</span></div>
+  <div class="slash-line"><span class="slash-en">so</span><span class="slash-sep">/</span><span class="slash-ja">だから</span></div>
+  <div class="slash-line"><span class="slash-en">in order to avoid</span><span class="slash-sep">/</span><span class="slash-ja">避けるために</span></div>
+  <div class="slash-line"><span class="slash-en">any mistakes,</span><span class="slash-sep">/</span><span class="slash-ja">いかなる間違いも<span class="slash-core">(避ける)</span>、</span></div>
+  <div class="slash-line"><span class="slash-en">the body</span><span class="slash-sep">/</span><span class="slash-ja">体は</span></div>
+  <div class="slash-line"><span class="slash-en">has become</span><span class="slash-sep">/</span><span class="slash-ja">なった</span></div>
+  <div class="slash-line"><span class="slash-en">careful</span><span class="slash-sep">/</span><span class="slash-ja">慎重に</span></div>
+  <div class="slash-line"><span class="slash-en">about regenerating parts</span><span class="slash-sep">/</span><span class="slash-ja">部位を再生することについて<span class="slash-core">(慎重に)</span></span></div>
+  <div class="slash-line"><span class="slash-en">so actively.</span><span class="slash-sep">/</span><span class="slash-ja">それほど活発に<span class="slash-core">(再生する)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  However,
+  <ruby>our bodies<rt>S</rt></ruby>
+  <ruby><span class="v-marker">are made up</span><rt>V</rt></ruby>
+  <span class="dim">of highly sophisticated systems</span>,
+  so
+  <span class="dim">in order</span> to avoid any mistakes,
+  the <ruby>body<rt>S</rt></ruby>
+  <ruby><span class="v-marker">has become</span><rt>V</rt></ruby>
+  <ruby>careful<rt>C</rt></ruby>
+  <span class="dim">about regenerating parts so actively</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>are made up</td><td>構成されている</td></tr>
+    <tr><td>主節</td><td>so</td><td>has become</td><td>なった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>so</td><td>our bodies are made up of ... / the body has become careful ...（因果関係で結ばれた2つの主節）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>has become ← in order to avoid any mistakes</td><td>いかなる間違いも避けるために<span class="slash-core">(なった)</span></td><td>副詞的（目的）</td></tr>
+    <tr><td>about の O ← regenerating parts so actively</td><td>部位をそれほど活発に再生すること</td><td>名詞的（前置詞の目的語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>are made up ← of highly sophisticated systems</td><td>非常に精巧なシステムから<span class="slash-core">(構成されている)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>careful ← about regenerating parts so actively</td><td>部位をそれほど活発に再生することについて<span class="slash-core">(慎重な)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>英文解釈 - English Learning</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Hiragino Kaku Gothic Pro", "Yu Gothic", "Meiryo", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #333; }
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.95em;
+            margin-bottom: 2rem;
+        }
+        .uni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .uni-card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px 20px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--card-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+        }
+        .uni-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .uni-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: var(--card-color);
+        }
+        .uni-desc {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 6px;
+        }
+    </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+    <div class="page-container">
+        <a href="../index.html" class="back-link">&larr; トップに戻る</a>
+        <h1>英文解釈</h1>
+        <p class="subtitle">大学入試 英文和訳問題集</p>
+        <div class="uni-grid">
+            <a href="hokkaido_translation_questions.html" class="uni-card" style="--card-color: #006400;">
+                <div class="uni-name">北海道大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="tohoku_translation_questions.html" class="uni-card" style="--card-color: #1565c0;">
+                <div class="uni-name">東北大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="tokyo_translation_questions.html" class="uni-card" style="--card-color: #8b0000;">
+                <div class="uni-name">東京大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="tokyo_tech_translation_questions.html" class="uni-card" style="--card-color: #00695c;">
+                <div class="uni-name">東京科学大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="hitotsubashi_translation_questions.html" class="uni-card" style="--card-color: #6b4c3b;">
+                <div class="uni-name">一橋大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="nagoya_translation_questions_revised.html" class="uni-card" style="--card-color: #b8860b;">
+                <div class="uni-name">名古屋大学</div>
+                <div class="uni-desc">中文和訳問題集</div>
+            </a>
+            <a href="kyoto_translation_questions.html" class="uni-card" style="--card-color: #4a0082;">
+                <div class="uni-name">京都大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="osaka_translation_questions.html" class="uni-card" style="--card-color: #0f4c75;">
+                <div class="uni-name">大阪大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+            <a href="kobe_translation_questions.html" class="uni-card" style="--card-color: #ad1457;">
+                <div class="uni-name">神戸大学</div>
+                <div class="uni-desc">中文和訳問題集</div>
+            </a>
+            <a href="kyushu_translation_questions.html" class="uni-card" style="--card-color: #d84315;">
+                <div class="uni-name">九州大学</div>
+                <div class="uni-desc">英文和訳問題集</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

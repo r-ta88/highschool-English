@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 7 Putting iPS Cells into Practice 3-4</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 7 &mdash; Putting iPS Cells into Practice（3-4）</h1>
+
+<!-- ========== 段落 3 ========== -->
+<div class="para-num">3</div>
+
+<!-- 3-① -->
+<details>
+<summary><span class="sent-num">3-①</span> Nonetheless, there are a great many scientists and doctors around the world who are trying to overcome difficulties in treating patients who need damaged body parts replaced.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> 第2段落で「人体は再生に慎重になっている」と述べた内容に対し、<strong>Nonetheless</strong>（それにもかかわらず）で逆接し、科学者たちの挑戦を提示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Nonetheless,</span><span class="slash-sep">/</span><span class="slash-ja">それにもかかわらず、</span></div>
+  <div class="slash-line"><span class="slash-en">there are</span><span class="slash-sep">/</span><span class="slash-ja">いる</span></div>
+  <div class="slash-line"><span class="slash-en">a great many scientists and doctors</span><span class="slash-sep">/</span><span class="slash-ja">非常に多くの科学者と医師が</span></div>
+  <div class="slash-line"><span class="slash-en">around the world</span><span class="slash-sep">/</span><span class="slash-ja">世界中の<span class="slash-core">（科学者と医師）</span></span></div>
+  <div class="slash-line"><span class="slash-en">who are trying to overcome</span><span class="slash-sep">/</span><span class="slash-ja">克服しようとしている</span></div>
+  <div class="slash-line"><span class="slash-en">difficulties</span><span class="slash-sep">/</span><span class="slash-ja">困難を</span></div>
+  <div class="slash-line"><span class="slash-en">in treating patients</span><span class="slash-sep">/</span><span class="slash-ja">患者を治療することにおける<span class="slash-core">（困難）</span></span></div>
+  <div class="slash-line"><span class="slash-en">who need</span><span class="slash-sep">/</span><span class="slash-ja">必要としている</span></div>
+  <div class="slash-line"><span class="slash-en">damaged body parts</span><span class="slash-sep">/</span><span class="slash-ja">損傷した体の部分を</span></div>
+  <div class="slash-line"><span class="slash-en">replaced.</span><span class="slash-sep">/</span><span class="slash-ja">取り替えて（もらうことを）</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Nonetheless, <ruby>there<rt>形S</rt></ruby> <ruby><span class="v-marker">are</span><rt>V</rt></ruby> a great many <ruby>scientists<rt>真S</rt></ruby> and doctors <span class="dim">around the world</span> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby> <ruby><span class="v-marker">are trying</span><rt>v'</rt></ruby> <ruby>to overcome<rt>o'</rt></ruby> difficulties <span class="dim">in treating patients</span> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby> <ruby><span class="v-marker">need</span><rt>v'</rt></ruby> damaged body <ruby>parts<rt>o'</rt></ruby> <ruby>replaced<rt>c'</rt></ruby><span class="adj-cl">&gt;&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節（there構文）</td><td>―</td><td>are</td><td>いる</td></tr>
+    <tr><td>形容詞節</td><td>who</td><td>are trying</td><td>克服しようとしている</td></tr>
+    <tr><td>形容詞節</td><td>who</td><td>need</td><td>必要としている</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句一覧</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>are trying ← to overcome difficulties ...</td><td>困難を克服すること<span class="slash-core">（を試みている）</span></td><td>名詞的（目的語）</td></tr>
+    <tr><td>in ← treating patients ...</td><td>患者を治療すること</td><td>名詞的（前置詞の目的語）</td></tr>
+    <tr><td>body parts ← damaged</td><td>損傷した<span class="slash-core">（体の部分）</span></td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句一覧（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>scientists and doctors ← around the world</td><td>世界中の<span class="slash-core">（科学者と医師）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 3-② -->
+<details>
+<summary><span class="sent-num">3-②</span> Using artificial parts, or transplanting parts taken from other places of a person's body or from someone else's body is effective to some extent but not perfect.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 3-①の「困難を克服しようとしている」の背景として、現在の方法とその限界を具体的に提示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Using artificial parts,</span><span class="slash-sep">/</span><span class="slash-ja">人工の部品を使うこと、</span></div>
+  <div class="slash-line"><span class="slash-en">or transplanting parts</span><span class="slash-sep">/</span><span class="slash-ja">あるいは部分を移植すること（は）</span></div>
+  <div class="slash-line"><span class="slash-en">taken from other places</span><span class="slash-sep">/</span><span class="slash-ja">他の場所から取られた<span class="slash-core">（部分）</span></span></div>
+  <div class="slash-line"><span class="slash-en">of a person's body</span><span class="slash-sep">/</span><span class="slash-ja">人の体の<span class="slash-core">（場所）</span></span></div>
+  <div class="slash-line"><span class="slash-en">or from someone else's body</span><span class="slash-sep">/</span><span class="slash-ja">あるいは他の誰かの体から<span class="slash-core">（取られた）</span></span></div>
+  <div class="slash-line"><span class="slash-en">is effective</span><span class="slash-sep">/</span><span class="slash-ja">効果的である</span></div>
+  <div class="slash-line"><span class="slash-en">to some extent</span><span class="slash-sep">/</span><span class="slash-ja">ある程度<span class="slash-core">（効果的）</span></span></div>
+  <div class="slash-line"><span class="slash-en">but not perfect.</span><span class="slash-sep">/</span><span class="slash-ja">しかし完璧ではない。</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>Using<rt>S</rt></ruby> artificial parts, or <ruby>transplanting<rt></rt></ruby> parts taken <span class="dim">from other places</span> <span class="dim">of a person's body</span> or <span class="dim">from someone else's body</span> <ruby><span class="v-marker">is</span><rt>V</rt></ruby> <ruby>effective<rt>C</rt></ruby> <span class="dim">to some extent</span> but not perfect.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is</td><td>〜である</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係一覧</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>or</td><td>Using artificial parts / transplanting parts ...（主語の並列）</td></tr>
+    <tr><td>or</td><td>from other places of a person's body / from someone else's body（前置詞句の並列）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句一覧</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>Using artificial parts（主語）</td><td>人工の部品を使うこと</td><td>名詞的（主語）</td></tr>
+    <tr><td>transplanting parts ...（主語）</td><td>部分を移植すること</td><td>名詞的（主語）</td></tr>
+    <tr><td>parts ← taken from other places ...</td><td>他の場所から取られた<span class="slash-core">（部分）</span></td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句一覧（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>places ← of a person's body</td><td>人の体の<span class="slash-core">（場所）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>is effective ← to some extent</td><td>ある程度<span class="slash-core">（効果的である）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 3-③ -->
+<details>
+<summary><span class="sent-num">3-③</span> But if it were possible to make parts from a person's own body cells, it would solve many problems.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> 3-②の「現在の方法は完璧ではない」に対し、<strong>But</strong> で仮定法を用いた理想的な解決策を提示</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> 2つ目の <strong>it</strong> → if節の内容（自分の細胞から部分を作ること）</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">But</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">if it were possible</span><span class="slash-sep">/</span><span class="slash-ja">もし可能であれば</span></div>
+  <div class="slash-line"><span class="slash-en">to make parts</span><span class="slash-sep">/</span><span class="slash-ja">部分を作ることが<span class="slash-core">（可能）</span></span></div>
+  <div class="slash-line"><span class="slash-en">from a person's own body cells,</span><span class="slash-sep">/</span><span class="slash-ja">人自身の体の細胞から<span class="slash-core">（作る）</span></span></div>
+  <div class="slash-line"><span class="slash-en">it would solve</span><span class="slash-sep">/</span><span class="slash-ja">それは解決するだろう</span></div>
+  <div class="slash-line"><span class="slash-en">many problems.</span><span class="slash-sep">/</span><span class="slash-ja">多くの問題を</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  But <span class="adv-cl">(</span><span class="cl-marker">if</span> <ruby>it<rt>形s'</rt></ruby> <ruby><span class="v-marker">were</span><rt>v'</rt></ruby> <ruby>possible<rt>c'</rt></ruby> <ruby>to make<rt>真s'</rt></ruby> parts <span class="dim">from a person's own body cells</span><span class="adv-cl">)</span>, <ruby>it<rt>S</rt></ruby> <ruby><span class="v-marker">would solve</span><rt>V</rt></ruby> many <ruby>problems<rt>O</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would solve</td><td>解決するだろう</td></tr>
+    <tr><td>副詞節（条件・仮定法過去）</td><td>if</td><td>were</td><td>〜であれば</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句一覧</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>it（形式主語）← to make parts from ...</td><td>部分を作ること</td><td>名詞的（真主語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句一覧（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>make ← from a person's own body cells</td><td>人自身の体の細胞から<span class="slash-core">（作る）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 3-④ -->
+<details>
+<summary><span class="sent-num">3-④</span> The science of recreating body parts is called tissue engineering.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> 3-①〜③で述べてきた「体の部分を再生する科学」に <strong>tissue engineering</strong> という名称を与えている</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The science</span><span class="slash-sep">/</span><span class="slash-ja">科学は</span></div>
+  <div class="slash-line"><span class="slash-en">of recreating body parts</span><span class="slash-sep">/</span><span class="slash-ja">体の部分を再生する<span class="slash-core">（科学）</span></span></div>
+  <div class="slash-line"><span class="slash-en">is called</span><span class="slash-sep">/</span><span class="slash-ja">と呼ばれている</span></div>
+  <div class="slash-line"><span class="slash-en">tissue engineering.</span><span class="slash-sep">/</span><span class="slash-ja">組織工学（ティッシュ・エンジニアリング）</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The <ruby>science<rt>S</rt></ruby> <span class="dim">of recreating body parts</span> <ruby><span class="v-marker">is called</span><rt>V</rt></ruby> <ruby>tissue engineering<rt>C</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is called</td><td>と呼ばれている</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句一覧</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>of ← recreating body parts</td><td>体の部分を再生すること</td><td>名詞的（前置詞の目的語）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ========== 段落 4 ========== -->
+<div class="para-num">4</div>
+
+<!-- 4-① -->
+<details>
+<summary><span class="sent-num">4-①</span> One of the most well-known scientists in this area is Dr. Yamanaka Shinya of Kyoto University.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this area</strong> → 3-④ tissue engineering（組織工学）</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 3-①の「多くの科学者と医師」から具体的な一人（山中伸弥博士）を紹介</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">One</span><span class="slash-sep">/</span><span class="slash-ja">一人は</span></div>
+  <div class="slash-line"><span class="slash-en">of the most well-known scientists</span><span class="slash-sep">/</span><span class="slash-ja">最もよく知られた科学者の<span class="slash-core">（一人）</span></span></div>
+  <div class="slash-line"><span class="slash-en">in this area</span><span class="slash-sep">/</span><span class="slash-ja">この分野における<span class="slash-core">（科学者）</span></span></div>
+  <div class="slash-line"><span class="slash-en">is</span><span class="slash-sep">/</span><span class="slash-ja">〜である</span></div>
+  <div class="slash-line"><span class="slash-en">Dr. Yamanaka Shinya</span><span class="slash-sep">/</span><span class="slash-ja">山中伸弥博士</span></div>
+  <div class="slash-line"><span class="slash-en">of Kyoto University.</span><span class="slash-sep">/</span><span class="slash-ja">京都大学の<span class="slash-core">（博士）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>One<rt>S</rt></ruby> <span class="dim">of the most well-known scientists</span> <span class="dim">in this area</span> <ruby><span class="v-marker">is</span><rt>V</rt></ruby> <ruby>Dr. Yamanaka Shinya<rt>C</rt></ruby> <span class="dim">of Kyoto University</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is</td><td>〜である</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句一覧（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>One ← of the most well-known scientists</td><td>最もよく知られた科学者の<span class="slash-core">（一人）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>scientists ← in this area</td><td>この分野における<span class="slash-core">（科学者）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>Dr. Yamanaka Shinya ← of Kyoto University</td><td>京都大学の<span class="slash-core">（博士）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 4-② -->
+<details>
+<summary><span class="sent-num">4-②</span> He was first a medical doctor who treated back injuries, broken limbs, damaged joints, and such.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>He</strong> → 4-① Dr. Yamanaka Shinya</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> <strong>first</strong> で山中博士の経歴の出発点（整形外科医）を示す</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">He was</span><span class="slash-sep">/</span><span class="slash-ja">彼は〜であった</span></div>
+  <div class="slash-line"><span class="slash-en">first</span><span class="slash-sep">/</span><span class="slash-ja">最初は</span></div>
+  <div class="slash-line"><span class="slash-en">a medical doctor</span><span class="slash-sep">/</span><span class="slash-ja">医師</span></div>
+  <div class="slash-line"><span class="slash-en">who treated</span><span class="slash-sep">/</span><span class="slash-ja">治療していた</span></div>
+  <div class="slash-line"><span class="slash-en">back injuries, broken limbs,</span><span class="slash-sep">/</span><span class="slash-ja">背中の怪我、折れた手足、</span></div>
+  <div class="slash-line"><span class="slash-en">damaged joints, and such.</span><span class="slash-sep">/</span><span class="slash-ja">損傷した関節、などを</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>He<rt>S</rt></ruby> <ruby><span class="v-marker">was</span><rt>V</rt></ruby> first a medical <ruby>doctor<rt>C</rt></ruby> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby> <ruby><span class="v-marker">treated</span><rt>v'</rt></ruby> back injuries, broken limbs, damaged <ruby>joints<rt>o'</rt></ruby>, and such<span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>〜であった</td></tr>
+    <tr><td>形容詞節</td><td>who</td><td>treated</td><td>治療していた</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 4-③ -->
+<details>
+<summary><span class="sent-num">4-③</span> One day, he saw a woman with a serious disease in her joints.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>he</strong> → 4-① Dr. Yamanaka Shinya；<strong>her</strong> → a woman</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> <strong>One day</strong> で、医師時代のある転機となった出来事を導入</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">One day,</span><span class="slash-sep">/</span><span class="slash-ja">ある日、</span></div>
+  <div class="slash-line"><span class="slash-en">he saw</span><span class="slash-sep">/</span><span class="slash-ja">彼は見た</span></div>
+  <div class="slash-line"><span class="slash-en">a woman</span><span class="slash-sep">/</span><span class="slash-ja">女性を</span></div>
+  <div class="slash-line"><span class="slash-en">with a serious disease</span><span class="slash-sep">/</span><span class="slash-ja">深刻な病気を持つ<span class="slash-core">（女性）</span></span></div>
+  <div class="slash-line"><span class="slash-en">in her joints.</span><span class="slash-sep">/</span><span class="slash-ja">関節の<span class="slash-core">（病気）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  One day, <ruby>he<rt>S</rt></ruby> <ruby><span class="v-marker">saw</span><rt>V</rt></ruby> a <ruby>woman<rt>O</rt></ruby> <span class="dim">with a serious disease</span> <span class="dim">in her joints</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>saw</td><td>見た</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句一覧（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>woman ← with a serious disease</td><td>深刻な病気を持つ<span class="slash-core">（女性）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>disease ← in her joints</td><td>関節の<span class="slash-core">（病気）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 4-④ -->
+<details>
+<summary><span class="sent-num">4-④</span> He was so shocked when he saw her joints in bad shape that he decided to search for a cure for the disease.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>He</strong> → Dr. Yamanaka Shinya；<strong>her</strong> → 4-③ a woman；<strong>the disease</strong> → 4-③ a serious disease in her joints（a → the の変化）</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> so ... that 構文で、ショックを受けたこと（原因）→ 治療法を探す決心（結果）を示す</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">He was</span><span class="slash-sep">/</span><span class="slash-ja">彼は〜だった</span></div>
+  <div class="slash-line"><span class="slash-en">so shocked</span><span class="slash-sep">/</span><span class="slash-ja">あまりにもショックを受けた</span></div>
+  <div class="slash-line"><span class="slash-en">when he saw</span><span class="slash-sep">/</span><span class="slash-ja">見たときに</span></div>
+  <div class="slash-line"><span class="slash-en">her joints</span><span class="slash-sep">/</span><span class="slash-ja">彼女の関節を</span></div>
+  <div class="slash-line"><span class="slash-en">in bad shape</span><span class="slash-sep">/</span><span class="slash-ja">ひどい状態の<span class="slash-core">（関節）</span></span></div>
+  <div class="slash-line"><span class="slash-en">that he decided</span><span class="slash-sep">/</span><span class="slash-ja">〜ので決心した</span></div>
+  <div class="slash-line"><span class="slash-en">to search for a cure</span><span class="slash-sep">/</span><span class="slash-ja">治療法を探すことを</span></div>
+  <div class="slash-line"><span class="slash-en">for the disease.</span><span class="slash-sep">/</span><span class="slash-ja">その病気の<span class="slash-core">（治療法）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>He<rt>S</rt></ruby> <ruby><span class="v-marker">was</span><rt>V</rt></ruby> so <ruby>shocked<rt>C</rt></ruby> <span class="adv-cl">(</span><span class="cl-marker">when</span> <ruby>he<rt>s'</rt></ruby> <ruby><span class="v-marker">saw</span><rt>v'</rt></ruby> her <ruby>joints<rt>o'</rt></ruby> <span class="dim">in bad shape</span><span class="adv-cl">)</span> <span class="adv-cl">(</span><span class="cl-marker">that</span> <ruby>he<rt>s'</rt></ruby> <ruby><span class="v-marker">decided</span><rt>v'</rt></ruby> <ruby>to search<rt>o'</rt></ruby> <span class="dim">for a cure</span> <span class="dim">for the disease</span><span class="adv-cl">)</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>〜だった</td></tr>
+    <tr><td>副詞節（時）</td><td>when</td><td>saw</td><td>見た</td></tr>
+    <tr><td>副詞節（結果・so...that）</td><td>that</td><td>decided</td><td>決心した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句一覧</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>decided ← to search for a cure for the disease</td><td>治療法を探すこと<span class="slash-core">（を決心した）</span></td><td>名詞的（目的語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句一覧（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>joints ← in bad shape</td><td>ひどい状態の<span class="slash-core">（関節）</span></td><td>補語（前置詞句）</td></tr>
+    <tr><td>a cure ← for the disease</td><td>その病気の<span class="slash-core">（治療法）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 4-⑤ -->
+<details>
+<summary><span class="sent-num">4-⑤</span> He wanted to find good ways to treat those patients suffering from serious diseases and injuries.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>He</strong> → Dr. Yamanaka Shinya；<strong>those patients</strong> → 3-①の patients who need damaged body parts replaced や 4-③ の女性のような患者を広く指す</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> 4-④の「治療法を探す決心」をより具体的に言い換えている</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">He wanted</span><span class="slash-sep">/</span><span class="slash-ja">彼は望んだ</span></div>
+  <div class="slash-line"><span class="slash-en">to find</span><span class="slash-sep">/</span><span class="slash-ja">見つけることを</span></div>
+  <div class="slash-line"><span class="slash-en">good ways</span><span class="slash-sep">/</span><span class="slash-ja">よい方法を</span></div>
+  <div class="slash-line"><span class="slash-en">to treat those patients</span><span class="slash-sep">/</span><span class="slash-ja">それらの患者を治療するための<span class="slash-core">（方法）</span></span></div>
+  <div class="slash-line"><span class="slash-en">suffering from</span><span class="slash-sep">/</span><span class="slash-ja">苦しんでいる<span class="slash-core">（患者）</span></span></div>
+  <div class="slash-line"><span class="slash-en">serious diseases and injuries.</span><span class="slash-sep">/</span><span class="slash-ja">深刻な病気や怪我に<span class="slash-core">（苦しんでいる）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>He<rt>S</rt></ruby> <ruby><span class="v-marker">wanted</span><rt>V</rt></ruby> <ruby>to find<rt>O</rt></ruby> good ways to treat those patients suffering <span class="dim">from serious diseases and injuries</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞一覧</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>wanted</td><td>望んだ</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句一覧</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>wanted ← to find good ways ...</td><td>よい方法を見つけること<span class="slash-core">（を望んだ）</span></td><td>名詞的（目的語）</td></tr>
+    <tr><td>ways ← to treat those patients ...</td><td>それらの患者を治療するための<span class="slash-core">（方法）</span></td><td>形容詞的（to不定詞）</td></tr>
+    <tr><td>patients ← suffering from serious diseases and injuries</td><td>深刻な病気や怪我に苦しんでいる<span class="slash-core">（患者）</span></td><td>形容詞的（現在分詞）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

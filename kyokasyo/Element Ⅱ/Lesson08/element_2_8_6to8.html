@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 8 How We Got to Now with Glass 6-8</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 8 &mdash; How We Got to Now with Glass（6-8）</h1>
+
+<!-- ============================================================ -->
+<!-- 段落 6 -->
+<!-- ============================================================ -->
+<div class="para-num">6</div>
+
+<!-- 6-① -->
+<details>
+<summary><span class="sent-num">6-①</span> What changed all of that was Gutenberg's invention of the printing press in the 1440s.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>all of that</strong> → 5段落 メガネが珍しく高価なままだった状況全体</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> グーテンベルクの印刷機の発明が、メガネをめぐる状況を一変させたと述べる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">What changed all of that</span><span class="slash-sep">/</span><span class="slash-ja">そのすべてを変えたものは</span></div>
+  <div class="slash-line"><span class="slash-en">was</span><span class="slash-sep">/</span><span class="slash-ja">だった</span></div>
+  <div class="slash-line"><span class="slash-en">Gutenberg's invention</span><span class="slash-sep">/</span><span class="slash-ja">グーテンベルクの発明</span></div>
+  <div class="slash-line"><span class="slash-en">of the printing press</span><span class="slash-sep">/</span><span class="slash-ja">印刷機の<span class="slash-core">(発明)</span></span></div>
+  <div class="slash-line"><span class="slash-en">in the 1440s.</span><span class="slash-sep">/</span><span class="slash-ja">1440年代における</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="noun-cl">[</span><ruby><span class="cl-marker">What</span><rt>S</rt></ruby> <ruby><span class="v-marker">changed</span><rt>v'</rt></ruby> <ruby>all<rt>o'</rt></ruby> <span class="dim">of that</span><span class="noun-cl">]</span> <ruby><span class="v-marker">was</span><rt>V</rt></ruby> Gutenberg's <ruby>invention<rt>C</rt></ruby> <span class="dim">of the printing press</span> <span class="dim">in the 1440s</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>〜だった</td></tr>
+    <tr><td>名詞節</td><td>What</td><td>changed</td><td>変えた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>invention ← of the printing press</td><td>印刷機の<span class="slash-core">(発明)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>invention ← in the 1440s</td><td>1440年代の<span class="slash-core">(発明)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 6-② -->
+<details>
+<summary><span class="sent-num">6-②</span> That had a great influence on printing, but his great invention had another effect: it made a great number of people notice that they were farsighted, which created a great need for glasses.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>That</strong> → 6-① グーテンベルクの印刷機の発明</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>his</strong> → Gutenberg</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong> → his great invention（＝印刷機の発明）/ another effect</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → a great number of people</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>which</strong> → 多くの人が自分の遠視に気づいたこと（前の節全体）</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 印刷への影響に加え、もう一つの効果（遠視の自覚→メガネ需要）を述べる</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> another effect の内容をコロン以降で具体化</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">That</span><span class="slash-sep">/</span><span class="slash-ja">それは</span></div>
+  <div class="slash-line"><span class="slash-en">had</span><span class="slash-sep">/</span><span class="slash-ja">与えた</span></div>
+  <div class="slash-line"><span class="slash-en">a great influence</span><span class="slash-sep">/</span><span class="slash-ja">大きな影響を</span></div>
+  <div class="slash-line"><span class="slash-en">on printing,</span><span class="slash-sep">/</span><span class="slash-ja">印刷に対する<span class="slash-core">(影響)</span></span></div>
+  <div class="slash-line"><span class="slash-en">but</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">his great invention</span><span class="slash-sep">/</span><span class="slash-ja">彼の偉大な発明は</span></div>
+  <div class="slash-line"><span class="slash-en">had</span><span class="slash-sep">/</span><span class="slash-ja">持っていた</span></div>
+  <div class="slash-line"><span class="slash-en">another effect:</span><span class="slash-sep">/</span><span class="slash-ja">もう一つの効果を</span></div>
+  <div class="slash-line"><span class="slash-en">it</span><span class="slash-sep">/</span><span class="slash-ja">それは</span></div>
+  <div class="slash-line"><span class="slash-en">made</span><span class="slash-sep">/</span><span class="slash-ja">させた</span></div>
+  <div class="slash-line"><span class="slash-en">a great number of people</span><span class="slash-sep">/</span><span class="slash-ja">非常に多くの人々に</span></div>
+  <div class="slash-line"><span class="slash-en">notice</span><span class="slash-sep">/</span><span class="slash-ja">気づく(こと)を</span></div>
+  <div class="slash-line"><span class="slash-en">that they were farsighted,</span><span class="slash-sep">/</span><span class="slash-ja">自分たちが遠視であると</span></div>
+  <div class="slash-line"><span class="slash-en">which</span><span class="slash-sep">/</span><span class="slash-ja">そしてそのことが</span></div>
+  <div class="slash-line"><span class="slash-en">created</span><span class="slash-sep">/</span><span class="slash-ja">生み出した</span></div>
+  <div class="slash-line"><span class="slash-en">a great need</span><span class="slash-sep">/</span><span class="slash-ja">大きな需要を</span></div>
+  <div class="slash-line"><span class="slash-en">for glasses.</span><span class="slash-sep">/</span><span class="slash-ja">メガネへの<span class="slash-core">(需要)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>That<rt>S</rt></ruby> <ruby><span class="v-marker">had</span><rt>V</rt></ruby> a great <ruby>influence<rt>O</rt></ruby> <span class="dim">on printing</span>, but his great <ruby>invention<rt>S</rt></ruby> <ruby><span class="v-marker">had</span><rt>V</rt></ruby> another <ruby>effect<rt>O</rt></ruby>: <ruby>it<rt>S</rt></ruby> <ruby><span class="v-marker">made</span><rt>V</rt></ruby> a great number of <ruby>people<rt>O</rt></ruby> <ruby>notice<rt>C</rt></ruby> <span class="noun-cl">[</span><ruby><span class="cl-marker">that</span><rt>o'</rt></ruby> <ruby>they<rt>s'</rt></ruby> <ruby><span class="v-marker">were</span><rt>v'</rt></ruby> farsighted<span class="noun-cl">]</span>, <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">which</span><rt>s'</rt></ruby> <span class="dim">in turn</span> <ruby><span class="v-marker">created</span><rt>v'</rt></ruby> a great <ruby>need<rt>o'</rt></ruby> <span class="dim">for glasses</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節①</td><td>―</td><td>had</td><td>与えた</td></tr>
+    <tr><td>主節②</td><td>―</td><td>had</td><td>持っていた</td></tr>
+    <tr><td>主節③</td><td>―</td><td>made</td><td>させた</td></tr>
+    <tr><td>名詞節</td><td>that</td><td>were</td><td>〜だった</td></tr>
+    <tr><td>形容詞節</td><td>which</td><td>created</td><td>生み出した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>but</td><td>That had a great influence … / his great invention had another effect …</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>people ← notice that they were farsighted</td><td>自分たちが遠視であると気づく<span class="slash-core">(こと)</span></td><td>名詞的（補語・原形不定詞 / make O V）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>influence ← on printing</td><td>印刷に対する<span class="slash-core">(影響)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>need ← for glasses</td><td>メガネへの<span class="slash-core">(需要)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 6-③ -->
+<details>
+<summary><span class="sent-num">6-③</span> They became the first piece of advanced technology that ordinary people would always wear wherever they went.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>They</strong> → 6-② glasses（メガネ）</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 6-②でメガネの需要が急増した結果、メガネが最初の日常的先端技術となった</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">They</span><span class="slash-sep">/</span><span class="slash-ja">それら（メガネ）は</span></div>
+  <div class="slash-line"><span class="slash-en">became</span><span class="slash-sep">/</span><span class="slash-ja">なった</span></div>
+  <div class="slash-line"><span class="slash-en">the first piece</span><span class="slash-sep">/</span><span class="slash-ja">最初の一つに</span></div>
+  <div class="slash-line"><span class="slash-en">of advanced technology</span><span class="slash-sep">/</span><span class="slash-ja">先進技術の<span class="slash-core">(一つ)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that ordinary people</span><span class="slash-sep">/</span><span class="slash-ja">一般の人々が</span></div>
+  <div class="slash-line"><span class="slash-en">would always wear</span><span class="slash-sep">/</span><span class="slash-ja">常に身に着ける<span class="slash-core">(技術)</span></span></div>
+  <div class="slash-line"><span class="slash-en">wherever they went.</span><span class="slash-sep">/</span><span class="slash-ja">どこへ行くときでも</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>They<rt>S</rt></ruby> <ruby><span class="v-marker">became</span><rt>V</rt></ruby> the first <ruby>piece<rt>C</rt></ruby> <span class="dim">of advanced technology</span> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">that</span><rt>o'</rt></ruby> ordinary <ruby>people<rt>s'</rt></ruby> <ruby><span class="v-marker">would</span> always <span class="v-marker">wear</span><rt>v'</rt></ruby> <span class="adv-cl">(</span><ruby><span class="cl-marker">wherever</span><rt></rt></ruby> <ruby>they<rt>s''</rt></ruby> <ruby><span class="v-marker">went</span><rt>v''</rt></ruby><span class="adv-cl">)</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>became</td><td>なった</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>would always wear</td><td>常に身に着ける</td></tr>
+    <tr><td>副詞節</td><td>wherever</td><td>went</td><td>行った</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>piece ← of advanced technology</td><td>先進技術の<span class="slash-core">(一つ)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ============================================================ -->
+<!-- 段落 7 -->
+<!-- ============================================================ -->
+<div class="para-num">7</div>
+
+<!-- 7-① -->
+<details>
+<summary><span class="sent-num">7-①</span> However, the influence did not stop there.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the influence</strong> → 6段落で述べたグーテンベルクの印刷機がメガネ普及に与えた影響</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>there</strong> → 6段落で述べたメガネの普及という段階</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> However — 影響はメガネの普及で終わりではなかったと対比的に展開を予告</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">However,</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">the influence</span><span class="slash-sep">/</span><span class="slash-ja">その影響は</span></div>
+  <div class="slash-line"><span class="slash-en">did not stop</span><span class="slash-sep">/</span><span class="slash-ja">止まらなかった</span></div>
+  <div class="slash-line"><span class="slash-en">there.</span><span class="slash-sep">/</span><span class="slash-ja">そこで</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  However, the <ruby>influence<rt>S</rt></ruby> <ruby><span class="v-marker">did</span> not <span class="v-marker">stop</span><rt>V</rt></ruby> there.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>did not stop</td><td>止まらなかった</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 7-② -->
+<details>
+<summary><span class="sent-num">7-②</span> In 1590 in a small town in the Netherlands, father-and-son glassmakers experimented with lining up two lenses, not side by side like glasses, but in line with each other.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 7-①「影響は止まらなかった」の具体例として、新たな発明を紹介</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> In 1590 — 時代を特定して新たなエピソードを開始</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> not side by side like glasses, but in line with each other — メガネ（横並び）と新方式（一列）を対比</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In 1590</span><span class="slash-sep">/</span><span class="slash-ja">1590年に</span></div>
+  <div class="slash-line"><span class="slash-en">in a small town</span><span class="slash-sep">/</span><span class="slash-ja">小さな町で</span></div>
+  <div class="slash-line"><span class="slash-en">in the Netherlands,</span><span class="slash-sep">/</span><span class="slash-ja">オランダの<span class="slash-core">(町)</span></span></div>
+  <div class="slash-line"><span class="slash-en">father-and-son glassmakers</span><span class="slash-sep">/</span><span class="slash-ja">父子のガラス職人が</span></div>
+  <div class="slash-line"><span class="slash-en">experimented</span><span class="slash-sep">/</span><span class="slash-ja">実験した</span></div>
+  <div class="slash-line"><span class="slash-en">with lining up</span><span class="slash-sep">/</span><span class="slash-ja">並べることを</span></div>
+  <div class="slash-line"><span class="slash-en">two lenses,</span><span class="slash-sep">/</span><span class="slash-ja">2枚のレンズを</span></div>
+  <div class="slash-line"><span class="slash-en">not side by side</span><span class="slash-sep">/</span><span class="slash-ja">横に並べるのではなく</span></div>
+  <div class="slash-line"><span class="slash-en">like glasses,</span><span class="slash-sep">/</span><span class="slash-ja">メガネのように</span></div>
+  <div class="slash-line"><span class="slash-en">but in line</span><span class="slash-sep">/</span><span class="slash-ja">一列に</span></div>
+  <div class="slash-line"><span class="slash-en">with each other.</span><span class="slash-sep">/</span><span class="slash-ja">互いに</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In 1590</span> <span class="dim">in a small town</span> <span class="dim">in the Netherlands</span>, father-and-son <ruby>glassmakers<rt>S</rt></ruby> <ruby><span class="v-marker">experimented</span><rt>V</rt></ruby> <span class="dim">with lining up two lenses</span>, not side by side <span class="dim">like glasses</span>, but in line <span class="dim">with each other</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>experimented</td><td>実験した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>not … but …</td><td>side by side like glasses / in line with each other</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>experimented with ← lining up two lenses</td><td>2枚のレンズを並べること<span class="slash-core">(を実験した)</span></td><td>名詞的（前置詞の目的語・動名詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>experimented ← In 1590</td><td>1590年に<span class="slash-core">(実験した)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>experimented ← in a small town in the Netherlands</td><td>オランダの小さな町で<span class="slash-core">(実験した)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 7-③ -->
+<details>
+<summary><span class="sent-num">7-③</span> This made the objects they observed look larger, and as a result, the microscope was invented.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>This</strong> → 7-② 2枚のレンズを一列に並べたこと</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> as a result — レンズを一列に並べた実験が顕微鏡の発明につながった</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">This</span><span class="slash-sep">/</span><span class="slash-ja">このことが</span></div>
+  <div class="slash-line"><span class="slash-en">made</span><span class="slash-sep">/</span><span class="slash-ja">させた</span></div>
+  <div class="slash-line"><span class="slash-en">the objects</span><span class="slash-sep">/</span><span class="slash-ja">対象物を</span></div>
+  <div class="slash-line"><span class="slash-en">they observed</span><span class="slash-sep">/</span><span class="slash-ja">彼らが観察した<span class="slash-core">(対象物)</span></span></div>
+  <div class="slash-line"><span class="slash-en">look larger,</span><span class="slash-sep">/</span><span class="slash-ja">より大きく見える(ように)</span></div>
+  <div class="slash-line"><span class="slash-en">and as a result,</span><span class="slash-sep">/</span><span class="slash-ja">その結果</span></div>
+  <div class="slash-line"><span class="slash-en">the microscope</span><span class="slash-sep">/</span><span class="slash-ja">顕微鏡が</span></div>
+  <div class="slash-line"><span class="slash-en">was invented.</span><span class="slash-sep">/</span><span class="slash-ja">発明された</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>This<rt>S</rt></ruby> <ruby><span class="v-marker">made</span><rt>V</rt></ruby> the <ruby>objects<rt>O</rt></ruby> <span class="adj-cl">&lt;</span><span class="omit">∧</span> <ruby>they<rt>s'</rt></ruby> <ruby><span class="v-marker">observed</span><rt>v'</rt></ruby><span class="adj-cl">&gt;</span> <ruby>look<rt>C</rt></ruby> larger, and <span class="dim">as a result</span>, the <ruby>microscope<rt>S</rt></ruby> <ruby><span class="v-marker">was invented</span><rt>V</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節①</td><td>―</td><td>made</td><td>させた</td></tr>
+    <tr><td>形容詞節</td><td>(that) [省略]</td><td>observed</td><td>観察した</td></tr>
+    <tr><td>主節②</td><td>―</td><td>was invented</td><td>発明された</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>, and</td><td>This made … look larger / the microscope was invented</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>objects ← look larger</td><td>より大きく見える<span class="slash-core">(ように)</span></td><td>名詞的（補語・原形不定詞 / make O V）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 7-④ -->
+<details>
+<summary><span class="sent-num">7-④</span> Within 80 years, the British scientist Robert Hooke had published his picture book with hand-drawn images showing what he had seen through his microscope, such as fleas, wood, and leaves.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>his microscope</strong> → Robert Hooke の顕微鏡</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> Within 80 years — 顕微鏡の発明（7-③）から80年以内</div>
+  <div class="context-item"><span class="discourse-tag">例示</span> such as fleas, wood, and leaves — 顕微鏡で観察したものの具体例</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Within 80 years,</span><span class="slash-sep">/</span><span class="slash-ja">80年以内に</span></div>
+  <div class="slash-line"><span class="slash-en">the British scientist Robert Hooke</span><span class="slash-sep">/</span><span class="slash-ja">イギリスの科学者ロバート・フックは</span></div>
+  <div class="slash-line"><span class="slash-en">had published</span><span class="slash-sep">/</span><span class="slash-ja">出版していた</span></div>
+  <div class="slash-line"><span class="slash-en">his picture book</span><span class="slash-sep">/</span><span class="slash-ja">彼の図鑑を</span></div>
+  <div class="slash-line"><span class="slash-en">with hand-drawn images</span><span class="slash-sep">/</span><span class="slash-ja">手描きの画像を含む<span class="slash-core">(図鑑)</span></span></div>
+  <div class="slash-line"><span class="slash-en">showing</span><span class="slash-sep">/</span><span class="slash-ja">示す<span class="slash-core">(画像)</span></span></div>
+  <div class="slash-line"><span class="slash-en">what he had seen</span><span class="slash-sep">/</span><span class="slash-ja">彼が見たものを</span></div>
+  <div class="slash-line"><span class="slash-en">through his microscope,</span><span class="slash-sep">/</span><span class="slash-ja">顕微鏡を通して<span class="slash-core">(見たもの)</span></span></div>
+  <div class="slash-line"><span class="slash-en">such as fleas, wood, and leaves.</span><span class="slash-sep">/</span><span class="slash-ja">たとえばノミ、木材、葉など</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">Within 80 years</span>, the British scientist <ruby>Robert Hooke<rt>S</rt></ruby> <ruby><span class="v-marker">had published</span><rt>V</rt></ruby> his picture <ruby>book<rt>O</rt></ruby> <span class="dim">with hand-drawn images</span> showing <span class="noun-cl">[</span><ruby><span class="cl-marker">what</span><rt>o'</rt></ruby> <ruby>he<rt>s'</rt></ruby> <ruby><span class="v-marker">had seen</span><rt>v'</rt></ruby> <span class="dim">through his microscope</span><span class="noun-cl">]</span>, such as fleas, wood, and leaves.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>had published</td><td>出版していた</td></tr>
+    <tr><td>名詞節</td><td>what</td><td>had seen</td><td>見ていた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>images ← showing what he had seen through his microscope</td><td>顕微鏡で見たものを示す<span class="slash-core">(画像)</span></td><td>形容詞的（現在分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>had published ← Within 80 years</td><td>80年以内に<span class="slash-core">(出版していた)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>book ← with hand-drawn images</td><td>手描きの画像を含む<span class="slash-core">(図鑑)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>had seen ← through his microscope</td><td>顕微鏡を通して<span class="slash-core">(見た)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ============================================================ -->
+<!-- 段落 8 -->
+<!-- ============================================================ -->
+<div class="para-num">8</div>
+
+<!-- 8-① -->
+<details>
+<summary><span class="sent-num">8-①</span> He also noticed the smallest part of all animals and plants, the cell.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>He</strong> → 7-④ Robert Hooke</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> also — 7-④のノミ・木材・葉の観察に加えて、もう一つの発見（細胞）を述べる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">He</span><span class="slash-sep">/</span><span class="slash-ja">彼は</span></div>
+  <div class="slash-line"><span class="slash-en">also</span><span class="slash-sep">/</span><span class="slash-ja">また</span></div>
+  <div class="slash-line"><span class="slash-en">noticed</span><span class="slash-sep">/</span><span class="slash-ja">気づいた</span></div>
+  <div class="slash-line"><span class="slash-en">the smallest part</span><span class="slash-sep">/</span><span class="slash-ja">最も小さな部分に</span></div>
+  <div class="slash-line"><span class="slash-en">of all animals and plants,</span><span class="slash-sep">/</span><span class="slash-ja">すべての動植物の<span class="slash-core">(部分)</span></span></div>
+  <div class="slash-line"><span class="slash-en">the cell.</span><span class="slash-sep">/</span><span class="slash-ja">すなわち細胞に</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>He<rt>S</rt></ruby> also <ruby><span class="v-marker">noticed</span><rt>V</rt></ruby> the smallest <ruby>part<rt>O</rt></ruby> <span class="dim">of all animals and plants</span>, the cell.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>noticed</td><td>気づいた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>part ← of all animals and plants</td><td>すべての動植物の<span class="slash-core">(部分)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 8-② -->
+<details>
+<summary><span class="sent-num">8-②</span> Before long the microscope would show the invisible bacteria and viruses that both protect and harm human life, which in turn led to modern vaccines.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the microscope</strong> → 7-③で発明された顕微鏡</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>which</strong> → 顕微鏡が細菌やウイルスを見せたこと（前の節全体）</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> Before long — やがて（フックの発見からさらに時代が進む）</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> which in turn led to — 細菌・ウイルスの発見が現代のワクチンにつながった</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Before long</span><span class="slash-sep">/</span><span class="slash-ja">やがて</span></div>
+  <div class="slash-line"><span class="slash-en">the microscope</span><span class="slash-sep">/</span><span class="slash-ja">顕微鏡は</span></div>
+  <div class="slash-line"><span class="slash-en">would show</span><span class="slash-sep">/</span><span class="slash-ja">見せることになる</span></div>
+  <div class="slash-line"><span class="slash-en">the invisible bacteria and viruses</span><span class="slash-sep">/</span><span class="slash-ja">目に見えない細菌やウイルスを</span></div>
+  <div class="slash-line"><span class="slash-en">that both protect</span><span class="slash-sep">/</span><span class="slash-ja">守りもし</span></div>
+  <div class="slash-line"><span class="slash-en">and harm</span><span class="slash-sep">/</span><span class="slash-ja">害しもする<span class="slash-core">(細菌やウイルス)</span></span></div>
+  <div class="slash-line"><span class="slash-en">human life,</span><span class="slash-sep">/</span><span class="slash-ja">人間の生命を</span></div>
+  <div class="slash-line"><span class="slash-en">which in turn</span><span class="slash-sep">/</span><span class="slash-ja">そしてそのことが今度は</span></div>
+  <div class="slash-line"><span class="slash-en">led to</span><span class="slash-sep">/</span><span class="slash-ja">つながった</span></div>
+  <div class="slash-line"><span class="slash-en">modern vaccines.</span><span class="slash-sep">/</span><span class="slash-ja">現代のワクチンへと</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Before long the <ruby>microscope<rt>S</rt></ruby> <ruby><span class="v-marker">would show</span><rt>V</rt></ruby> the invisible <ruby>bacteria and viruses<rt>O</rt></ruby> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">that</span><rt>s'</rt></ruby> both <ruby><span class="v-marker">protect</span> and <span class="v-marker">harm</span><rt>v'</rt></ruby> human <ruby>life<rt>o'</rt></ruby><span class="adj-cl">&gt;</span>, <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">which</span><rt>s'</rt></ruby> <span class="dim">in turn</span> <ruby><span class="v-marker">led</span><rt>v'</rt></ruby> <span class="dim">to modern vaccines</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would show</td><td>見せることになる</td></tr>
+    <tr><td>形容詞節（制限）</td><td>that</td><td>protect and harm</td><td>守り、害する</td></tr>
+    <tr><td>形容詞節（非制限）</td><td>which</td><td>led</td><td>つながった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>bacteria / viruses（名詞）</td></tr>
+    <tr><td>both … and …</td><td>protect / harm（動詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>led ← to modern vaccines</td><td>現代のワクチンへと<span class="slash-core">(つながった)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

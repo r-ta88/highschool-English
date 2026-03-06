@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 7 Putting iPS Cells into Practice 8-9</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 7 Putting iPS Cells into Practice 8-9</h1>
+
+<!-- ==================== 段落 8 ==================== -->
+<div class="para-num">8</div>
+
+<!-- ===== 8-① ===== -->
+<details>
+<summary><span class="sent-num">8-①</span> Dr. Yamanaka's team was the first to publish its method of creating human iPS cells, but only just barely.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Dr. Yamanaka's</strong> → 4-① Dr. Yamanaka Shinya of Kyoto University</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>its</strong> → Dr. Yamanaka's team</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>human iPS cells</strong> → 6-② で初めて作製されたiPS細胞</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> 7段落までのiPS細胞の医療応用の説明から一転し、発見の優先権争いという新しい話題を導入。but only just barely が次文の具体的説明を予告</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Dr. Yamanaka's team</span><span class="slash-sep">/</span><span class="slash-ja">山中博士のチームは</span></div>
+  <div class="slash-line"><span class="slash-en">was</span><span class="slash-sep">/</span><span class="slash-ja">～だった</span></div>
+  <div class="slash-line"><span class="slash-en">the first</span><span class="slash-sep">/</span><span class="slash-ja">最初（のチーム）</span></div>
+  <div class="slash-line"><span class="slash-en">to publish</span><span class="slash-sep">/</span><span class="slash-ja">発表した<span class="slash-core">（最初）</span></span></div>
+  <div class="slash-line"><span class="slash-en">its method</span><span class="slash-sep">/</span><span class="slash-ja">その方法を</span></div>
+  <div class="slash-line"><span class="slash-en">of creating human iPS cells,</span><span class="slash-sep">/</span><span class="slash-ja">ヒトiPS細胞を作り出す<span class="slash-core">（方法）</span></span></div>
+  <div class="slash-line"><span class="slash-en">but only just barely.</span><span class="slash-sep">/</span><span class="slash-ja">しかしほんのぎりぎりで</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Dr. Yamanaka's <ruby>team<rt>S</rt></ruby>
+  <ruby><span class="v-marker">was</span><rt>V</rt></ruby>
+  the <ruby>first<rt>C</rt></ruby>
+  to publish its method
+  <span class="dim">of creating human iPS cells</span>,
+  but only just barely.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>～だった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>the first ← to publish its method</td><td>その方法を発表した<span class="slash-core">（最初）</span></td><td>形容詞的（to不定詞）</td></tr>
+    <tr><td>of ← creating human iPS cells</td><td>ヒトiPS細胞を作り出すこと</td><td>名詞的（前置詞の目的語・動名詞）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ===== 8-② ===== -->
+<details>
+<summary><span class="sent-num">8-②</span> An American researcher named James Thomson published a similar paper in Science, but Dr. Yamanaka's appeared online first.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>a similar paper</strong> → 8-① の publish its method に対応する論文</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Dr. Yamanaka's</strong> → Dr. Yamanaka's paper（paper が省略）</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 8-① の but only just barely を具体的に説明：トムソンも類似論文を発表したが、山中博士の方がオンライン掲載が先だった</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">An American researcher</span><span class="slash-sep">/</span><span class="slash-ja">あるアメリカの研究者が</span></div>
+  <div class="slash-line"><span class="slash-en">named James Thomson</span><span class="slash-sep">/</span><span class="slash-ja">ジェームズ・トムソンという名の<span class="slash-core">（研究者）</span></span></div>
+  <div class="slash-line"><span class="slash-en">published</span><span class="slash-sep">/</span><span class="slash-ja">発表した</span></div>
+  <div class="slash-line"><span class="slash-en">a similar paper</span><span class="slash-sep">/</span><span class="slash-ja">似た論文を</span></div>
+  <div class="slash-line"><span class="slash-en">in Science,</span><span class="slash-sep">/</span><span class="slash-ja">サイエンス誌に<span class="slash-core">（発表した）</span></span></div>
+  <div class="slash-line"><span class="slash-en">but</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">Dr. Yamanaka's</span><span class="slash-sep">/</span><span class="slash-ja">山中博士の（論文）は</span></div>
+  <div class="slash-line"><span class="slash-en">appeared</span><span class="slash-sep">/</span><span class="slash-ja">掲載された</span></div>
+  <div class="slash-line"><span class="slash-en">online</span><span class="slash-sep">/</span><span class="slash-ja">オンラインで</span></div>
+  <div class="slash-line"><span class="slash-en">first.</span><span class="slash-sep">/</span><span class="slash-ja">最初に</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  An American <ruby>researcher<rt>S</rt></ruby>
+  named James Thomson
+  <ruby><span class="v-marker">published</span><rt>V</rt></ruby>
+  a similar <ruby>paper<rt>O</rt></ruby>
+  <span class="dim">in Science</span>,
+  but
+  Dr. <ruby>Yamanaka's<rt>S</rt></ruby>
+  <ruby><span class="v-marker">appeared</span><rt>V</rt></ruby>
+  online first.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節①</td><td>―</td><td>published</td><td>発表した</td></tr>
+    <tr><td>主節②</td><td>―</td><td>appeared</td><td>掲載された</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>but</td><td>SVO: An American researcher ... published a similar paper / SV: Dr. Yamanaka's ... appeared</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>researcher ← named James Thomson</td><td>ジェームズ・トムソンという名の<span class="slash-core">（研究者）</span></td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>published ← in Science</td><td>サイエンス誌に<span class="slash-core">（発表した）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ===== 8-③ ===== -->
+<details>
+<summary><span class="sent-num">8-③</span> If it had been posted just one day later, the honor of having made such a wonderful discovery would have gone to Dr. Thomson instead.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong> → 8-② Dr. Yamanaka's paper（山中博士の論文）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Dr. Thomson</strong> → 8-② James Thomson</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 8-② の事実（ぎりぎりの差で先に掲載された）を受け、仮定法過去完了で「もし1日遅れていたら」という反実仮想を展開し、優先権争いの緊迫感を強調</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">If</span><span class="slash-sep">/</span><span class="slash-ja">もし</span></div>
+  <div class="slash-line"><span class="slash-en">it</span><span class="slash-sep">/</span><span class="slash-ja">それ（山中博士の論文）が</span></div>
+  <div class="slash-line"><span class="slash-en">had been posted</span><span class="slash-sep">/</span><span class="slash-ja">投稿されていたら</span></div>
+  <div class="slash-line"><span class="slash-en">just one day later,</span><span class="slash-sep">/</span><span class="slash-ja">たった1日遅く</span></div>
+  <div class="slash-line"><span class="slash-en">the honor</span><span class="slash-sep">/</span><span class="slash-ja">その栄誉は</span></div>
+  <div class="slash-line"><span class="slash-en">of having made</span><span class="slash-sep">/</span><span class="slash-ja">成し遂げたという<span class="slash-core">（栄誉）</span></span></div>
+  <div class="slash-line"><span class="slash-en">such a wonderful discovery</span><span class="slash-sep">/</span><span class="slash-ja">そのような素晴らしい発見を</span></div>
+  <div class="slash-line"><span class="slash-en">would have gone</span><span class="slash-sep">/</span><span class="slash-ja">渡っていただろう</span></div>
+  <div class="slash-line"><span class="slash-en">to Dr. Thomson</span><span class="slash-sep">/</span><span class="slash-ja">トムソン博士に<span class="slash-core">（渡っていただろう）</span></span></div>
+  <div class="slash-line"><span class="slash-en">instead.</span><span class="slash-sep">/</span><span class="slash-ja">代わりに</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="adv-cl">(</span><span class="cl-marker">If</span>
+  <ruby>it<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">had been posted</span><rt>v'</rt></ruby>
+  just one day later<span class="adv-cl">)</span>,
+  the <ruby>honor<rt>S</rt></ruby>
+  <span class="dim">of having made such a wonderful discovery</span>
+  <ruby><span class="v-marker">would have gone</span><rt>V</rt></ruby>
+  <span class="dim">to Dr. Thomson</span> instead.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would have gone</td><td>渡っていただろう</td></tr>
+    <tr><td>副詞節（条件）</td><td>If</td><td>had been posted</td><td>投稿されていたら</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>honor ← of having made such a wonderful discovery</td><td>そのような素晴らしい発見を成し遂げたという<span class="slash-core">（栄誉）</span></td><td>名詞的（前置詞の目的語・動名詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>would have gone ← to Dr. Thomson</td><td>トムソン博士に<span class="slash-core">（渡っていただろう）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ==================== 段落 9 ==================== -->
+<div class="para-num">9</div>
+
+<!-- ===== 9-① ===== -->
+<details>
+<summary><span class="sent-num">9-①</span> Researchers around the world are now competing to put this technology into practice.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this technology</strong> → iPS細胞の作製・応用技術（6〜7段落で説明）</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> now が8段落の過去の出来事（論文発表競争）から現在の状況へ視点を切り替える</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Researchers</span><span class="slash-sep">/</span><span class="slash-ja">研究者たちは</span></div>
+  <div class="slash-line"><span class="slash-en">around the world</span><span class="slash-sep">/</span><span class="slash-ja">世界中の<span class="slash-core">（研究者）</span></span></div>
+  <div class="slash-line"><span class="slash-en">are now competing</span><span class="slash-sep">/</span><span class="slash-ja">今競い合っている</span></div>
+  <div class="slash-line"><span class="slash-en">to put</span><span class="slash-sep">/</span><span class="slash-ja">実用化するために<span class="slash-core">（競い合っている）</span></span></div>
+  <div class="slash-line"><span class="slash-en">this technology</span><span class="slash-sep">/</span><span class="slash-ja">この技術を</span></div>
+  <div class="slash-line"><span class="slash-en">into practice.</span><span class="slash-sep">/</span><span class="slash-ja">実用に</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>Researchers<rt>S</rt></ruby>
+  <span class="dim">around the world</span>
+  <span class="v-marker">are</span> now
+  <ruby><span class="v-marker">competing</span><rt>V</rt></ruby>
+  to put this technology
+  <span class="dim">into practice</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>are competing</td><td>競い合っている</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>are competing ← to put this technology into practice</td><td>この技術を実用化するために<span class="slash-core">（競い合っている）</span></td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>Researchers ← around the world</td><td>世界中の<span class="slash-core">（研究者）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ===== 9-② ===== -->
+<details>
+<summary><span class="sent-num">9-②</span> Dr. Yamanaka, who shared the 2012 Nobel Prize in Physiology or Medicine for this achievement, says this kind of competition is a good thing for patients who are waiting for the practical use of the technology.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this achievement</strong> → iPS細胞の作製（6段落）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this kind of competition</strong> → 9-① の competing（研究者間の競争）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the technology</strong> → 9-① の this technology（iPS細胞技術）</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> competition = 9-① の competing to put this technology into practice を名詞で言い換え</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 9-① の事実（世界中で競争が起きている）に対し、山中博士の見解を追加：競争は患者にとって良いことである</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Dr. Yamanaka,</span><span class="slash-sep">/</span><span class="slash-ja">山中博士は</span></div>
+  <div class="slash-line"><span class="slash-en">who shared</span><span class="slash-sep">/</span><span class="slash-ja">共同受賞した</span></div>
+  <div class="slash-line"><span class="slash-en">the 2012 Nobel Prize</span><span class="slash-sep">/</span><span class="slash-ja">2012年のノーベル賞を</span></div>
+  <div class="slash-line"><span class="slash-en">in Physiology or Medicine</span><span class="slash-sep">/</span><span class="slash-ja">生理学・医学の<span class="slash-core">（賞）</span></span></div>
+  <div class="slash-line"><span class="slash-en">for this achievement,</span><span class="slash-sep">/</span><span class="slash-ja">この業績で<span class="slash-core">（共同受賞した）</span></span></div>
+  <div class="slash-line"><span class="slash-en">says</span><span class="slash-sep">/</span><span class="slash-ja">述べている</span></div>
+  <div class="slash-line"><span class="slash-en">(that)</span><span class="slash-sep">/</span><span class="slash-ja">～と</span></div>
+  <div class="slash-line"><span class="slash-en">this kind of competition</span><span class="slash-sep">/</span><span class="slash-ja">この種の競争は</span></div>
+  <div class="slash-line"><span class="slash-en">is</span><span class="slash-sep">/</span><span class="slash-ja">～である</span></div>
+  <div class="slash-line"><span class="slash-en">a good thing</span><span class="slash-sep">/</span><span class="slash-ja">良いことで</span></div>
+  <div class="slash-line"><span class="slash-en">for patients</span><span class="slash-sep">/</span><span class="slash-ja">患者にとって<span class="slash-core">（良いこと）</span></span></div>
+  <div class="slash-line"><span class="slash-en">who are waiting</span><span class="slash-sep">/</span><span class="slash-ja">待っている<span class="slash-core">（患者）</span></span></div>
+  <div class="slash-line"><span class="slash-en">for the practical use</span><span class="slash-sep">/</span><span class="slash-ja">実用化を<span class="slash-core">（待っている）</span></span></div>
+  <div class="slash-line"><span class="slash-en">of the technology.</span><span class="slash-sep">/</span><span class="slash-ja">その技術の<span class="slash-core">（実用化）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Dr. <ruby>Yamanaka<rt>S</rt></ruby>,
+  <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby>
+  <ruby><span class="v-marker">shared</span><rt>v'</rt></ruby>
+  the 2012 Nobel Prize
+  <span class="dim">in Physiology or Medicine</span>
+  <span class="dim">for this achievement</span><span class="adj-cl">&gt;</span>,
+  <ruby><span class="v-marker">says</span><rt>V</rt></ruby>
+  <span class="noun-cl">[</span><ruby><span class="omit">∧</span><rt>O</rt></ruby>
+  this <ruby>kind<rt>s'</rt></ruby>
+  <span class="dim">of competition</span>
+  <ruby><span class="v-marker">is</span><rt>v'</rt></ruby>
+  a good <ruby>thing<rt>c'</rt></ruby>
+  <span class="dim">for patients</span>
+  <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby>
+  <span class="v-marker">are</span>
+  <ruby><span class="v-marker">waiting</span><rt>v'</rt></ruby>
+  <span class="dim">for the practical use</span>
+  <span class="dim">of the technology</span><span class="adj-cl">&gt;</span><span class="noun-cl">]</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>says</td><td>述べている</td></tr>
+    <tr><td>形容詞節（非制限）</td><td>who</td><td>shared</td><td>共同受賞した</td></tr>
+    <tr><td>名詞節</td><td>(that) [省略]</td><td>is</td><td>～である</td></tr>
+    <tr><td>形容詞節（制限）</td><td>who</td><td>are waiting</td><td>待っている</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>Nobel Prize ← in Physiology or Medicine</td><td>生理学・医学の<span class="slash-core">（賞）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>shared ← for this achievement</td><td>この業績で<span class="slash-core">（共同受賞した）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>thing ← for patients</td><td>患者にとって<span class="slash-core">（良いこと）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>are waiting ← for the practical use</td><td>実用化を<span class="slash-core">（待っている）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>use ← of the technology</td><td>その技術の<span class="slash-core">（実用化）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

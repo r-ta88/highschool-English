@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>2025年度 大学入試 自由英作文 完全分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f5f1;--white:#ffffff;--border:#e4dfd6;--border2:#cec7bb;
+  --text:#1c1c1c;--text2:#47423d;--text3:#8a8278;
+  --teal:#3a7068;--teal-l:#eaf3f1;--teal-b:#c0ddd9;
+  --rose:#8a4a58;--rose-l:#f5eef0;--rose-b:#ddc4cc;
+  --amber:#b8832a;--amber-l:#f7f0e4;
+  --slate:#3a4a5a;
+}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);font-size:13.5px;line-height:1.85;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.site-header{background:var(--white);border-bottom:1px solid var(--border)}
+.hdr-inner{max-width:1080px;margin:0 auto;padding:44px 32px 0;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+.hdr-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,40px);font-weight:600;line-height:1.2;color:var(--text);letter-spacing:-.3px;margin-bottom:10px}
+.hdr-title em{font-style:italic;color:var(--teal)}
+.hdr-desc{font-size:12.5px;color:var(--text3);font-weight:300;line-height:1.6}
+.hdr-stats{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--bg)}
+.stat{padding:14px 20px;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--teal);display:block;line-height:1;margin-bottom:3px}
+.stat-l{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1px;color:var(--text3);display:block;text-transform:uppercase}
+
+/* NAV */
+.site-nav{max-width:1080px;margin:0 auto;padding:0 32px;display:flex;overflow-x:auto;scrollbar-width:none}
+.site-nav::-webkit-scrollbar{display:none}
+.nav-item{padding:13px 18px;font-size:11.5px;font-family:'IBM Plex Mono',monospace;letter-spacing:.8px;text-transform:uppercase;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s;user-select:none}
+.nav-item:hover{color:var(--text2)}
+.nav-item.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+/* LAYOUT */
+.page{display:none}.page.on{display:block}
+.wrap{max-width:1080px;margin:0 auto;padding:40px 32px 80px}
+
+/* PAGE HEAD */
+.pg-head{margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.pg-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;margin-bottom:6px}
+.pg-sub{font-size:12.5px;color:var(--text3);line-height:1.7}
+
+/* TABLE */
+.tblock{margin-bottom:40px}
+.tblock-head{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--white);border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0}
+.tblock-icon{font-size:16px}
+.tblock-label{font-family:'Noto Serif JP',serif;font-weight:600;font-size:14px}
+.tblock-count{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);margin-left:auto;background:var(--bg);padding:2px 8px;border-radius:10px;border:1px solid var(--border)}
+table.et{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--border);border-radius:0 0 6px 6px;overflow:hidden}
+table.et thead th{background:var(--bg);padding:9px 14px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);font-weight:400;border-bottom:1px solid var(--border)}
+table.et tbody tr{border-bottom:1px solid var(--border)}
+table.et tbody tr:last-child{border-bottom:none}
+table.et tbody tr:hover td{background:#fdfcfa}
+table.et td{padding:10px 14px;vertical-align:top;font-size:12.5px;line-height:1.65}
+.tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;padding:2px 7px;border-radius:3px;background:var(--bg);color:var(--slate);border:1px solid var(--border2);white-space:nowrap}
+.tag.med{background:var(--rose-l);color:var(--rose);border-color:var(--rose-b)}
+.kw{font-weight:500;color:var(--teal)}
+.qs{font-size:11.5px;color:var(--text3);font-style:italic;margin-top:2px}
+
+/* TREND CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:40px}
+.tcard{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:22px 22px 20px;position:relative}
+.tcard-num{font-family:'Playfair Display',serif;font-size:40px;font-weight:400;font-style:italic;color:var(--border);position:absolute;top:14px;right:16px;line-height:1}
+.tcard-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.tcard-tag.a{color:var(--amber)}.tcard-tag.t{color:var(--teal)}.tcard-tag.r{color:var(--rose)}.tcard-tag.s{color:var(--slate)}
+.tcard h3{font-family:'Noto Serif JP',serif;font-size:14.5px;font-weight:600;margin-bottom:8px;line-height:1.4;position:relative}
+.tcard p{font-size:12.5px;color:var(--text2);line-height:1.75;position:relative}
+
+/* BARS */
+.bar-wrap{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:36px}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.bar-row:last-child{margin-bottom:0}
+.bar-label{width:110px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);text-align:right;flex-shrink:0;letter-spacing:.5px}
+.bar-track{flex:1;height:18px;background:var(--bg);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:8px}
+.bar-fill span{font-family:'IBM Plex Mono',monospace;font-size:10px;color:white;font-weight:500}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:5px;top:8px;bottom:0;width:1px;background:var(--border2)}
+.tl-item{position:relative;margin-bottom:28px}
+.tl-dot{position:absolute;left:-21px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--white);border:2px solid var(--teal)}
+.tl-flag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+.tl-item h4{font-family:'Noto Serif JP',serif;font-size:14.5px;font-weight:600;margin-bottom:5px}
+.tl-item p{font-size:12.5px;color:var(--text2);line-height:1.75}
+
+/* NOTICE */
+.notice{border-left:3px solid var(--amber);background:var(--amber-l);padding:14px 18px;border-radius:0 6px 6px 0;font-size:12.5px;line-height:1.8;margin-bottom:28px;color:var(--text2)}
+.notice strong{color:var(--amber)}
+.notice code{background:rgba(184,131,42,.12);padding:1px 5px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:11.5px}
+.notice.teal{border-left-color:var(--teal);background:var(--teal-l)}
+.notice.teal strong{color:var(--teal)}
+.notice.teal code{background:rgba(58,112,104,.12)}
+
+/* ACCORDION */
+.acc-list{display:flex;flex-direction:column;gap:10px}
+.acc{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.acc.tl{border-left:3px solid var(--teal)}
+.acc.rl{border-left:3px solid var(--rose)}
+.acc-head{display:flex;align-items:center;gap:16px;padding:16px 20px;cursor:pointer;transition:background .12s}
+.acc-head:hover{background:var(--bg)}
+.acc-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;font-style:italic;color:var(--border2);line-height:1;flex-shrink:0;width:32px}
+.acc-info{flex:1;min-width:0}
+.acc-type{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px}
+.acc-type.t{color:var(--teal)}.acc-type.r{color:var(--rose)}
+.acc-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1.2}
+.acc-sub{font-size:11.5px;color:var(--text3);margin-top:1px}
+.acc-arrow{font-size:14px;color:var(--text3);flex-shrink:0;transition:transform .2s}
+.acc-arrow.open{transform:rotate(180deg)}
+.acc-body{display:none;padding:0 20px 22px}
+.acc-body.open{display:block}
+.acc-body hr{border:none;border-top:1px solid var(--border);margin-bottom:18px}
+.def-b{background:var(--bg);border-radius:6px;padding:14px 16px;margin-bottom:16px}
+.def-b .lbl{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
+.def-b p{font-size:12.5px;line-height:1.8}
+.pts-lbl{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:8px}
+.pts{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.pt{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;line-height:1.65}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:10px;white-space:nowrap;margin-top:2px;flex-shrink:0;letter-spacing:.5px}
+.pill.pro{background:#e6f4ec;color:#2d7a50}
+.pill.con{background:#fdecea;color:#9b3030}
+.pill.vs{background:var(--bg);color:var(--text3);border:1px solid var(--border2)}
+.qs-list{display:flex;flex-direction:column;gap:7px}
+.q-row{padding:11px 14px 11px 42px;border-radius:5px;font-size:12.5px;line-height:1.65;position:relative}
+.q-row::before{position:absolute;left:10px;top:11px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;padding:1px 5px;border-radius:3px;letter-spacing:.5px}
+.q-row.yn{background:#f0f6fb}.q-row.yn::before{content:"賛否";background:#d8eaf8;color:#2a5a8a}
+.q-row.pr{background:#f0f7f3}.q-row.pr::before{content:"提案";background:#d4edde;color:#276040}
+.kws{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.kw-p{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 9px;border-radius:12px;background:var(--bg);color:var(--text3);border:1px solid var(--border)}
+.kw-p.t{background:var(--teal-l);color:var(--teal);border-color:var(--teal-b)}
+.kw-p.r{background:var(--rose-l);color:var(--rose);border-color:var(--rose-b)}
+
+/* BADGE */
+.bdg{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 6px;border-radius:10px;margin-left:6px;vertical-align:middle;letter-spacing:.5px}
+.bdg.new{background:var(--teal);color:white}
+.bdg.hot{background:var(--amber);color:white}
+
+/* PRED GRID */
+.pred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.pred-card{background:var(--white);border:1px solid var(--border);border-radius:7px;padding:16px}
+.pred-card .pt-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.pred-card h5{font-size:13px;font-weight:600;margin-bottom:5px;font-family:'Noto Serif JP',serif}
+.pred-card p{font-size:11.5px;color:var(--text3);line-height:1.65}
+
+/* AXIS */
+.axis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.axis-card{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--rose);border-radius:6px;padding:16px}
+.axis-tag{font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--rose);letter-spacing:1px;margin-bottom:6px}
+.axis-card h4{font-size:13.5px;font-weight:600;font-family:'Noto Serif JP',serif;margin-bottom:4px}
+.axis-card p{font-size:11.5px;color:var(--text3)}
+
+/* FOOTER */
+footer{background:var(--white);border-top:1px solid var(--border);padding:20px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--text3);letter-spacing:.5px}
+
+@media(max-width:680px){
+  .hdr-inner{grid-template-columns:1fr}
+  .hdr-stats{display:none}
+  .wrap{padding:28px 18px 60px}
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="hdr-inner">
+    <div>
+      <div class="eyebrow">英語科 教材研究資料 ／ 2025–2026</div>
+      <h1 class="hdr-title">大学入試 自由英作文<br><em>Complete Analysis &amp; Trend Forecast</em></h1>
+      <p class="hdr-desc">2025年度 出題分類 ／ 傾向分析 ／ 2026年度予想テーマ（一般15 ＋ 医学8）</p>
+    </div>
+    <div class="hdr-stats">
+      <div class="stat"><span class="stat-n">78+</span><span class="stat-l">出題数</span></div>
+      <div class="stat"><span class="stat-n">15</span><span class="stat-l">一般時事</span></div>
+      <div class="stat"><span class="stat-n">8</span><span class="stat-l">医学時事</span></div>
+    </div>
+  </div>
+  <nav class="site-nav">
+    <div class="nav-item active" onclick="go('list',this)">📋 出題リスト</div>
+    <div class="nav-item" onclick="go('trends',this)">📈 傾向分析</div>
+    <div class="nav-item" onclick="go('predict',this)">🔮 2026予測</div>
+    <div class="nav-item" onclick="go('general',this)">🌍 一般時事 15選</div>
+    <div class="nav-item" onclick="go('medical',this)">🏥 医学時事 8選</div>
+  </nav>
+</header>
+
+
+<!-- PAGE: 出題リスト -->
+<div class="page on" id="pg-list">
+<div class="wrap">
+  <div class="pg-head">
+    <div class="pg-title">2025年度 自由英作文 出題リスト</div>
+    <p class="pg-sub">「自分の意見・考えを英語で述べる形式」で出題された問題を大学別・テーマ別に分類。</p>
+  </div>
+
+  <div class="tblock">
+    <div class="tblock-head"><span class="tblock-icon">🎓</span><span class="tblock-label">1. 教育・大学生活・キャリア</span><span class="tblock-count">16問</span></div>
+    <table class="et"><thead><tr><th>大学名</th><th>トピック</th><th>設問内容（抜粋）</th></tr></thead><tbody>
+      <tr><td><span class="tag">早稲田（国教）</span></td><td><span class="kw">大学教育の目的</span></td><td>精神の自由か職業訓練か</td></tr>
+      <tr><td><span class="tag">三重大学</span></td><td><span class="kw">総合評価 vs 試験型</span></td><td>holistic evaluationが試験中心より優れている理由を述べよ</td></tr>
+      <tr><td><span class="tag">東京農工（前期）</span></td><td><span class="kw">講義出席義務</span></td><td>出席必須 vs 試験のみ、どちらが良いか</td></tr>
+      <tr><td><span class="tag">電気通信（後期）</span></td><td><span class="kw">生成AI×学習</span></td><td>学習への生成AI利用は有益か</td></tr>
+      <tr><td><span class="tag">大阪公立大</span></td><td><span class="kw">中高へのAI導入</span></td><td>中高の授業にAIを導入する理由を2つ（50語）</td></tr>
+      <tr><td><span class="tag">信州大（教育）</span></td><td><span class="kw">ゲーム×学習</span></td><td>ゲームを使った学習の有効性に賛否</td></tr>
+      <tr><td><span class="tag">名古屋市立（前期）</span></td><td><span class="kw">高校で学んだこと</span></td><td>高校の授業で最も面白かったことを述べよ</td></tr>
+      <tr><td><span class="tag">獨協大学</span></td><td><span class="kw">理想の英語授業</span></td><td>理想の英語授業のビジョンを詳述せよ</td></tr>
+      <tr><td><span class="tag">青森公立大</span></td><td><span class="kw">全授業を英語で</span></td><td>高校の全授業を英語で行うべきか</td></tr>
+      <tr><td><span class="tag">奈良教育大</span></td><td><span class="kw">授業を面白くするには</span></td><td>How can teachers make lessons more interesting?</td></tr>
+      <tr><td><span class="tag">宮城教育大</span></td><td><span class="kw">教育の将来準備</span></td><td>教育制度は将来への準備をすべきか</td></tr>
+      <tr><td><span class="tag">明治学院大</span></td><td><span class="kw">大学で挑戦したいこと</span></td><td>What new things do you want to try at university?</td></tr>
+      <tr><td><span class="tag">愛媛大学</span></td><td><span class="kw">良い授業の条件</span></td><td>What makes a good class?</td></tr>
+      <tr><td><span class="tag">長崎県立（前期）</span></td><td><span class="kw">志望理由</span></td><td>この学科を志願した理由（100語）</td></tr>
+      <tr><td><span class="tag">東京農工（後期）</span></td><td><span class="kw">研究室の選び方</span></td><td>研究室を選ぶ際の基準を2つ挙げよ</td></tr>
+      <tr><td><span class="tag med">宮崎大（医）</span></td><td><span class="kw">筆記体教育</span></td><td>中学生に筆記体を教えるべきではない立場から論述</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="tblock">
+    <div class="tblock-head"><span class="tblock-icon">🤖</span><span class="tblock-label">2. 科学技術・AI・情報社会</span><span class="tblock-count">8問</span></div>
+    <table class="et"><thead><tr><th>大学名</th><th>トピック</th><th>設問内容（抜粋）</th></tr></thead><tbody>
+      <tr><td><span class="tag">京都大学</span></td><td><span class="kw">AIと想像力</span></td><td>「AIで想像力が豊か/乏しくなる」どちらかを選んで論証</td></tr>
+      <tr><td><span class="tag">奈良女子大</span></td><td><span class="kw">生成AI×社会</span></td><td>ChatGPT等の普及による社会・生活の変化</td></tr>
+      <tr><td><span class="tag">国際教養（B）</span></td><td><span class="kw">Ghostbots（AI死者）</span></td><td>AI版の死者再現の是非（300語）</td></tr>
+      <tr><td><span class="tag">名古屋大</span></td><td><span class="kw">SNS×コミュニケーション</span></td><td>①SNSが社会に与えた影響 ②SNSがなければ自分はどう違うか</td></tr>
+      <tr><td><span class="tag">新潟大学</span></td><td><span class="kw">SNS年齢制限</span></td><td>16歳未満のSNS利用を禁止すべきか</td></tr>
+      <tr><td><span class="tag">山形大学</span></td><td><span class="kw">キッズインフルエンサー</span></td><td>子供のSNS労働問題についての考え</td></tr>
+      <tr><td><span class="tag">青山学院（文）</span></td><td><span class="kw">過去の技術革新</span></td><td>PC以外で社会を大きく変えた技術は何か</td></tr>
+      <tr><td><span class="tag">学習院（経済）</span></td><td><span class="kw">宇宙開発予算</span></td><td>宇宙探索予算拡大への賛否</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="tblock">
+    <div class="tblock-head"><span class="tblock-icon">🌏</span><span class="tblock-label">3. 観光・グローバル社会・文化</span><span class="tblock-count">9問</span></div>
+    <table class="et"><thead><tr><th>大学名</th><th>トピック</th><th>設問内容（抜粋）</th></tr></thead><tbody>
+      <tr><td><span class="tag">東北大学（前期）</span></td><td><span class="kw">オーバーツーリズム対策</span></td><td>日本のオーバーツーリズムへの提案（2理由）</td></tr>
+      <tr><td><span class="tag">北海道大学</span></td><td><span class="kw">インバウンド推進</span></td><td>政府のインバウンド政策に賛成か反対か（70–100語）</td></tr>
+      <tr><td><span class="tag">滋賀大学（前期）</span></td><td><span class="kw">奈良のシカ問題</span></td><td>観光客とシカの共生問題についての意見</td></tr>
+      <tr><td><span class="tag">国際教養（A）</span></td><td><span class="kw">ダークツーリズム</span></td><td>ダークツーリズムの是非を論じよ（300語）</td></tr>
+      <tr><td><span class="tag">早稲田（政経）</span></td><td><span class="kw">外国人増加×摩擦</span></td><td>外国人住民増加に伴う摩擦と自治体の政策</td></tr>
+      <tr><td><span class="tag">静岡大（後期）</span></td><td><span class="kw">二重価格</span></td><td>外国人観光客への高額料金設定への意見</td></tr>
+      <tr><td><span class="tag">弘前大学</span></td><td><span class="kw">難民受け入れ</span></td><td>難民受け入れのメリット・デメリットをそれぞれ1つ</td></tr>
+      <tr><td><span class="tag">電気通信（前期）</span></td><td><span class="kw">西暦 vs 和暦</span></td><td>日本は西暦のみに統一すべきか</td></tr>
+      <tr><td><span class="tag med">慶應（医）</span></td><td><span class="kw">日本の観光人気</span></td><td>日本が観光客に人気な理由を2つ以上</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="tblock">
+    <div class="tblock-head"><span class="tblock-icon">🌱</span><span class="tblock-label">4. 環境・倫理・医療（医学部系）</span><span class="tblock-count">10問</span></div>
+    <table class="et"><thead><tr><th>大学名</th><th>トピック</th><th>設問内容（抜粋）</th></tr></thead><tbody>
+      <tr><td><span class="tag med">順天堂（医）</span></td><td><span class="kw">デザイナーベビー</span></td><td>子供の遺伝子設計は許容されるか</td></tr>
+      <tr><td><span class="tag med">東京慈恵会（医）</span></td><td><span class="kw">ヒト組織の利用</span></td><td>医療・科学目的でのヒト組織使用の範囲</td></tr>
+      <tr><td><span class="tag med">日本医科大</span></td><td><span class="kw">75歳寿命説</span></td><td>「75歳で人生を終えるのが良い」という意見への賛否</td></tr>
+      <tr><td><span class="tag med">秋田大（医）</span></td><td><span class="kw">医師不足の解消</span></td><td>2036年に予想される医師不足への解決策</td></tr>
+      <tr><td><span class="tag med">福島県立医科</span></td><td><span class="kw">サステナブルファッション</span></td><td>持続可能なファッション推進政策を実施すべきか</td></tr>
+      <tr><td><span class="tag med">島根大（医）</span></td><td><span class="kw">予防医療 vs 先端研究</span></td><td>どちらにより多くの予算を配分すべきか</td></tr>
+      <tr><td><span class="tag">中央大（商）</span></td><td><span class="kw">動物実験×価格</span></td><td>安価・動物実験あり vs 高価・クルエルティフリー</td></tr>
+      <tr><td><span class="tag">福岡教育大</span></td><td><span class="kw">ジオエンジニアリング</span></td><td>推奨するジオエンジニアリング手法を説明（60語）</td></tr>
+      <tr><td><span class="tag">明治学院大</span></td><td><span class="kw">最も深刻な環境問題</span></td><td>最も深刻な環境問題と解決策</td></tr>
+      <tr><td><span class="tag">横浜国立（後期）</span></td><td><span class="kw">EV充電インフラ</span></td><td>充電設備不足の問題点と解決策（60語）</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="tblock">
+    <div class="tblock-head"><span class="tblock-icon">💭</span><span class="tblock-label">5. 価値観・人間関係・ライフスタイル</span><span class="tblock-count">10問</span></div>
+    <table class="et"><thead><tr><th>大学名</th><th>トピック</th><th>設問内容（抜粋）</th></tr></thead><tbody>
+      <tr><td><span class="tag">東京大学</span></td><td><span class="kw">沈黙＝同意か</span></td><td>「意見を言わないことは同意を意味する」への考え（60–80語）</td></tr>
+      <tr><td><span class="tag">静岡大（前期）</span></td><td><span class="kw">嘘の是非</span></td><td>うそは全く許されないか、具体例を挙げて（120語以上）</td></tr>
+      <tr><td><span class="tag">山梨大学</span></td><td><span class="kw">図書館の必要性</span></td><td>デジタル時代に図書館は重要か不要か（150語・3理由以上）</td></tr>
+      <tr><td><span class="tag">長崎県立（後期）</span></td><td><span class="kw">都会 vs 田舎</span></td><td>どちらがより幸せな生活か（100語）</td></tr>
+      <tr><td><span class="tag">東北大（後期）</span></td><td><span class="kw">ジェンダー平等</span></td><td>ジェンダー平等に関する文章を読んで考えを述べよ</td></tr>
+      <tr><td><span class="tag">名古屋市立（後期）</span></td><td><span class="kw">若者の政治離れ</span></td><td>主な理由1つと改善策（120–150語）</td></tr>
+      <tr><td><span class="tag">滋賀県立大</span></td><td><span class="kw">社会問題の選択</span></td><td>大学生関心の7テーマから1つ選び重要性を説明</td></tr>
+      <tr><td><span class="tag">小樽商科大</span></td><td><span class="kw">心は最大の敵か</span></td><td>"Your biggest enemy is your own mind." への賛否</td></tr>
+      <tr><td><span class="tag">電気通信（後期）</span></td><td><span class="kw">消費税の軽減税率</span></td><td>子供服・教科書などの消費税率を下げるべきか</td></tr>
+      <tr><td><span class="tag">静岡大（後期）</span></td><td><span class="kw">高齢社会での活躍</span></td><td>高齢者が活躍できる社会実現のために必要なこと</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="tblock">
+    <div class="tblock-head"><span class="tblock-icon">📊</span><span class="tblock-label">6. 図表・データ分析型</span><span class="tblock-count">8問</span></div>
+    <table class="et"><thead><tr><th>大学名</th><th>トピック</th><th>設問内容（抜粋）</th></tr></thead><tbody>
+      <tr><td><span class="tag">東京女子大</span></td><td><span class="kw">EV普及率</span></td><td>地域別EV販売比率の特徴をまとめ比較せよ</td></tr>
+      <tr><td><span class="tag">大阪大学</span></td><td><span class="kw">博士号取得者の推移</span></td><td>日本の博士号取得者数のグラフを読み要因・改善策を論じよ</td></tr>
+      <tr><td><span class="tag">長崎大学</span></td><td><span class="kw">出生率（日中）</span></td><td>中国・日本の出生率変化と今後の問題点を論じよ</td></tr>
+      <tr><td><span class="tag">神戸大学</span></td><td><span class="kw">SNSとニュース</span></td><td>SNSニュース利用の変化を比較し、SNSをニュース源にすべきか</td></tr>
+      <tr><td><span class="tag">島根大（前期）</span></td><td><span class="kw">スマートフォン取得年齢</span></td><td>子供へのスマートフォン初購入年齢調査から気づいたこと</td></tr>
+      <tr><td><span class="tag">琉球大学</span></td><td><span class="kw">ペット飼育調査</span></td><td>ペット飼育に関する2つの図を参考に自分の考えを述べよ</td></tr>
+      <tr><td><span class="tag">佐賀大（前期）</span></td><td><span class="kw">2グラフ比較</span></td><td>日本人アンケート2グラフを比較して考えを述べよ</td></tr>
+      <tr><td><span class="tag">香川大学</span></td><td><span class="kw">不快な習慣</span></td><td>年齢層別の不快な習慣の類似点・相違点を述べ、1つを論じよ</td></tr>
+    </tbody></table>
+  </div>
+
+</div>
+</div>
+
+<!-- PAGE: 傾向分析 -->
+<div class="page" id="pg-trends">
+<div class="wrap">
+  <div class="pg-head">
+    <div class="pg-title">2025年度入試 傾向分析</div>
+    <p class="pg-sub">2025年度の最大の特徴は「法整備が追いついていない新しい議論」が即座に入試へ反映されたこと。</p>
+  </div>
+  <div class="card-grid">
+    <div class="tcard">
+      <div class="tcard-num">1</div>
+      <div class="tcard-tag a">AI論の具体化</div>
+      <h3>「使う・使わせる」ルール論へ</h3>
+      <p>抽象的な「AI脅威論」から、教育現場での利用ルール・死者のデジタル再現・生成AI信頼性など<strong>具体的な責任・倫理</strong>を問う内容へ。京都大・奈良女子・国際教養など多数。</p>
+    </div>
+    <div class="tcard">
+      <div class="tcard-num">2</div>
+      <div class="tcard-tag t">制限と規制の是非</div>
+      <h3>「自由 vs 公共の利益」の急増</h3>
+      <p>SNS年齢制限・オーバーツーリズムの入場制限・二重価格・環境規制など<strong>公共の利益のための制限をどう考えるか</strong>という設問が急増。新潟・北海道・静岡・東北など。</p>
+    </div>
+    <div class="tcard">
+      <div class="tcard-num">3</div>
+      <div class="tcard-tag s">日本の独自性 vs グローバル化</div>
+      <h3>板挟み問題の増加</h3>
+      <p>和暦の是非・難民受け入れ・二重価格など「<strong>日本の伝統・現状</strong>」と「<strong>国際基準・経済合理性</strong>」の矛盾を問う問題が増加。</p>
+    </div>
+    <div class="tcard">
+      <div class="tcard-num">4</div>
+      <div class="tcard-tag r">医学部の「倫理×社会」融合</div>
+      <h3>医師としての社会的責任</h3>
+      <p>単なる医療知識ではなく<strong>生命倫理への感度・地域医療の当事者意識・QOL観</strong>を要求。日本医科大（75歳寿命説）・順天堂（デザイナーベビー）など。</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin-bottom:16px;">カテゴリ別 出題頻度</h3>
+  <div class="bar-wrap">
+    <div class="bar-row"><div class="bar-label">教育・大学</div><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--teal)"><span>16問</span></div></div></div>
+    <div class="bar-row"><div class="bar-label">価値観・倫理</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--slate)"><span>10問</span></div></div></div>
+    <div class="bar-row"><div class="bar-label">環境・医療</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--rose)"><span>10問</span></div></div></div>
+    <div class="bar-row"><div class="bar-label">観光・グローバル</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--amber)"><span>9問</span></div></div></div>
+    <div class="bar-row"><div class="bar-label">AI・情報</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:#7a8aaa"><span>8問</span></div></div></div>
+    <div class="bar-row"><div class="bar-label">図表・データ</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:#9aaa8a"><span>8問</span></div></div></div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin-bottom:14px;">医学部 特化分析</h3>
+  <div class="notice teal" style="margin-bottom:20px;">
+    <strong>医学部が本当に問うているもの：</strong>「病気だけを見るのではなく、社会構造からくる健康被害を見抜ける医師」かどうか。<br>採点で差がつくキーワード：<code>QOL</code>・<code>Patient Autonomy</code>・<code>Triage</code>・<code>Compassion Fatigue</code>・<code>Black-box Problem of AI</code>
+  </div>
+  <div class="axis-grid">
+    <div class="axis-card"><div class="axis-tag">AXIS 01</div><h4>生命倫理への感度</h4><p>正解のない問いに自分のスタンスを持てるか</p></div>
+    <div class="axis-card"><div class="axis-tag">AXIS 02</div><h4>QOL・死生観の理解</h4><p>「長生き＝幸福」を超えた思考ができるか</p></div>
+    <div class="axis-card"><div class="axis-tag">AXIS 03</div><h4>地域医療の当事者意識</h4><p>医師不足を「自分事」として解決策を出せるか</p></div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: 2026予測 -->
+<div class="page" id="pg-predict">
+<div class="wrap">
+  <div class="pg-head">
+    <div class="pg-title">2026年度入試 トレンド予測</div>
+    <p class="pg-sub">「紹介型」から「対立する利益の調整案を求める型」へシフト。</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-flag">⚠ 最重要予測 #1</div>
+      <h4>孤独の社会問題化（Loneliness as Public Health Crisis）</h4>
+      <p>WHOが「タバコ15本/日と同等のリスク」と発表。SNS禁止論（新潟大2025）の次として「テクノロジーが孤独を深めているか」という設問が増える。医学部では孤独死・独居高齢者との絡みで出題リスク高。</p>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-flag">⚠ 最重要予測 #2</div>
+      <h4>情報の真偽・ディープフェイク（Media Literacy × Democracy）</h4>
+      <p>ディープフェイクが選挙・裁判・個人の名誉を脅かす中、「批判的思考（Critical Thinking）」をSNS・AIと絡めて書かせる問題が急増予測。</p>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-flag">予測 #3</div>
+      <h4>サステナブルな医療・福祉の限界</h4>
+      <p>少子高齢化が極まる中、「すべての命を救う」理想と「限られた予算・人材」の矛盾。Triage問題が医学部以外でも問われる可能性。島根大「予防医療 vs 先端研究」（2025）がその前兆。</p>
+    </div>
+    <div class="tl-item"><div class="tl-dot"></div>
+      <div class="tl-flag">予測 #4</div>
+      <h4>デジタルデトックス / 切断する権利</h4>
+      <p>SNS禁止議論を受け「あえてテクノロジーを捨てる」選択の是非が問われる。欧州発の「右to Disconnect」が日本の働き方改革・教育にどう絡むか。</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:20px;font-weight:400;margin:36px 0 16px;">まだ出ていないが今後狙われるテーマ</h3>
+  <div class="pred-grid">
+    <div class="pred-card"><div class="pt-tag">DX</div><h5>デジタルトランスフォーメーション</h5><p>社会変革の恩恵と取り残される弱者の逆説。デジタル格差・雇用転換・中小企業問題と直結。</p></div>
+    <div class="pred-card"><div class="pt-tag">Basic Income</div><h5>ベーシックインカムの実現性</h5><p>財源論・就労意欲への影響・AI化による雇用喪失対策。賛否両論が鮮明で論じやすいテーマ。</p></div>
+    <div class="pred-card"><div class="pt-tag">GX</div><h5>グリーントランスフォーメーション</h5><p>脱炭素のための産業転換。エネルギー価格上昇・雇用変化・途上国との公平性問題。</p></div>
+    <div class="pred-card"><div class="pt-tag">Male Parental Leave</div><h5>男性育休の義務化</h5><p>取得率低迷・キャリアへの影響・職場文化の変革。ジェンダー平等と直結する論点。</p></div>
+    <div class="pred-card"><div class="pt-tag">Fair Trade</div><h5>フェアトレードの実効性</h5><p>「フェアウォッシング」と認証ラベルの信頼性。個人の選択 vs 法的規制のどちらが有効か。</p></div>
+    <div class="pred-card"><div class="pt-tag">Young Carers</div><h5>ヤングケアラー</h5><p>家族介護を担う子どもたちの教育機会の喪失。医学部では発見・支援の観点で出題リスク大。</p></div>
+    <div class="pred-card"><div class="pt-tag">Prenatal Diagnosis</div><h5>出生前診断</h5><p>NIPTの普及と選択的中絶の倫理問題。デザイナーベビー論争と地続きで医学部必須テーマ。</p></div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: 一般時事 -->
+<div class="page" id="pg-general">
+<div class="wrap">
+  <div class="pg-head">
+    <div class="pg-title">一般社会・時事 重要テーマ 15選</div>
+    <p class="pg-sub">定義・議論のポイント・予想設問を収録。クリックで展開。</p>
+  </div>
+  <div class="acc-list">
+
+    <div class="acc tl" id="g1"><div class="acc-head" onclick="tog('g1')"><div class="acc-num">1</div><div class="acc-info"><div class="acc-type t">ENVIRONMENT / LABOR</div><div class="acc-title">Fast Fashion</div><div class="acc-sub">ファストファッション ／ 安さの裏側</div></div><div class="acc-arrow" id="ar-g1">▾</div></div>
+    <div class="acc-body" id="bd-g1"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>最新の流行を取り入れた衣料品を短いサイクルで大量生産・低価格販売するビジネスモデル。ZARA・H&M・Shein・Temuが代表例。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>誰もがファッションを楽しめる経済的アクセスの向上</div>
+        <div class="pt"><span class="pill con">問題</span>発展途上国の低賃金・劣悪労働環境（2013年ラナ・プラザ崩壊：1100人超死亡）</div>
+        <div class="pt"><span class="pill con">問題</span>衣服産業は世界2位の水消費産業。ポリエステルからのマイクロプラスチックが食物連鎖へ</div>
+        <div class="pt"><span class="pill con">問題</span>SNSが促す過剰消費・自己肯定感低下というメンタルヘルス問題</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">途上国の安価な労働力を使うことは経済発展の段階として許容されるか。</div>
+        <div class="q-row yn">安価なファストファッションを買い続けることは倫理的に問題か。</div>
+        <div class="q-row pr">衣類廃棄を減らすためにメーカーに課すべき規制を具体的に提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">supply chain transparency</span><span class="kw-p t">microplastic contamination</span><span class="kw-p t">ethical consumption</span><span class="kw-p t">greenwashing</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g2"><div class="acc-head" onclick="tog('g2')"><div class="acc-num">2</div><div class="acc-info"><div class="acc-type t">LIFESTYLE / EDUCATION</div><div class="acc-title">Taipa（タイパ）</div><div class="acc-sub">Time Performance ／ 時間効率最大化</div></div><div class="acc-arrow" id="ar-g2">▾</div></div>
+    <div class="acc-body" id="bd-g2"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>費やした時間に対する満足度・効果の度合い。倍速視聴・要約サービス・スキップ視聴など時間効率を最大化する行動様式。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>膨大な情報社会を生き抜くための必要スキル・学習効率向上</div>
+        <div class="pt"><span class="pill con">問題</span>深い思考力・創造性・感受性の低下。芸術をありのままに味わう力の喪失</div>
+        <div class="pt"><span class="pill con">問題</span>「常に効率的でなければ」というプレッシャーがメンタルヘルスを蝕む</div>
+        <div class="pt"><span class="pill con">問題</span>退屈（Boredom）は創造性の源泉。常に刺激を求める脳の変容</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">本を読む代わりに要約サイトを利用することは教育上有効か。</div>
+        <div class="q-row yn">映画・音楽を倍速で楽しむことは芸術鑑賞として認められるか。</div>
+        <div class="q-row pr">タイパ重視の若者が「深い思考」を取り戻すための教育方法を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">deep thinking</span><span class="kw-p t">boredom &amp; creativity</span><span class="kw-p t">productivity pressure</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g3"><div class="acc-head" onclick="tog('g3')"><div class="acc-num">3</div><div class="acc-info"><div class="acc-type t">ENVIRONMENT / BUSINESS</div><div class="acc-title">Greenwashing</div><div class="acc-sub">グリーンウォッシング ／ 見せかけのエコ</div></div><div class="acc-arrow" id="ar-g3">▾</div></div>
+    <div class="acc-body" id="bd-g3"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>実態が伴わないにもかかわらず広告やイメージ戦略で「環境にやさしい」と思わせること。消費者の環境意識の高まりを利用した誇大広告。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>不完全であってもエコ意識を高める一歩という「何もしないよりはマシ」論</div>
+        <div class="pt"><span class="pill con">問題</span>本物のエコ企業が競争で不利になる。消費者の信頼を損なう</div>
+        <div class="pt"><span class="pill con">問題</span>どこからが「嘘」かの境界線が不明確で規制が困難</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">うわべだけの環境宣言であっても公言すること自体は評価されるべきか。</div>
+        <div class="q-row pr">消費者がグリーンウォッシングを見抜くための公的な認証基準制度を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">eco label standards</span><span class="kw-p t">corporate transparency</span><span class="kw-p t">consumer rights</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g4"><div class="acc-head" onclick="tog('g4')"><div class="acc-num">4</div><div class="acc-info"><div class="acc-type t">ENVIRONMENT / ECONOMICS</div><div class="acc-title">Circular Economy</div><div class="acc-sub">循環型経済 ／ 廃棄物ゼロを目指すモデル</div></div><div class="acc-arrow" id="ar-g4">▾</div></div>
+    <div class="acc-body" id="bd-g4"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>廃棄物を出さずに資源を循環させ続ける経済システム。製品の修理・再利用・リサイクルを当然の前提とする。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>地球の資源的限界に対応する唯一の解として広く支持</div>
+        <div class="pt"><span class="pill con">問題</span>「長く使う」は「新品が売れない」を意味し資本主義の拡大前提と矛盾</div>
+        <div class="pt"><span class="pill con">問題</span>循環システムの整備には莫大な初期投資が必要</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">環境のために企業が意図的に売上を減らすビジネスモデルへ移行すべきか。</div>
+        <div class="q-row pr">消費者が「修理する」を「新品を買う」より選ぶための経済的インセンティブを提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">right to repair</span><span class="kw-p t">planned obsolescence</span><span class="kw-p t">waste reduction</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g5"><div class="acc-head" onclick="tog('g5')"><div class="acc-num">5</div><div class="acc-info"><div class="acc-type t">PUBLIC HEALTH / SOCIETY <span class="bdg hot">HOT</span></div><div class="acc-title">Loneliness as Public Health Issue</div><div class="acc-sub">孤独の社会問題化 ／ 見えない流行病</div></div><div class="acc-arrow" id="ar-g5">▾</div></div>
+    <div class="acc-body" id="bd-g5"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>個人が望む人間関係と実際の関係にギャップがある状態。WHOは「タバコ15本/日と同等のリスク」とし心血管疾患・認知症・早期死亡リスクを高める公衆衛生問題と定義。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill vs">論点</span>個人の性格・選択の問題か、国家が介入すべき「社会の病」か</div>
+        <div class="pt"><span class="pill con">問題</span>SNSがリアルな繋がりを希薄にしかえって孤独を深めるという研究</div>
+        <div class="pt"><span class="pill con">問題</span>若者に最も深刻とする研究も。高齢者問題にとどまらない</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">孤独は個人のライフスタイル選択であり政府が税金を使って対策すべきでないか。</div>
+        <div class="q-row pr">高齢者・若者の孤立を防ぐために地域コミュニティと医療機関が行うべき対策を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">social isolation</span><span class="kw-p t">public health epidemic</span><span class="kw-p t">community building</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g6"><div class="acc-head" onclick="tog('g6')"><div class="acc-num">6</div><div class="acc-info"><div class="acc-type t">LABOR / DIGITAL LIFE</div><div class="acc-title">Right to Disconnect</div><div class="acc-sub">切断する権利 ／ 勤務時間外連絡の拒否</div></div><div class="acc-arrow" id="ar-g6">▾</div></div>
+    <div class="acc-body" id="bd-g6"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>勤務時間外にメール・SNS・電話などの仕事上の連絡を受け取ることを拒否する権利。フランスが2017年に法制化。テレワーク普及で「仕事とプライベートの境界消滅」問題が顕在化。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>過労防止・ワークライフバランス・メンタルヘルスの保護</div>
+        <div class="pt"><span class="pill con">問題</span>グローバルな時差対応・緊急対応の必要性。競争力低下の懸念</div>
+        <div class="pt"><span class="pill con">問題</span>「いつでも連絡できること」が評価される文化では法律だけでは変わらない</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">勤務時間外のメール・連絡を法律で完全に禁止すべきという意見に賛成か。</div>
+        <div class="q-row pr">テレワーク環境において「オンとオフ」を切り替えるための具体的な社内ルールを提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">work-life balance</span><span class="kw-p t">burnout prevention</span><span class="kw-p t">labor law reform</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g7"><div class="acc-head" onclick="tog('g7')"><div class="acc-num">7</div><div class="acc-info"><div class="acc-type t">TECHNOLOGY / DEMOCRACY <span class="bdg new">NEW</span></div><div class="acc-title">Deepfakes &amp; Media Literacy</div><div class="acc-sub">ディープフェイク ／ 情報の真偽と民主主義</div></div><div class="acc-arrow" id="ar-g7">▾</div></div>
+    <div class="acc-body" id="bd-g7"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>AIによって作られた本物と見分けがつかない人物の合成映像・音声・画像。選挙妨害・名誉毀損・フェイクニュースに悪用される一方、映画・教育では有益な活用も。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>映画・教育・エンターテインメントへの活用。歴史的人物の「復活」など</div>
+        <div class="pt"><span class="pill con">問題</span>選挙前の偽動画が有権者の判断を歪める。事実と虚偽の境界崩壊</div>
+        <div class="pt"><span class="pill con">問題</span>同意なく「本人の言葉」として拡散される性的・誹謗中傷コンテンツ</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">AIで作られた映像はすべて法的に「AI製」と明記することを義務付けるべきか。</div>
+        <div class="q-row pr">フェイクニュースに騙されないための義務教育でのメディアリテラシー教育案を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">media literacy</span><span class="kw-p t">AI regulation</span><span class="kw-p t">digital democracy</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g8"><div class="acc-head" onclick="tog('g8')"><div class="acc-num">8</div><div class="acc-info"><div class="acc-type t">ENVIRONMENT / FOOD CULTURE</div><div class="acc-title">Meat Alternatives</div><div class="acc-sub">代替肉・培養肉 ／ 食の未来と伝統</div></div><div class="acc-arrow" id="ar-g8">▾</div></div>
+    <div class="acc-body" id="bd-g8"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>植物性原料（大豆・えんどう豆など）や動物の細胞を培養した「本物の肉に代わる食品」。畜産業は温室効果ガスの約15%を排出するため気候変動対策の切り札と期待される。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>CO₂削減・水資源節約・動物愛護の観点での環境的優位性</div>
+        <div class="pt"><span class="pill con">問題</span>伝統的畜産業に携わる人々の生活・地域経済への打撃</div>
+        <div class="pt"><span class="pill con">問題</span>高度加工食品への安全性懸念。宗教的・倫理的解釈の相違</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">環境保護のために将来的に本物の肉の販売に税金を課すべきか。</div>
+        <div class="q-row pr">代替肉を日本の一般家庭に普及させるための価格以外の障壁を取り除く方法を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">plant-based diet</span><span class="kw-p t">food security</span><span class="kw-p t">carbon footprint</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g9"><div class="acc-head" onclick="tog('g9')"><div class="acc-num">9</div><div class="acc-info"><div class="acc-type t">TECHNOLOGY / SOCIAL EQUITY</div><div class="acc-title">Digital Divide</div><div class="acc-sub">デジタル格差 ／ テクノロジーと社会的排除</div></div><div class="acc-arrow" id="ar-g9">▾</div></div>
+    <div class="acc-body" id="bd-g9"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>ITの恩恵を受けられる人と受けられない人の差。高齢者・貧困層・障害者・農村部住民がデジタル化によって行政・医療・教育・雇用機会から排除されるリスク。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>行政コスト削減・24時間サービス・利便性向上のためのデジタル化は不可避</div>
+        <div class="pt"><span class="pill con">問題</span>デジタル化が進むほどITに不慣れな人々が公共サービスにアクセスできなくなる逆説</div>
+        <div class="pt"><span class="pill con">問題</span>遠隔医療の普及がデジタル格差と重なる地域では健康格差を広げる可能性</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">あらゆる行政手続きを「デジタルのみ」に完全移行すべきか。</div>
+        <div class="q-row pr">テクノロジーに不慣れな人々をサポートするための地域単位の包括的支援策を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">digital inclusion</span><span class="kw-p t">social equity</span><span class="kw-p t">healthcare access</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g10"><div class="acc-head" onclick="tog('g10')"><div class="acc-num">10</div><div class="acc-info"><div class="acc-type t">TECHNOLOGY / ECONOMICS <span class="bdg new">NEW</span></div><div class="acc-title">Digital Transformation (DX)</div><div class="acc-sub">デジタルトランスフォーメーション ／ 社会変革の光と影</div></div><div class="acc-arrow" id="ar-g10">▾</div></div>
+    <div class="acc-body" id="bd-g10"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>デジタル技術を活用して企業・行政・社会の仕組みそのものを変革すること。単なるITの導入（デジタイゼーション）とは異なり、業務プロセス・文化・顧客体験の根本的な再設計を意味する。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>生産性向上・新サービス創出・行政効率化・医療DXによる僻地医療の改善</div>
+        <div class="pt"><span class="pill con">問題</span>雇用の置き換え。中高年・中小企業・地方がデジタル化の恩恵を受けにくい</div>
+        <div class="pt"><span class="pill con">問題</span>サイバーセキュリティリスクと個人情報の集中管理による漏洩リスク</div>
+        <div class="pt"><span class="pill con">問題</span>「変革できる企業」と「取り残される企業」の二極化が格差を拡大する</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">政府がすべての中小企業のDX推進を義務付けることは適切か。</div>
+        <div class="q-row yn">DXの推進は結果的に中高年労働者を不利にするという意見に賛成か。</div>
+        <div class="q-row pr">DXの恩恵が地方・高齢者・中小企業にも届くようにするための政策を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">digital transformation</span><span class="kw-p t">labor displacement</span><span class="kw-p t">cybersecurity</span><span class="kw-p t">regional gap</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g11"><div class="acc-head" onclick="tog('g11')"><div class="acc-num">11</div><div class="acc-info"><div class="acc-type t">ECONOMICS / SOCIAL POLICY <span class="bdg new">NEW</span></div><div class="acc-title">Basic Income</div><div class="acc-sub">ベーシックインカム ／ 無条件の所得保障</div></div><div class="acc-arrow" id="ar-g11">▾</div></div>
+    <div class="acc-body" id="bd-g11"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>政府がすべての国民に、就労状況・収入水準に関わらず、一定額の現金を定期的に無条件で給付する制度。フィンランド・ケニアなどで試験的実施の事例がある。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>貧困撲滅・社会保障の簡素化・AI化による雇用喪失へのセーフティネット</div>
+        <div class="pt"><span class="pill pro">利点</span>官僚的な審査なしに支援が届く。ケアワーク・芸術など評価されにくい労働の承認</div>
+        <div class="pt"><span class="pill con">問題</span>財源論。大規模な財政出動が必要で増税か国債か議論が分かれる</div>
+        <div class="pt"><span class="pill con">問題</span>就労意欲の低下懸念。「働かなくてもよい」文化的副作用</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">AIによる雇用喪失への対策として、日本でもベーシックインカムを導入すべきか。</div>
+        <div class="q-row yn">ベーシックインカムは就労意欲を低下させ、経済成長を妨げるという意見に賛成か。</div>
+        <div class="q-row pr">ベーシックインカムの財源として最も公平な税制改革案を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">universal basic income</span><span class="kw-p t">social safety net</span><span class="kw-p t">labor incentive</span><span class="kw-p t">fiscal policy</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g12"><div class="acc-head" onclick="tog('g12')"><div class="acc-num">12</div><div class="acc-info"><div class="acc-type t">ENVIRONMENT / ECONOMICS <span class="bdg new">NEW</span></div><div class="acc-title">Green Transformation (GX)</div><div class="acc-sub">グリーントランスフォーメーション ／ 脱炭素と産業転換</div></div><div class="acc-arrow" id="ar-g12">▾</div></div>
+    <div class="acc-body" id="bd-g12"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>化石燃料中心の社会・経済構造を再生可能エネルギー・省エネ・炭素循環を軸にした「グリーン」な構造へ根本的に転換すること。日本政府はGX推進戦略として2050年カーボンニュートラルを目標とする。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>再生可能エネルギー産業の拡大・新たな雇用創出・長期的なエネルギー安全保障</div>
+        <div class="pt"><span class="pill pro">利点</span>気候変動対策の最前線に立つことで国際競争力・技術輸出のチャンス</div>
+        <div class="pt"><span class="pill con">問題</span>転換期のエネルギーコスト上昇が家計・中小企業を直撃。電力料金高騰</div>
+        <div class="pt"><span class="pill con">問題</span>石炭・石油関連産業に携わる労働者の雇用喪失。「公正な移行（Just Transition）」が必須</div>
+        <div class="pt"><span class="pill con">問題</span>途上国に「脱炭素のコスト」を押し付ける先進国の不公平さという倫理問題</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">GX実現のために国民がエネルギー価格の上昇を受け入れることは正当化されるか。</div>
+        <div class="q-row yn">途上国に対して先進国と同じ脱炭素基準を求めることは公平か。</div>
+        <div class="q-row pr">石炭産業で働く労働者がグリーン産業へ円滑に移行できる支援策を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">carbon neutrality</span><span class="kw-p t">just transition</span><span class="kw-p t">renewable energy</span><span class="kw-p t">energy security</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g13"><div class="acc-head" onclick="tog('g13')"><div class="acc-num">13</div><div class="acc-info"><div class="acc-type t">GENDER / LABOR POLICY <span class="bdg new">NEW</span></div><div class="acc-title">Male Parental Leave</div><div class="acc-sub">男性育休 ／ 義務化論争とジェンダー平等</div></div><div class="acc-arrow" id="ar-g13">▾</div></div>
+    <div class="acc-body" id="bd-g13"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>男性が育児のために仕事を休む制度。日本では2022年に「産後パパ育休」が創設されたが取得率は約30%にとどまる。スウェーデン・アイスランドでは父親の育休取得が義務に近い形で浸透。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>女性のキャリア継続・育児負担の公平化・少子化対策として有効</div>
+        <div class="pt"><span class="pill pro">利点</span>男性の育児参加が子どもの発達・夫婦関係にもプラスという研究</div>
+        <div class="pt"><span class="pill con">問題</span>職場の人手不足・「休めない空気」という日本固有の文化的障壁</div>
+        <div class="pt"><span class="pill con">問題</span>義務化は個人の自由・企業の経営判断への過剰介入という批判</div>
+        <div class="pt"><span class="pill con">問題</span>中小企業では代替人員の確保が難しく経済的負担が大きい</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">男性の育休取得を法律で義務化することに賛成か。</div>
+        <div class="q-row yn">育休取得率の低さは個人の意識の問題ではなく企業・社会の構造的な問題か。</div>
+        <div class="q-row pr">男性が育休を取得しやすい職場文化を作るために企業が行うべき具体的な取り組みを提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">paternity leave</span><span class="kw-p t">gender equality</span><span class="kw-p t">work culture reform</span><span class="kw-p t">childcare policy</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g14"><div class="acc-head" onclick="tog('g14')"><div class="acc-num">14</div><div class="acc-info"><div class="acc-type t">ECONOMICS / ETHICS <span class="bdg new">NEW</span></div><div class="acc-title">Fair Trade</div><div class="acc-sub">フェアトレード ／ 公正な貿易と認証の信頼性</div></div><div class="acc-arrow" id="ar-g14">▾</div></div>
+    <div class="acc-body" id="bd-g14"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>途上国の生産者に正当な対価を支払い、劣悪な労働条件を排除することを目的とした貿易の仕組み。コーヒー・チョコレート・衣類などに「フェアトレード認証ラベル」が付与される。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>生産者の生活水準・労働環境の改善。消費者の倫理的選択を可能にする</div>
+        <div class="pt"><span class="pill con">問題</span>「フェアウォッシング」：認証ラベルの取得コストが高く実態が伴わない場合も</div>
+        <div class="pt"><span class="pill con">問題</span>個人の消費者選択に依存するだけでは市場全体は変わらない。法的規制の方が有効か</div>
+        <div class="pt"><span class="pill con">問題</span>価格が高くなることで低所得者層が倫理的消費から排除される</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">フェアトレード製品を選ぶことは個人の倫理的責任か、企業・政府が解決すべき構造問題か。</div>
+        <div class="q-row pr">認証の信頼性を高め「フェアウォッシング」を防ぐための国際的な監査制度を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">fair trade certification</span><span class="kw-p t">fairwashing</span><span class="kw-p t">supply chain ethics</span><span class="kw-p t">consumer activism</span></div>
+    </div></div>
+
+    <div class="acc tl" id="g15"><div class="acc-head" onclick="tog('g15')"><div class="acc-num">15</div><div class="acc-info"><div class="acc-type t">TECHNOLOGY / CONSUMER RIGHTS</div><div class="acc-title">Planned Obsolescence</div><div class="acc-sub">計画的陳腐化 ／ 修理する権利と使い捨て文化</div></div><div class="acc-arrow" id="ar-g15">▾</div></div>
+    <div class="acc-body" id="bd-g15"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>製品の寿命を意図的に短く設計したり修理しにくくすることで消費者に買い替えを促す戦略。スマートフォンのバッテリー交換困難・ソフトウェアサポート終了が典型例。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>買い替えサイクルが新技術への投資資金を生み、イノベーションを促進するという産業論理</div>
+        <div class="pt"><span class="pill con">問題</span>「修理する権利（Right to Repair）」の侵害。消費者の自由と資源の浪費</div>
+        <div class="pt"><span class="pill con">問題</span>廃棄された電子機器（e-waste）に含まれる重金属が途上国で深刻な環境汚染を引き起こす</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">メーカーは製品の「修理可能性」を法的に保証する義務を負うべきか。</div>
+        <div class="q-row pr">「使い捨て文化」を終わらせるために中古品・修理済み品への新たな価値観を広める方法を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p t">right to repair</span><span class="kw-p t">e-waste</span><span class="kw-p t">product lifespan</span><span class="kw-p t">consumer protection</span></div>
+    </div></div>
+
+  </div>
+</div>
+</div>
+
+<!-- PAGE: 医学時事 -->
+<div class="page" id="pg-medical">
+<div class="wrap">
+  <div class="pg-head">
+    <div class="pg-title">医学・医療 重要テーマ 8選</div>
+    <p class="pg-sub">医学部入試で差がつく専門的な議論。定義・議論のポイント・予想設問を収録。</p>
+  </div>
+  <div class="notice">
+    <strong>採点で差がつくキーワード：</strong>
+    <code>QOL</code> <code>Patient Autonomy</code> <code>Triage</code> <code>Compassion Fatigue</code> <code>Black-box Problem</code> <code>Young Carer</code> <code>Prenatal Diagnosis</code><br>
+    これらを文脈に合わせて使いこなすことで「医学的素養のある受験生」として高く評価される。
+  </div>
+  <div class="acc-list">
+
+    <div class="acc rl" id="m1"><div class="acc-head" onclick="tog('m1')"><div class="acc-num">1</div><div class="acc-info"><div class="acc-type r">DIGITAL HEALTH</div><div class="acc-title">Online Telemedicine</div><div class="acc-sub">オンライン診療 ／ 遠隔医療の限界と可能性</div></div><div class="acc-arrow" id="ar-m1">▾</div></div>
+    <div class="acc-body" id="bd-m1"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>スマートフォン・タブレットを通じて医師が遠隔地の患者を診察・処方する医療形態。2020年COVID以降日本でも急拡大。離島・山村部の医療格差解消が期待されるが課題も多い。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>離島・農村部・多忙な現代人の受診障壁の低減、感染リスク回避</div>
+        <div class="pt"><span class="pill con">問題</span>触診・打診・聴診が不可能。顔色・呼吸・皮膚状態など非言語情報の見落としリスク</div>
+        <div class="pt"><span class="pill con">問題</span>医師-患者の深い信頼関係（ラポール）が画面越しでは築きにくい</div>
+        <div class="pt"><span class="pill con">問題</span>高齢者・低所得者がITを使えない場合、デジタル格差が医療格差を拡大する逆説</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">オンライン診療は対面診療と同等の診療報酬を受けるべきか。</div>
+        <div class="q-row pr">オンライン診療で誤診を防ぐために医師が遵守すべき具体的なガイドラインを提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">rapport building</span><span class="kw-p r">diagnostic accuracy</span><span class="kw-p r">healthcare access</span><span class="kw-p r">digital divide</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m2"><div class="acc-head" onclick="tog('m2')"><div class="acc-num">2</div><div class="acc-info"><div class="acc-type r">AI × MEDICINE</div><div class="acc-title">AI Medical Responsibility</div><div class="acc-sub">AI医療と責任問題 ／ ブラックボックスと信頼</div></div><div class="acc-arrow" id="ar-m2">▾</div></div>
+    <div class="acc-body" id="bd-m2"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>AIが画像診断や治療方針の決定を補助・代替する際に生じる法的・倫理的責任の帰属問題。Deep LearningはAI自身が判断の理由を説明できない「ブラックボックス問題」を抱える。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>AIは専門医を超える診断精度を達成しつつあり、見落としゼロ・24時間稼働が可能</div>
+        <div class="pt"><span class="pill con">問題</span>判断根拠を説明できないAIの診断はEvidence-Based Medicineの原則と相容れない</div>
+        <div class="pt"><span class="pill con">問題</span>Automation Bias：医師がAIを盲信し自ら判断しなくなるリスク</div>
+        <div class="pt"><span class="pill con">問題</span>AIによる医療ミスの際、医師・病院・AI開発者のいずれが責任を負うか法整備が追いついていない</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">AIが人間の医師より高い診断精度を達成した場合、最終的な意思決定権限はAIに移すべきか。</div>
+        <div class="q-row pr">AI医療事故において医師・病院・AI開発者の間の責任分担ルールを提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">black-box problem</span><span class="kw-p r">evidence-based medicine</span><span class="kw-p r">automation bias</span><span class="kw-p r">legal liability</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m3"><div class="acc-head" onclick="tog('m3')"><div class="acc-num">3</div><div class="acc-info"><div class="acc-type r">MEDICAL ETHICS / WELLBEING</div><div class="acc-title">Compassion Fatigue</div><div class="acc-sub">共感疲労 ／ 医療者の感情的燃え尽き</div></div><div class="acc-arrow" id="ar-m3">▾</div></div>
+    <div class="acc-body" id="bd-m3"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>医師・看護師・ソーシャルワーカーなどが患者の苦しみや外傷体験に継続的に共感することで精神的に消耗し、共感能力そのものが麻痺した状態。一般的な「燃え尽き症候群（Burnout）」より急速に進行する。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill vs">論点</span>「深い共感」こそが良い医師の証という信念が、皮肉にも燃え尽きや医療ミスを招くパラドックス</div>
+        <div class="pt"><span class="pill con">問題</span>医学教育は「感情的距離の保ち方」を教えるべきか、それともメンタルケア体制を整えるべきか</div>
+        <div class="pt"><span class="pill con">問題</span>1診察あたりの時間短縮（タイパ化）が「共感の余白」を奪っているという批判</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">患者に深く共感できない医師は医師としての資格を欠くという主張に賛成か。</div>
+        <div class="q-row pr">医療現場での燃え尽きを防ぐために病院経営者が導入すべき具体的な制度を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">burnout syndrome</span><span class="kw-p r">secondary traumatic stress</span><span class="kw-p r">emotional resilience</span><span class="kw-p r">physician wellbeing</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m4"><div class="acc-head" onclick="tog('m4')"><div class="acc-num">4</div><div class="acc-info"><div class="acc-type r">BIOETHICS / END-OF-LIFE</div><div class="acc-title">Advance Directives</div><div class="acc-sub">事前指示書（リビングウィル）／ 死に方を決める権利</div></div><div class="acc-arrow" id="ar-m4">▾</div></div>
+    <div class="acc-body" id="bd-m4"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>意識不明や意思疎通困難になった場合に延命治療を受けるかどうかを事前に文書で記録する制度。西洋では普及しているが日本では法的整備が遅れている。「尊厳死」「リビングウィル」とも関連する。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>自己決定権（Patient Autonomy）の尊重。本人の意思通りの「死に方」を実現</div>
+        <div class="pt"><span class="pill con">問題</span>「延命不要」という本人の指示に反して家族が「助けてほしい」と懇願する現場の葛藤</div>
+        <div class="pt"><span class="pill con">問題</span>健康な状態で書いた意思と、実際に終末期になった時の意思が変わる可能性</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">本人の明確な意思がある場合、家族の反対があっても延命治療を停止すべきか。</div>
+        <div class="q-row pr">日本での事前指示書の普及を促すために医療機関・学校・地域社会が行うべき啓発活動を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">patient autonomy</span><span class="kw-p r">dignity in dying</span><span class="kw-p r">end-of-life care</span><span class="kw-p r">QOL</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m5"><div class="acc-head" onclick="tog('m5')"><div class="acc-num">5</div><div class="acc-info"><div class="acc-type r">MEDICAL ETHICS / DISASTER</div><div class="acc-title">Medical Triage</div><div class="acc-sub">医療トリアージ ／ 「誰を助けるか」の倫理</div></div><div class="acc-arrow" id="ar-m5">▾</div></div>
+    <div class="acc-body" id="bd-m5"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>医療資源が限られた大規模災害・パンデミック・救急医療において治療・搬送の優先順位をつける行為。功利主義（最大多数の最大幸福）と義務論（一命の平等性）が鋭く対立する倫理問題。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>限られたリソースで最大数の命を救うための合理的な方法として功利主義的に正当化される</div>
+        <div class="pt"><span class="pill con">問題</span>「生存確率が低い」ことを理由に治療を後回しにすることは基本的人権の侵害ではないか</div>
+        <div class="pt"><span class="pill con">問題</span>「誰を諦めるかを決めた」医師が抱えるPTSD・モラルディストレスへの支援体制が不十分</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">パンデミック時に生存率の低い高齢者より若い患者を優先するトリアージ基準は倫理的に正当か。</div>
+        <div class="q-row pr">トリアージを行う医師の精神的ダメージを軽減するために病院・社会が整備すべき支援体制を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">utilitarian ethics</span><span class="kw-p r">moral distress</span><span class="kw-p r">resource allocation</span><span class="kw-p r">crisis standard of care</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m6"><div class="acc-head" onclick="tog('m6')"><div class="acc-num">6</div><div class="acc-info"><div class="acc-type r">GENOMICS / BIOETHICS</div><div class="acc-title">Precision Medicine</div><div class="acc-sub">精密医療（ゲノム医療）／ 個別化と格差</div></div><div class="acc-arrow" id="ar-m6">▾</div></div>
+    <div class="acc-body" id="bd-m6"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>個人の遺伝情報・生活習慣・環境データを詳細に解析し、その人に最適な治療・予防を提供する医療アプローチ。「平均的な患者」ではなく「この患者」に合わせた治療を目指す。がんの分子標的治療が先行事例。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>不要な投薬・副作用の軽減。がん治療の劇的な改善。予防医療への応用</div>
+        <div class="pt"><span class="pill con">問題</span>高額なゲノム解析・個別化治療を受けられるのは富裕層のみという健康格差の深刻化</div>
+        <div class="pt"><span class="pill con">問題</span>遺伝情報は究極の個人情報。保険・雇用・家族関係での差別的利用リスク</div>
+        <div class="pt"><span class="pill con">問題</span>出生前診断の精度向上が選択的中絶・優生学的問題と隣接する</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">高額な精密医療は公的保険でカバーすべきでないという意見に賛成か。</div>
+        <div class="q-row pr">遺伝情報のプライバシーを守るための厳格な法的整備案を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">genomic medicine</span><span class="kw-p r">health equity</span><span class="kw-p r">genetic privacy</span><span class="kw-p r">insurance discrimination</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m7"><div class="acc-head" onclick="tog('m7')"><div class="acc-num">7</div><div class="acc-info"><div class="acc-type r">SOCIAL MEDICINE / CHILD WELFARE <span class="bdg new">NEW</span></div><div class="acc-title">Young Carers</div><div class="acc-sub">ヤングケアラー ／ 介護を担う子どもたち</div></div><div class="acc-arrow" id="ar-m7">▾</div></div>
+    <div class="acc-body" id="bd-m7"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>家族の介護・看護・障害のある親や兄弟のサポートなどを日常的に担う18歳未満の子ども。日本では2020年以降実態調査が進み、中高生の約5〜6%が相当するとされる。本来大人が担うべき責任を背負わされている状態。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill con">問題</span>学業・友人関係・進路・睡眠が犠牲になり、教育機会の喪失が将来的な貧困連鎖を生む</div>
+        <div class="pt"><span class="pill con">問題</span>「家族を助けることは当然」という規範が子ども自身に問題を認識させず支援を求めにくくする</div>
+        <div class="pt"><span class="pill con">問題</span>学校・医療現場での発見が遅れる。教師や医師の認知不足が深刻</div>
+        <div class="pt"><span class="pill vs">論点</span>「家族の絆」という美談として語られがちで、構造的問題として捉えられにくい日本的文化背景</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">家族の介護をすることで子どもが学業を犠牲にすることは、家族の絆として尊重されるべきか。</div>
+        <div class="q-row yn">ヤングケアラー問題は家庭の事情であり政府が介入すべきではないという意見に賛成か。</div>
+        <div class="q-row pr">ヤングケアラーを早期に発見し支援するために学校・医療機関・行政が連携して行うべき具体策を提案せよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">young carer</span><span class="kw-p r">child welfare</span><span class="kw-p r">caregiver burden</span><span class="kw-p r">educational inequality</span></div>
+    </div></div>
+
+    <div class="acc rl" id="m8"><div class="acc-head" onclick="tog('m8')"><div class="acc-num">8</div><div class="acc-info"><div class="acc-type r">BIOETHICS / REPRODUCTIVE MEDICINE <span class="bdg new">NEW</span></div><div class="acc-title">Prenatal Diagnosis</div><div class="acc-sub">出生前診断 ／ 命の選択と倫理的境界線</div></div><div class="acc-arrow" id="ar-m8">▾</div></div>
+    <div class="acc-body" id="bd-m8"><hr>
+      <div class="def-b"><span class="lbl">定義</span><p>出生前に胎児の染色体異常や遺伝疾患を調べる検査。NIPT（非侵襲性出生前遺伝学的検査）の普及により妊婦の血液だけでダウン症などの検出が可能になった。結果によっては妊娠継続・中絶の選択を迫られる。</p></div>
+      <span class="pts-lbl">議論のポイント</span>
+      <div class="pts">
+        <div class="pt"><span class="pill pro">利点</span>出生後の準備ができる・早期治療開始が可能・当事者夫婦の自己決定権の尊重</div>
+        <div class="pt"><span class="pill con">問題</span>陽性診断後の中絶率が非常に高く、障害者の「生きる価値」への社会的メッセージとなる懸念</div>
+        <div class="pt"><span class="pill con">問題</span>障害のある人や家族が「生まれてくるべきではなかった」と感じさせる差別的構造（Wrongful Life）</div>
+        <div class="pt"><span class="pill con">問題</span>「完璧な子どもを産む」プレッシャーが高まり、デザイナーベビー論争と地続きになる</div>
+        <div class="pt"><span class="pill vs">論点</span>検査を受けること自体は「知る権利」の行使か、「選択的排除」への加担か</div>
+      </div>
+      <span class="pts-lbl">予想設問</span>
+      <div class="qs-list">
+        <div class="q-row yn">出生前診断で疾患が判明した場合の中絶は倫理的に許容されるか。</div>
+        <div class="q-row yn">出生前診断は親の「知る権利」として制限なく提供されるべきか。</div>
+        <div class="q-row pr">出生前診断を受けるカップルに対して医療機関が提供すべき「遺伝カウンセリング」の内容と役割を提案せよ。</div>
+        <div class="q-row pr">障害のある人が生きやすい社会をつくることで選択的中絶を減らせるとする立場から、社会整備の提案をせよ。</div>
+      </div>
+      <div class="kws"><span class="kw-p r">prenatal diagnosis</span><span class="kw-p r">reproductive autonomy</span><span class="kw-p r">disability rights</span><span class="kw-p r">genetic counseling</span><span class="kw-p r">selective abortion</span></div>
+    </div></div>
+
+  </div>
+</div>
+</div>
+
+<footer>
+  <span>英語科 教材研究資料 ／ 2025年度入試分析</span>
+  <span>一般 15テーマ ＋ 医学 8テーマ ／ 計78問以上</span>
+</footer>
+
+<script>
+function go(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+}
+function tog(id){
+  const b=document.getElementById('bd-'+id);
+  const a=document.getElementById('ar-'+id);
+  const o=b.classList.contains('open');
+  b.classList.toggle('open',!o);
+  a.classList.toggle('open',!o);
+}
+</script>
+</body>
+</html>

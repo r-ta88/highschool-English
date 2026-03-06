@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>It is 形容詞 that S V — 形容詞パターン完全ガイド</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Source+Code+Pro:wght@500&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-main: #f8f9fc;
+      --bg-card: #ffffff;
+      --bg-card-alt: #f1f5f9;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
+      --accent-green: #059669;
+      --accent-orange: #ea580c;
+      --accent-pink: #db2777;
+      --accent-cyan: #0891b2;
+      --accent-red: #dc2626;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border-light: #e2e8f0;
+      --border-medium: #cbd5e1;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 60px 40px;
+      text-align: center;
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 50%, #faf5ff 100%);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: white;
+      border: 1px solid var(--accent-blue);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--accent-blue);
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .hero-formula {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      padding: 14px 28px;
+      background: white;
+      border: 2px solid var(--border-medium);
+      border-radius: 12px;
+      display: inline-block;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-formula .adj { color: var(--accent-green); font-weight: 700; }
+    .hero-formula .subj { color: var(--accent-purple); font-weight: 700; }
+    .hero-formula .verb { color: var(--accent-orange); font-weight: 700; }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    .section-icon {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .icon-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .icon-col .label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .icon-col .ok,
+    .icon-col .ng {
+      font-size: 1rem;
+    }
+
+    .section-icon .ok { color: var(--accent-green); }
+    .section-icon .ng { color: var(--accent-red); }
+
+    .section-header h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    /* Pattern Sections */
+    .pattern-section {
+      margin-bottom: 50px;
+    }
+
+    .pattern-desc {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    /* Pattern A: that ○ / to do × */
+    .pattern-a-icon {
+      background: #fef3c7;
+    }
+    .pattern-a .section-header {
+      border-color: #fde68a;
+    }
+
+    /* Pattern B: both ○ */
+    .pattern-b-icon {
+      background: #dcfce7;
+    }
+    .pattern-b .section-header {
+      border-color: #bbf7d0;
+    }
+
+    /* Pattern C: that × / to do ○ */
+    .pattern-c-icon {
+      background: #fee2e2;
+    }
+    .pattern-c .section-header {
+      border-color: #fecaca;
+    }
+
+    /* Pattern Grid */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .pattern-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pattern-a .pattern-card { border-color: #fde68a; }
+    .pattern-b .pattern-card { border-color: #bbf7d0; }
+    .pattern-c .pattern-card { border-color: #fecaca; }
+
+    .pattern-card h4 {
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .pattern-a .pattern-card h4 { color: #b45309; }
+    .pattern-b .pattern-card h4 { color: #059669; }
+    .pattern-c .pattern-card h4 { color: #dc2626; }
+
+    /* Word Tags */
+    .word-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .word-tags span {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .word-tags span sup {
+      font-size: 0.6rem;
+      opacity: 0.6;
+      margin-left: 2px;
+    }
+
+    .pattern-a .word-tags span {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #b45309;
+    }
+
+    .pattern-b .word-tags span {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      color: #059669;
+    }
+
+    .pattern-c .word-tags span {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+    }
+
+    /* Example Pairs */
+    .example-pair {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      background: var(--bg-card-alt);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .ex {
+      padding: 6px 0;
+    }
+
+    .ex-ok {
+      color: var(--accent-green);
+    }
+
+    .ex-ng {
+      color: var(--accent-red);
+    }
+
+    .ex strong {
+      font-weight: 600;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      padding-left: 8px;
+      border-left: 2px solid var(--border-light);
+    }
+
+    /* Pattern Noun Section */
+    .pattern-noun-icon {
+      background: #e0e7ff;
+    }
+
+    .pattern-noun-icon .noun-label {
+      font-size: 0.8rem;
+      color: #4338ca;
+      font-weight: 700;
+    }
+
+    .pattern-noun .section-header {
+      border-color: #c7d2fe;
+    }
+
+    .pattern-noun .pattern-card {
+      border-color: #c7d2fe;
+    }
+
+    .pattern-noun .pattern-card h4 {
+      color: #4338ca;
+    }
+
+    .pattern-noun .word-tags span {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #4338ca;
+    }
+
+    .pattern-noun .word-tags span.essential {
+      background: #fef3c7;
+      border-color: #fcd34d;
+      color: #b45309;
+      position: relative;
+    }
+
+    .pattern-noun .word-tags span.essential::before {
+      content: '★';
+      font-size: 0.6rem;
+      margin-right: 3px;
+    }
+
+    .star-note {
+      font-size: 0.85rem;
+      color: #b45309;
+      margin-left: 8px;
+    }
+
+    .noun-note {
+      margin-top: 24px;
+      padding: 16px 20px;
+      background: #f8fafc;
+      border: 1px dashed var(--border-medium);
+      border-radius: 10px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .noun-note strong {
+      color: var(--text-primary);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-light);
+      background: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .pattern-grid {
+        grid-template-columns: 1fr;
+      }
+      .section-header {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-badge">CORPUS-BASED GRAMMAR GUIDE</div>
+    <h1>It is 形容詞 that S V</h1>
+    <div class="hero-formula">It is <span class="adj">形容詞</span> that <span class="subj">S</span> <span class="verb">V</span></div>
+    <p>that 節と to 不定詞は入れ替え可能ではない。<br>3つのパターンを押さえよう。<span style="font-size:0.85rem; opacity:0.7;">（数字はコーパス頻度）</span></p>
+  </header>
+
+  <main class="container">
+
+    <!-- Pattern A: that ○ / to do × -->
+    <section class="pattern-section pattern-a">
+      <div class="section-header">
+        <div class="section-icon pattern-a-icon">
+          <div class="icon-col"><span class="label">that</span><span class="ok">○</span></div>
+          <div class="icon-col"><span class="label">to do</span><span class="ng">×</span></div>
+        </div>
+        <h2>that 節のみ（to do 不可）</h2>
+      </div>
+      <p class="pattern-desc">命題の真偽・可能性・状況の性質など、<strong>客観的評価</strong>をする形容詞。to 不定詞とは組み合わせられません。</p>
+
+      <div class="pattern-grid">
+        <!-- 真偽・明白性 -->
+        <div class="pattern-card">
+          <h4>🔍 真偽・明白性</h4>
+          <div class="word-tags">
+            <span title="本当の">true<sup>3827</sup></span>
+            <span title="明らかな">obvious<sup>1038</sup></span>
+            <span title="明白な">evident<sup>697</sup></span>
+            <span title="明白な・見かけ上の">apparent<sup>554</sup></span>
+            <span title="確かな">certain<sup>254</sup></span>
+            <span title="否定できない">undeniable<sup>132</sup></span>
+            <span title="よく知られた">well-known<sup>63</sup></span>
+            <span title="明白な">plain<sup>55</sup></span>
+            <span title="不明確な">unclear<sup>45</sup></span>
+            <span title="議論の余地のない">indisputable<sup>30</sup></span>
+            <span title="自明の">self-evident<sup>29</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is obvious <strong>that he lied</strong>.</div>
+            <div class="ex ex-ng">× It is obvious <strong>for him to lie</strong>.</div>
+          </div>
+        </div>
+
+        <!-- 可能性・蓋然性 -->
+        <div class="pattern-card">
+          <h4>🎲 可能性・蓋然性</h4>
+          <div class="word-tags">
+            <span title="ありそうな">likely<sup>2323</sup></span>
+            <span title="ありそうにない">unlikely<sup>1353</sup></span>
+            <span title="疑わしい">doubtful<sup>344</sup></span>
+            <span title="考えられる">conceivable<sup>342</sup></span>
+            <span title="ありそうな">probable<sup>317</sup></span>
+            <span title="避けられない">inevitable<sup>214</sup></span>
+            <span title="もっともらしい">plausible<sup>147</sup></span>
+            <span title="考えられない">inconceivable<sup>116</sup></span>
+            <span title="まれな">rare<sup>106</sup></span>
+            <span title="不可能な">impossible<sup>102</sup></span>
+            <span title="議論の余地がある">arguable<sup>84</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is likely <strong>that he will come</strong>.</div>
+            <div class="ex ex-ng">× It is likely <strong>for him to come</strong>.</div>
+          </div>
+          <p class="note">※ He is likely to come. のように人主語なら可</p>
+        </div>
+
+        <!-- 状況の客観評価 -->
+        <div class="pattern-card">
+          <h4>💭 状況の客観評価</h4>
+          <div class="word-tags">
+            <span title="残念な・不運な">unfortunate<sup>413</sup></span>
+            <span title="注目に値する">noteworthy<sup>400</sup></span>
+            <span title="皮肉な">ironic<sup>311</sup></span>
+            <span title="遺憾な">regrettable<sup>42</sup></span>
+            <span title="幸運な">fortunate<sup>34</sup></span>
+            <span title="悲劇的な">tragic<sup>29</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is ironic <strong>that he won</strong>.</div>
+            <div class="ex ex-ng">× It is ironic <strong>for him to win</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pattern B: that ○ / to do ○ -->
+    <section class="pattern-section pattern-b">
+      <div class="section-header">
+        <div class="section-icon pattern-b-icon">
+          <div class="icon-col"><span class="label">that</span><span class="ok">○</span></div>
+          <div class="icon-col"><span class="label">to do</span><span class="ok">○</span></div>
+        </div>
+        <h2>両方 OK</h2>
+      </div>
+      <p class="pattern-desc">重要性・感情・妥当性など、<strong>感情的評価</strong>をする形容詞。that 節も to 不定詞も使えます。</p>
+
+      <div class="pattern-grid">
+        <!-- 重要性・必要性 -->
+        <div class="pattern-card">
+          <h4>⚡ 重要性・必要性</h4>
+          <div class="word-tags">
+            <span title="重要な">important<sup>1993</sup></span>
+            <span title="必須の・緊急の">imperative<sup>866</sup></span>
+            <span title="不可欠な">essential<sup>668</sup></span>
+            <span title="極めて重要な">critical<sup>434</sup></span>
+            <span title="極めて重要な">vital<sup>281</sup></span>
+            <span title="極めて重要な">crucial<sup>245</sup></span>
+            <span title="必要な">necessary<sup>218</sup></span>
+            <span title="より良い">better<sup>91</sup></span>
+            <span title="望ましい">desirable<sup>41</sup></span>
+            <span title="最重要の">paramount<sup>28</sup></span>
+            <span title="緊急の">urgent<sup>26</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is important <strong>that he attend</strong> the meeting.</div>
+            <div class="ex ex-ok">○ It is important <strong>for him to attend</strong> the meeting.</div>
+          </div>
+          <p class="note">※ that 節では仮定法現在（should）を伴うことが多い</p>
+        </div>
+
+        <!-- 可能性（possible） -->
+        <div class="pattern-card">
+          <h4>🎯 possible（例外）</h4>
+          <div class="word-tags">
+            <span title="可能な">possible<sup>3803</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is possible <strong>that he will fail</strong>.</div>
+            <div class="ex ex-ok">○ It is possible <strong>for him to fail</strong>.</div>
+          </div>
+          <p class="note">※ 可能性系で唯一 to do も可</p>
+        </div>
+
+        <!-- 状況の感情評価 -->
+        <div class="pattern-card">
+          <h4>💭 状況の感情評価</h4>
+          <div class="word-tags">
+            <span title="興味深い">interesting<sup>651</sup></span>
+            <span title="重要な・意味のある">significant<sup>310</sup></span>
+            <span title="悲しい">sad<sup>233</sup></span>
+            <span title="注目すべき">remarkable<sup>194</sup></span>
+            <span title="注目すべき">notable<sup>191</sup></span>
+            <span title="驚くべき">surprising<sup>175</sup></span>
+            <span title="驚くべき">amazing<sup>165</sup></span>
+            <span title="良い">good<sup>149</sup></span>
+            <span title="素晴らしい">great<sup>93</sup></span>
+            <span title="励みになる">encouraging<sup>71</sup></span>
+            <span title="驚くに当たらない">unsurprising<sup>57</sup></span>
+            <span title="がっかりさせる">disappointing<sup>52</sup></span>
+            <span title="素晴らしい">wonderful<sup>49</sup></span>
+            <span title="驚くべき">astonishing<sup>41</sup></span>
+            <span title="ばかげた">ridiculous<sup>38</sup></span>
+            <span title="恥ずべき">shameful<sup>37</sup></span>
+            <span title="おかしい">funny<sup>35</sup></span>
+            <span title="考えられない">unthinkable<sup>35</sup></span>
+            <span title="良い">nice<sup>32</sup></span>
+            <span title="言語道断の">outrageous<sup>32</sup></span>
+            <span title="信じられない">unbelievable<sup>29</sup></span>
+            <span title="衝撃的な">shocking<sup>29</sup></span>
+            <span title="容認できない">unacceptable<sup>24</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is surprising <strong>that he passed</strong>.</div>
+            <div class="ex ex-ok">○ It is surprising <strong>for him to pass</strong>.</div>
+          </div>
+        </div>
+
+        <!-- 適切性・妥当性 -->
+        <div class="pattern-card">
+          <h4>⚖️ 適切性・妥当性</h4>
+          <div class="word-tags">
+            <span title="理解できる">understandable<sup>219</sup></span>
+            <span title="自然な・当然の">natural<sup>81</sup></span>
+            <span title="奇妙な">strange<sup>65</sup></span>
+            <span title="奇妙な・興味深い">curious<sup>64</sup></span>
+            <span title="適切な">appropriate<sup>61</sup></span>
+            <span title="奇妙な">odd<sup>51</sup></span>
+            <span title="良い・結構な">well<sup>40</sup></span>
+            <span title="論理的な">logical<sup>39</sup></span>
+            <span title="合理的な">reasonable<sup>28</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is natural <strong>that he feel angry</strong>.</div>
+            <div class="ex ex-ok">○ It is natural <strong>for him to feel angry</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pattern C: that × / to do ○ -->
+    <section class="pattern-section pattern-c">
+      <div class="section-header">
+        <div class="section-icon pattern-c-icon">
+          <div class="icon-col"><span class="label">that</span><span class="ng">×</span></div>
+          <div class="icon-col"><span class="label">to do</span><span class="ok">○</span></div>
+        </div>
+        <h2>to do のみ（that 節不可）</h2>
+      </div>
+      <p class="pattern-desc">以下のカテゴリの形容詞は that 節を取りません：<strong>有効性・効率性・難易度・利便性</strong></p>
+
+      <div class="pattern-grid">
+        <!-- 有効性 -->
+        <div class="pattern-card">
+          <h4>🎯 有効性</h4>
+          <div class="word-tags">
+            <span title="効果的な">effective</span>
+            <span title="役に立つ">useful</span>
+            <span title="助けになる">helpful</span>
+            <span title="有益な">beneficial</span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ng">× It is effective <strong>that you study every day</strong>.</div>
+            <div class="ex ex-ok">○ It is effective <strong>for you to study every day</strong>.</div>
+          </div>
+        </div>
+
+        <!-- 効率性 -->
+        <div class="pattern-card">
+          <h4>⚡ 効率性</h4>
+          <div class="word-tags">
+            <span title="効率的な">efficient</span>
+            <span title="生産的な">productive</span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ng">× It is efficient <strong>that we use AI</strong>.</div>
+            <div class="ex ex-ok">○ It is efficient <strong>for us to use AI</strong>.</div>
+          </div>
+        </div>
+
+        <!-- 難易度 -->
+        <div class="pattern-card">
+          <h4>📊 難易度</h4>
+          <div class="word-tags">
+            <span title="簡単な">easy</span>
+            <span title="難しい">difficult</span>
+            <span title="難しい">hard</span>
+            <span title="簡単な">simple</span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ng">× It is difficult <strong>that he solves this</strong>.</div>
+            <div class="ex ex-ok">○ It is difficult <strong>for him to solve this</strong>.</div>
+          </div>
+        </div>
+
+        <!-- 利便性 -->
+        <div class="pattern-card">
+          <h4>🔧 利便性</h4>
+          <div class="word-tags">
+            <span title="便利な・都合の良い">convenient</span>
+            <span title="手軽な">handy</span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ng">× It is convenient <strong>that you visit me</strong>.</div>
+            <div class="ex ex-ok">○ It is convenient <strong>for you to visit me</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Noun Pattern Section -->
+    <section class="pattern-section pattern-noun">
+      <div class="section-header">
+        <div class="section-icon pattern-noun-icon">
+          <span class="noun-label">名詞</span>
+        </div>
+        <h2>It is 名詞 that S V（補足）</h2>
+      </div>
+      <p class="pattern-desc">形容詞と同様の評価機能を持つ名詞表現。ただし<strong>決まり文句</strong>であり、類推は効きません。<span class="star-note">★ = 必須</span></p>
+
+      <div class="pattern-grid">
+        <!-- 残念・遺憾系 -->
+        <div class="pattern-card">
+          <h4>😢 残念・遺憾</h4>
+          <div class="word-tags">
+            <span class="essential" title="残念なことだ → shameful / unfortunate">a shame<sup>240</sup></span>
+            <span class="essential" title="残念なことだ → unfortunate">a pity<sup>76</sup></span>
+            <span title="悲劇だ → tragic">a tragedy<sup>19</sup></span>
+            <span title="茶番だ・ひどい歪曲だ">a travesty<sup>14</sup></span>
+            <span title="恥だ → disgraceful">a disgrace<sup>9</sup></span>
+            <span title="スキャンダルだ → scandalous">a scandal<sup>6</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is <strong>a pity</strong> that he can't come.</div>
+            <div class="ex ex-ok">= It is <strong>unfortunate</strong> that he can't come.</div>
+          </div>
+        </div>
+
+        <!-- 当然・驚くに当たらない系 -->
+        <div class="pattern-card">
+          <h4>🤷 当然・驚くに当たらない</h4>
+          <div class="word-tags">
+            <span class="essential" title="驚くことではない → unsurprising">no surprise<sup>356</sup></span>
+            <span class="essential" title="当然だ・不思議ではない → unsurprising">no wonder<sup>313</sup></span>
+            <span title="偶然ではない">no coincidence<sup>279</sup></span>
+            <span title="偶然ではない">no accident<sup>235</sup></span>
+            <span title="秘密ではない → obvious">no secret<sup>169</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is <strong>no wonder</strong> that he quit.</div>
+            <div class="ex ex-ok">= It is <strong>unsurprising</strong> that he quit.</div>
+          </div>
+          <p class="note">※ no doubt は There is no doubt that が普通</p>
+        </div>
+
+        <!-- 真偽・信憑性系 -->
+        <div class="pattern-card">
+          <h4>📜 真偽・信憑性</h4>
+          <div class="word-tags">
+            <span class="essential" title="事実だ → true">a fact<sup>301</sup></span>
+            <span title="神話だ（＝嘘だ） → false / untrue">a myth<sup>49</sup></span>
+            <span title="現実だ → real / true">a reality<sup>27</sup></span>
+            <span title="自明のことだ">a truism<sup>15</sup></span>
+            <span title="確実だ → certain">a certainty<sup>9</sup></span>
+            <span title="誤解だ → mistaken">a misconception<sup>8</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is <strong>a fact</strong> that the earth is round.</div>
+            <div class="ex ex-ok">= It is <strong>true</strong> that the earth is round.</div>
+          </div>
+        </div>
+
+        <!-- 驚き・奇跡系 -->
+        <div class="pattern-card">
+          <h4>✨ 驚き・奇跡</h4>
+          <div class="word-tags">
+            <span title="不思議だ・驚きだ → wonderful">a wonder<sup>25</sup></span>
+            <span title="奇跡だ → miraculous">a miracle<sup>22</sup></span>
+            <span title="偶然だ → coincidental">a coincidence<sup>12</sup></span>
+            <span title="逆説だ・矛盾だ → paradoxical">a paradox<sup>6</sup></span>
+            <span title="驚きだ → surprising">a surprise<sup>5</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is <strong>a miracle</strong> that he survived.</div>
+            <div class="ex ex-ok">= It is <strong>miraculous</strong> that he survived.</div>
+          </div>
+        </div>
+
+        <!-- 問題・脅威系 -->
+        <div class="pattern-card">
+          <h4>⚠️ 問題・脅威</h4>
+          <div class="word-tags">
+            <span title="問題だ → problematic">a problem<sup>73</sup></span>
+            <span title="脅威だ → threatening">a threat<sup>8</sup></span>
+            <span title="間違いだ → mistaken / wrong">a mistake<sup>7</sup></span>
+            <span title="危機だ → critical">a crisis<sup>5</sup></span>
+          </div>
+          <div class="example-pair">
+            <div class="ex ex-ok">○ It is <strong>a problem</strong> that he never listens.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="noun-note">
+        <p><strong>💡 ポイント：</strong>形容詞と違い生産的ではありません。上記リストがほぼ全てで、ここにない名詞（a sadness, a difficulty など）は使えません。</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Based on corpus data analysis • Created for English language education</p>
+  </footer>
+
+</body>
+</html>

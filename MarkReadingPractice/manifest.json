@@ -1,0 +1,15 @@
+{
+  "name": "マーク式リーディング練習",
+  "short_name": "リーディング",
+  "start_url": "./reading_practice.html",
+  "display": "standalone",
+  "background_color": "#f7f3eb",
+  "theme_color": "#f7f3eb",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>📖</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

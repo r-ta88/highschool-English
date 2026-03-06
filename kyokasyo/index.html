@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>教科書 - English Learning</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Hiragino Kaku Gothic Pro", "Yu Gothic", "Meiryo", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #333; }
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.95em;
+            margin-bottom: 2rem;
+        }
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .lesson-card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px 20px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--card-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+        }
+        .lesson-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .lesson-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: var(--card-color);
+        }
+        .lesson-desc {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 6px;
+        }
+    </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+    <div class="page-container">
+        <a href="../index.html" class="back-link">&larr; トップに戻る</a>
+        <h1>教科書</h1>
+        <p class="subtitle">Element English Communication II</p>
+        <div class="lesson-grid">
+            <a href="Element%20%E2%85%A1/Lesson07/index.html" class="lesson-card" style="--card-color: #1565c0;">
+                <div class="lesson-name">Lesson 7</div>
+                <div class="lesson-desc">Putting iPS Cells into Practice</div>
+            </a>
+            <a href="Element%20%E2%85%A1/Lesson08/index.html" class="lesson-card" style="--card-color: #c62828;">
+                <div class="lesson-name">Lesson 8</div>
+                <div class="lesson-desc">How We Got to Now with Glass</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

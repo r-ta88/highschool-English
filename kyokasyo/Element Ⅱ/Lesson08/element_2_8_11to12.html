@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 8 How We Got to Now with Glass 11-12</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 8 How We Got to Now with Glass 11-12</h1>
+
+<!-- ========== 段落 11 ========== -->
+<div class="para-num">11</div>
+
+<!-- 11-① -->
+<details>
+<summary><span class="sent-num">11-①</span> Another invention dates back to older days.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Another invention</strong> → 前段落までに述べられた顕微鏡・望遠鏡・レンズ応用に続く「もう一つの発明」（ガラス繊維）を予告</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 10段落までのレンズ関連の発明に加え、別系統の発明を導入</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Another invention</span><span class="slash-sep">/</span><span class="slash-ja">もう一つの発明は</span></div>
+  <div class="slash-line"><span class="slash-en">dates back</span><span class="slash-sep">/</span><span class="slash-ja">遡る</span></div>
+  <div class="slash-line"><span class="slash-en">to older days.</span><span class="slash-sep">/</span><span class="slash-ja">より古い時代に<span class="slash-core">(遡る)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Another <ruby>invention<rt>S</rt></ruby>
+  <ruby><span class="v-marker">dates back</span><rt>V</rt></ruby>
+  <span class="dim">to older days</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>dates back</td><td>遡る</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>dates back ← to older days</td><td>より古い時代に<span class="slash-core">(遡る)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 11-② -->
+<details>
+<summary><span class="sent-num">11-②</span> The physicist C. V. Boys had a gift for creating tools for his experiments.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 11-①「もう一つの発明」の具体的な人物を導入</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The physicist C. V. Boys</span><span class="slash-sep">/</span><span class="slash-ja">物理学者の C. V. ボーイズは</span></div>
+  <div class="slash-line"><span class="slash-en">had</span><span class="slash-sep">/</span><span class="slash-ja">持っていた</span></div>
+  <div class="slash-line"><span class="slash-en">a gift</span><span class="slash-sep">/</span><span class="slash-ja">才能を</span></div>
+  <div class="slash-line"><span class="slash-en">for creating tools</span><span class="slash-sep">/</span><span class="slash-ja">道具を作る<span class="slash-core">(才能)</span></span></div>
+  <div class="slash-line"><span class="slash-en">for his experiments.</span><span class="slash-sep">/</span><span class="slash-ja">実験のための<span class="slash-core">(道具)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The physicist C. V. <ruby>Boys<rt>S</rt></ruby>
+  <ruby><span class="v-marker">had</span><rt>V</rt></ruby>
+  a <ruby>gift<rt>O</rt></ruby>
+  <span class="dim">for creating tools</span>
+  <span class="dim">for his experiments</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>had</td><td>持っていた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>gift ← for creating tools</td><td>道具を作る<span class="slash-core">(才能)</span></td><td>名詞的（前置詞の目的語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>tools ← for his experiments</td><td>実験のための<span class="slash-core">(道具)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 11-③ -->
+<details>
+<summary><span class="sent-num">11-③</span> In 1887, he wanted to create a very fine piece of glass to measure the effects of delicate physical forces on objects.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>he</strong> → 11-② C. V. Boys</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 11-②の「才能」が具体的にどう発揮されたかを記述</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In 1887,</span><span class="slash-sep">/</span><span class="slash-ja">1887年に</span></div>
+  <div class="slash-line"><span class="slash-en">he</span><span class="slash-sep">/</span><span class="slash-ja">彼は</span></div>
+  <div class="slash-line"><span class="slash-en">wanted</span><span class="slash-sep">/</span><span class="slash-ja">望んだ</span></div>
+  <div class="slash-line"><span class="slash-en">to create</span><span class="slash-sep">/</span><span class="slash-ja">作ることを<span class="slash-core">(望んだ)</span></span></div>
+  <div class="slash-line"><span class="slash-en">a very fine piece of glass</span><span class="slash-sep">/</span><span class="slash-ja">非常に細いガラス片を<span class="slash-core">(作る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">to measure</span><span class="slash-sep">/</span><span class="slash-ja">測定するために<span class="slash-core">(望んだ)</span></span></div>
+  <div class="slash-line"><span class="slash-en">the effects</span><span class="slash-sep">/</span><span class="slash-ja">影響を<span class="slash-core">(測定する)</span></span></div>
+  <div class="slash-line"><span class="slash-en">of delicate physical forces</span><span class="slash-sep">/</span><span class="slash-ja">微細な物理的力の<span class="slash-core">(影響)</span></span></div>
+  <div class="slash-line"><span class="slash-en">on objects.</span><span class="slash-sep">/</span><span class="slash-ja">物体への<span class="slash-core">(力)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In 1887,</span>
+  <ruby>he<rt>S</rt></ruby>
+  <ruby><span class="v-marker">wanted</span><rt>V</rt></ruby>
+  <ruby>to create<rt>O</rt></ruby>
+  a very fine piece <span class="dim">of glass</span>
+  to measure the effects
+  <span class="dim">of delicate physical forces</span>
+  <span class="dim">on objects</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>wanted</td><td>望んだ</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>wanted ← to create a very fine piece of glass</td><td>非常に細いガラス片を作ること<span class="slash-core">(望んだ)</span></td><td>名詞的（目的語）</td></tr>
+    <tr><td>wanted ← to measure the effects of delicate physical forces on objects</td><td>微細な物理的力の物体への影響を測定するために<span class="slash-core">(望んだ)</span></td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>wanted ← In 1887</td><td>1887年に<span class="slash-core">(望んだ)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>piece ← of glass</td><td>ガラスの<span class="slash-core">(片)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>effects ← of delicate physical forces</td><td>微細な物理的力の<span class="slash-core">(影響)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>forces ← on objects</td><td>物体への<span class="slash-core">(力)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 11-④ -->
+<details>
+<summary><span class="sent-num">11-④</span> He built a special crossbow and created small arrows called bolts with it.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>He</strong> → 11-② C. V. Boys</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong> → 11-④ a special crossbow</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 11-③の目的を達成するための具体的な手順の開始</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">He</span><span class="slash-sep">/</span><span class="slash-ja">彼は</span></div>
+  <div class="slash-line"><span class="slash-en">built</span><span class="slash-sep">/</span><span class="slash-ja">作った</span></div>
+  <div class="slash-line"><span class="slash-en">a special crossbow</span><span class="slash-sep">/</span><span class="slash-ja">特製の石弓を</span></div>
+  <div class="slash-line"><span class="slash-en">and created</span><span class="slash-sep">/</span><span class="slash-ja">そして作った</span></div>
+  <div class="slash-line"><span class="slash-en">small arrows</span><span class="slash-sep">/</span><span class="slash-ja">小さな矢を</span></div>
+  <div class="slash-line"><span class="slash-en">called bolts</span><span class="slash-sep">/</span><span class="slash-ja">ボルトと呼ばれる<span class="slash-core">(矢)</span></span></div>
+  <div class="slash-line"><span class="slash-en">with it.</span><span class="slash-sep">/</span><span class="slash-ja">それ（石弓）で<span class="slash-core">(作った)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>He<rt>S</rt></ruby>
+  <ruby><span class="v-marker">built</span><rt>V<sub>1</sub></rt></ruby>
+  a special <ruby>crossbow<rt>O<sub>1</sub></rt></ruby>
+  and
+  <ruby><span class="v-marker">created</span><rt>V<sub>2</sub></rt></ruby>
+  small <ruby>arrows<rt>O<sub>2</sub></rt></ruby>
+  called bolts
+  <span class="dim">with it</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>built</td><td>作った</td></tr>
+    <tr><td>主節</td><td>and</td><td>created</td><td>作った</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>built a special crossbow / created small arrows called bolts with it （S が共通）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>arrows ← called bolts</td><td>ボルトと呼ばれる<span class="slash-core">(矢)</span></td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>created ← with it</td><td>それ（石弓）で<span class="slash-core">(作った)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 11-⑤ -->
+<details>
+<summary><span class="sent-num">11-⑤</span> To one bolt he attached heated glass, and he fired the bolt.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>he</strong>（2回）→ 11-② C. V. Boys</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>one bolt</strong> → 11-④ small arrows called bolts のうちの1本</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the bolt</strong> → 11-⑤ one bolt（a → the の変化：直前で導入された bolt を再指示）</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 11-④の準備に続く実験手順</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">To one bolt</span><span class="slash-sep">/</span><span class="slash-ja">1本のボルトに</span></div>
+  <div class="slash-line"><span class="slash-en">he</span><span class="slash-sep">/</span><span class="slash-ja">彼は</span></div>
+  <div class="slash-line"><span class="slash-en">attached</span><span class="slash-sep">/</span><span class="slash-ja">取り付けた</span></div>
+  <div class="slash-line"><span class="slash-en">heated glass,</span><span class="slash-sep">/</span><span class="slash-ja">熱したガラスを</span></div>
+  <div class="slash-line"><span class="slash-en">and he</span><span class="slash-sep">/</span><span class="slash-ja">そして彼は</span></div>
+  <div class="slash-line"><span class="slash-en">fired</span><span class="slash-sep">/</span><span class="slash-ja">発射した</span></div>
+  <div class="slash-line"><span class="slash-en">the bolt.</span><span class="slash-sep">/</span><span class="slash-ja">そのボルトを</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">To one bolt</span>
+  <ruby>he<rt>S<sub>1</sub></rt></ruby>
+  <ruby><span class="v-marker">attached</span><rt>V<sub>1</sub></rt></ruby>
+  heated <ruby>glass<rt>O<sub>1</sub></rt></ruby>,
+  and
+  <ruby>he<rt>S<sub>2</sub></rt></ruby>
+  <ruby><span class="v-marker">fired</span><rt>V<sub>2</sub></rt></ruby>
+  the <ruby>bolt<rt>O<sub>2</sub></rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>attached</td><td>取り付けた</td></tr>
+    <tr><td>主節</td><td>and</td><td>fired</td><td>発射した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>he attached heated glass / he fired the bolt （2つの SVO 節）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>attached ← To one bolt</td><td>1本のボルトに<span class="slash-core">(取り付けた)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 11-⑥ -->
+<details>
+<summary><span class="sent-num">11-⑥</span> As the bolt flew toward its target, it pulled a tail of fiber from the glass.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the bolt</strong> → 11-⑤ the bolt（熱したガラスが取り付けられたボルト）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>its</strong> → the bolt の</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong> → the bolt</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the glass</strong> → 11-⑤ heated glass</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> ボルトが飛んだ結果、ガラスから繊維の尾が引き出された</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">As the bolt flew</span><span class="slash-sep">/</span><span class="slash-ja">ボルトが飛んでいくにつれて</span></div>
+  <div class="slash-line"><span class="slash-en">toward its target,</span><span class="slash-sep">/</span><span class="slash-ja">的に向かって<span class="slash-core">(飛ぶ)</span></span></div>
+  <div class="slash-line"><span class="slash-en">it</span><span class="slash-sep">/</span><span class="slash-ja">それ（ボルト）は</span></div>
+  <div class="slash-line"><span class="slash-en">pulled</span><span class="slash-sep">/</span><span class="slash-ja">引っ張った</span></div>
+  <div class="slash-line"><span class="slash-en">a tail of fiber</span><span class="slash-sep">/</span><span class="slash-ja">繊維の尾を</span></div>
+  <div class="slash-line"><span class="slash-en">from the glass.</span><span class="slash-sep">/</span><span class="slash-ja">ガラスから<span class="slash-core">(引っ張った)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="adv-cl">(</span><span class="cl-marker">As</span>
+  the <ruby>bolt<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">flew</span><rt>v'</rt></ruby>
+  <span class="dim">toward its target</span><span class="adv-cl">)</span>,
+  <ruby>it<rt>S</rt></ruby>
+  <ruby><span class="v-marker">pulled</span><rt>V</rt></ruby>
+  a <ruby>tail<rt>O</rt></ruby>
+  <span class="dim">of fiber</span>
+  <span class="dim">from the glass</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>pulled</td><td>引っ張った</td></tr>
+    <tr><td>副詞節</td><td>As</td><td>flew</td><td>飛んでいく</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>flew ← toward its target</td><td>的に向かって<span class="slash-core">(飛ぶ)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>tail ← of fiber</td><td>繊維の<span class="slash-core">(尾)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>pulled ← from the glass</td><td>ガラスから<span class="slash-core">(引っ張った)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 11-⑦ -->
+<details>
+<summary><span class="sent-num">11-⑦</span> In one of his shots, Boys produced a long, thin piece of glass that stretched almost 90 feet.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>his</strong> → Boys</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 11-⑥の実験結果として、最も顕著な成果を報告</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In one of his shots,</span><span class="slash-sep">/</span><span class="slash-ja">彼の発射の一つで</span></div>
+  <div class="slash-line"><span class="slash-en">Boys</span><span class="slash-sep">/</span><span class="slash-ja">ボーイズは</span></div>
+  <div class="slash-line"><span class="slash-en">produced</span><span class="slash-sep">/</span><span class="slash-ja">生み出した</span></div>
+  <div class="slash-line"><span class="slash-en">a long, thin piece of glass</span><span class="slash-sep">/</span><span class="slash-ja">長くて細いガラス片を</span></div>
+  <div class="slash-line"><span class="slash-en">that stretched</span><span class="slash-sep">/</span><span class="slash-ja">伸びた<span class="slash-core">(ガラス片)</span></span></div>
+  <div class="slash-line"><span class="slash-en">almost 90 feet.</span><span class="slash-sep">/</span><span class="slash-ja">約90フィート<span class="slash-core">(伸びた)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In one of his shots,</span>
+  <ruby>Boys<rt>S</rt></ruby>
+  <ruby><span class="v-marker">produced</span><rt>V</rt></ruby>
+  a long, thin <ruby>piece<rt>O</rt></ruby>
+  <span class="dim">of glass</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">stretched</span><rt>v'</rt></ruby>
+  almost 90 feet<span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>produced</td><td>生み出した</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>stretched</td><td>伸びた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>produced ← In one of his shots</td><td>彼の発射の一つで<span class="slash-core">(生み出した)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>piece ← of glass</td><td>ガラスの<span class="slash-core">(片)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ========== 段落 12 ========== -->
+<div class="para-num">12</div>
+
+<!-- 12-① -->
+<details>
+<summary><span class="sent-num">12-①</span> By the middle of the next century, new glass fibers or fiberglass were everywhere: in clothes, surfboards, large yachts, helmets, the largest airplanes in the sky, and the circuit boards of modern computers.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the next century</strong> → 11-③で示された1887年の次の世紀、つまり20世紀（その中頃＝1950年代頃）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>glass fibers</strong> → 11-⑥⑦でボーイズが生み出したガラス繊維</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 11-⑥⑦のボーイズの実験がガラス繊維技術の発展へとつながった</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> <strong>everywhere</strong> をコロン以下で具体化（衣服、サーフボード、ヨット、ヘルメット、飛行機、回路基板）</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">By the middle</span><span class="slash-sep">/</span><span class="slash-ja">半ばまでに</span></div>
+  <div class="slash-line"><span class="slash-en">of the next century,</span><span class="slash-sep">/</span><span class="slash-ja">次の世紀の<span class="slash-core">(半ば)</span></span></div>
+  <div class="slash-line"><span class="slash-en">new glass fibers or fiberglass</span><span class="slash-sep">/</span><span class="slash-ja">新しいガラス繊維、すなわちファイバーグラスは</span></div>
+  <div class="slash-line"><span class="slash-en">were</span><span class="slash-sep">/</span><span class="slash-ja">あった</span></div>
+  <div class="slash-line"><span class="slash-en">everywhere:</span><span class="slash-sep">/</span><span class="slash-ja">あらゆるところに</span></div>
+  <div class="slash-line"><span class="slash-en">in clothes, surfboards,</span><span class="slash-sep">/</span><span class="slash-ja">衣服、サーフボード、</span></div>
+  <div class="slash-line"><span class="slash-en">large yachts, helmets,</span><span class="slash-sep">/</span><span class="slash-ja">大型ヨット、ヘルメット、</span></div>
+  <div class="slash-line"><span class="slash-en">the largest airplanes in the sky,</span><span class="slash-sep">/</span><span class="slash-ja">空で最も大きな飛行機、</span></div>
+  <div class="slash-line"><span class="slash-en">and the circuit boards</span><span class="slash-sep">/</span><span class="slash-ja">そして回路基板に</span></div>
+  <div class="slash-line"><span class="slash-en">of modern computers.</span><span class="slash-sep">/</span><span class="slash-ja">現代のコンピュータの<span class="slash-core">(回路基板)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">By the middle of the next century,</span>
+  new glass fibers or <ruby>fiberglass<rt>S</rt></ruby>
+  <ruby><span class="v-marker">were</span><rt>V</rt></ruby>
+  <ruby>everywhere<rt>C</rt></ruby>:
+  <span class="dim">in clothes, surfboards, large yachts, helmets, the largest airplanes in the sky, and the circuit boards of modern computers</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>were</td><td>あった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>or</td><td>new glass fibers / fiberglass （S の言い換え）</td></tr>
+    <tr><td>, ... , and</td><td>in clothes / surfboards / large yachts / helmets / the largest airplanes in the sky / the circuit boards of modern computers （everywhere の具体列挙）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>were ← By the middle of the next century</td><td>次の世紀の半ばまでに<span class="slash-core">(あった)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>airplanes ← in the sky</td><td>空の<span class="slash-core">(飛行機)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>circuit boards ← of modern computers</td><td>現代のコンピュータの<span class="slash-core">(回路基板)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

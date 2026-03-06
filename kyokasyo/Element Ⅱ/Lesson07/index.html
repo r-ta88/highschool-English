@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lesson 7 - Putting iPS Cells into Practice</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Hiragino Kaku Gothic Pro", "Yu Gothic", "Meiryo", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #333; }
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.95em;
+            margin-bottom: 2rem;
+        }
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .chapter-card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px 20px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #1565c0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+        }
+        .chapter-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .chapter-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: #1565c0;
+        }
+        .chapter-desc {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 6px;
+        }
+    </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+    <div class="page-container">
+        <a href="../../index.html" class="back-link">&larr; 教科書に戻る</a>
+        <h1>Lesson 7</h1>
+        <p class="subtitle">Putting iPS Cells into Practice</p>
+        <div class="chapter-grid">
+            <a href="element_2_7_1to2.html" class="chapter-card">
+                <div class="chapter-name">1 - 2</div>
+                <div class="chapter-desc">段落 1〜2</div>
+            </a>
+            <a href="element_2_7_3to4.html" class="chapter-card">
+                <div class="chapter-name">3 - 4</div>
+                <div class="chapter-desc">段落 3〜4</div>
+            </a>
+            <a href="element_2_7_5to7.html" class="chapter-card">
+                <div class="chapter-name">5 - 7</div>
+                <div class="chapter-desc">段落 5〜7</div>
+            </a>
+            <a href="element_2_7_8to9.html" class="chapter-card">
+                <div class="chapter-name">8 - 9</div>
+                <div class="chapter-desc">段落 8〜9</div>
+            </a>
+            <a href="element_2_7_10to11.html" class="chapter-card">
+                <div class="chapter-name">10 - 11</div>
+                <div class="chapter-desc">段落 10〜11</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

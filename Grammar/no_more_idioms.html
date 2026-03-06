@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>no more のイディオム的用法 — 構文別完全ガイド</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Noto+Sans+JP:wght@300;400;500;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf8f5;
+  --bg-card: #ffffff;
+  --bg-example: #f7f5f0;
+  --bg-logic: #eef3f8;
+  --text: #2a2520;
+  --text-sub: #6b6360;
+  --accent-blue: #3a6b9f;
+  --accent-teal: #2a8a7a;
+  --accent-orange: #c87832;
+  --accent-rose: #b84a6a;
+  --accent-purple: #7a5aaa;
+  --border: #e0dcd6;
+  --border-accent: #c8b8a0;
+  --shadow: 0 2px 12px rgba(42,37,32,0.06);
+  --shadow-hover: 0 4px 20px rgba(42,37,32,0.1);
+  --radius: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 15px;
+  padding: 0 0 80px;
+}
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, #2a3a50 0%, #3a5a7a 40%, #2a8a7a 100%);
+  color: #fff;
+  padding: 56px 24px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    120deg,
+    transparent,
+    transparent 80px,
+    rgba(255,255,255,0.02) 80px,
+    rgba(255,255,255,0.02) 160px
+  );
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+  position: relative;
+}
+.hero h1 .mono {
+  font-family: 'Source Code Pro', monospace;
+  background: rgba(255,255,255,0.15);
+  padding: 2px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+.hero .subtitle {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  font-weight: 300;
+  position: relative;
+}
+
+/* ── Controls ── */
+.global-controls {
+  max-width: 880px;
+  margin: -20px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 10;
+}
+.controls-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.controls-bar label {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+}
+.toggle-btn {
+  background: var(--accent-blue);
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.toggle-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.toggle-btn.active { background: var(--accent-teal); }
+
+/* ── Main Container ── */
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ── Intro Section ── */
+.intro {
+  margin-top: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 28px 24px;
+  box-shadow: var(--shadow);
+}
+.intro h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--accent-blue);
+  margin-bottom: 12px;
+}
+.intro p { color: var(--text-sub); font-size: 0.92rem; }
+.intro .logic-box {
+  margin-top: 16px;
+  background: var(--bg-logic);
+  border-left: 4px solid var(--accent-blue);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+}
+.logic-box .formula {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.95rem;
+  color: var(--accent-blue);
+  margin: 8px 0 4px;
+  font-weight: 500;
+}
+.logic-box .note { color: var(--text-sub); font-size: 0.82rem; margin-top: 6px; }
+
+/* ── Section ── */
+.section {
+  margin-top: 36px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.section-desc {
+  font-size: 0.88rem;
+  color: var(--text-sub);
+  margin-bottom: 16px;
+  padding-left: 48px;
+}
+
+/* Color themes per section */
+.section[data-theme="blue"] .section-num { background: var(--accent-blue); }
+.section[data-theme="blue"] .section-title { color: var(--accent-blue); }
+.section[data-theme="teal"] .section-num { background: var(--accent-teal); }
+.section[data-theme="teal"] .section-title { color: var(--accent-teal); }
+.section[data-theme="orange"] .section-num { background: var(--accent-orange); }
+.section[data-theme="orange"] .section-title { color: var(--accent-orange); }
+.section[data-theme="rose"] .section-num { background: var(--accent-rose); }
+.section[data-theme="rose"] .section-title { color: var(--accent-rose); }
+.section[data-theme="purple"] .section-num { background: var(--accent-purple); }
+.section[data-theme="purple"] .section-title { color: var(--accent-purple); }
+
+/* ── Example Card ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+.card:hover { box-shadow: var(--shadow-hover); }
+.card-body { padding: 20px 24px; }
+.card-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+.section[data-theme="blue"] .card-label { background: var(--accent-blue); }
+.section[data-theme="teal"] .card-label { background: var(--accent-teal); }
+.section[data-theme="orange"] .card-label { background: var(--accent-orange); }
+.section[data-theme="rose"] .card-label { background: var(--accent-rose); }
+.section[data-theme="purple"] .card-label { background: var(--accent-purple); }
+
+.example-en {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.example-en .highlight {
+  background: linear-gradient(to top, rgba(58,107,159,0.15) 40%, transparent 40%);
+  font-weight: 700;
+}
+
+.translation {
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+.translation.visible {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 8px;
+}
+.translation-inner {
+  background: #fdfaf5;
+  border-left: 3px solid var(--border-accent);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.88rem;
+  color: var(--text-sub);
+}
+.translation-inner .ja-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-orange);
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.toggle-ja {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 8px;
+}
+.toggle-ja:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+.toggle-ja .arrow { transition: transform 0.3s ease; display: inline-block; }
+.toggle-ja.open .arrow { transform: rotate(180deg); }
+
+/* ── Explanation ── */
+.explanation {
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: var(--bg-example);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--text-sub);
+  line-height: 1.75;
+}
+.explanation .structure {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.82rem;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+}
+
+/* ── Tip Box ── */
+.tip-box {
+  margin-top: 36px;
+  background: linear-gradient(135deg, #f0f7f5, #eef3f8);
+  border: 1px solid #c8ddd8;
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+.tip-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: var(--accent-teal);
+  margin-bottom: 10px;
+}
+.tip-box p { font-size: 0.88rem; color: var(--text-sub); }
+.tip-box .alt-example {
+  margin-top: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+/* ── Comparison Table ── */
+.comparison {
+  margin-top: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  box-shadow: var(--shadow);
+}
+.comparison h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--accent-blue);
+  margin-bottom: 14px;
+}
+.comparison table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.comparison th {
+  text-align: left;
+  padding: 10px 12px;
+  background: var(--bg-logic);
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--accent-blue);
+  border-bottom: 2px solid var(--border);
+}
+.comparison td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.comparison td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  color: var(--accent-blue);
+  font-weight: 500;
+}
+.comparison tr:last-child td { border-bottom: none; }
+
+/* ── Footer ── */
+.footer {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .hero { padding: 40px 16px 36px; }
+  .card-body { padding: 16px 18px; }
+  .section-desc { padding-left: 0; }
+  .controls-bar { flex-direction: column; align-items: stretch; }
+  .comparison td:first-child { white-space: normal; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<div class="hero">
+  <h1><span class="mono">no more</span> のイディオム的用法</h1>
+  <p class="subtitle">構文パターン別 完全ガイド — 使い方・構造・例文</p>
+</div>
+
+<div class="global-controls">
+  <div class="controls-bar">
+    <label>和訳の表示:</label>
+    <div>
+      <button class="toggle-btn" onclick="showAllTranslations()">すべて表示</button>
+      <button class="toggle-btn" onclick="hideAllTranslations()">すべて非表示</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── Intro ── -->
+  <div class="intro">
+    <h2>この構文の本質</h2>
+    <p><strong>no more ... than ~</strong> は、<strong>than 以下に「誰が見ても否定されるべき事実・あり得ないこと」</strong>を置くことで、前半（A）の否定を劇的に強調するレトリックです。いわゆる「クジラ構文」はこのパターンの一例にすぎません。</p>
+    <div class="logic-box">
+      <div class="formula">A is no more X than B is X.</div>
+      <p>＝「B が X でないのは明白 → だから A も同じくらい X ではない」</p>
+      <div class="note">※ 天秤の両側に「マイナス（否定）」を置いて釣り合わせるイメージ。than 以下が「あり得なさの基準点」として機能します。</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- Section 1: no more + 形容詞 -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section" data-theme="blue">
+    <div class="section-header">
+      <span class="section-num">1</span>
+      <span class="section-title">no more + 形容詞（Adj）</span>
+    </div>
+    <p class="section-desc">「どちらも同じくらい〜ではない」——期待外れや実力不足を皮肉る際に効果的。比較対象に「明らかに〜でないもの」を据えるのがポイント。</p>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">Adj — 信頼性</span>
+        <div class="example-en">The new model is <span class="highlight">no more reliable</span> than the old one.</div>
+        <div class="explanation">
+          <div class="structure">S + is + no more + Adj + than + 比較対象</div>
+          旧型が信頼できないのは周知の事実。それを基準に「新型も同様にダメ」と切り捨てる構文。製品レビューやビジネスの文脈で使いやすい。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>新型モデルは、旧型と同様にちっとも信頼できない。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">Adj — 幸福</span>
+        <div class="example-en">Winning the lottery is <span class="highlight">no more a guarantee of happiness</span> than being born rich is.</div>
+        <div class="explanation">
+          <div class="structure">S + is + no more + a + N(= 形容詞的) + than + S + is</div>
+          「金持ちの家に生まれること ≠ 幸福の保証」は多くの人が同意する前提。それと天秤にかけて「宝くじ当選も同じ」と論じる。エッセイや議論向き。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>宝くじに当たることが幸せの保証にならないのは、金持ちの家に生まれることが幸せの保証にならないのと同じだ。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">Adj — 安全性</span>
+        <div class="example-en">This shortcut is <span class="highlight">no more safe</span> than walking through a minefield.</div>
+        <div class="explanation">
+          <div class="structure">S + is + no more + Adj + than + V-ing 句</div>
+          「地雷原を歩くこと」という極端な比較対象を置き、近道の危険性を強烈に否定する。会話でも使える分かりやすいパターン。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>この近道は、地雷原を歩くのと同じくらい安全ではない（＝まったく安全ではない）。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- Section 2: can no more + 動詞原形 -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section" data-theme="teal">
+    <div class="section-header">
+      <span class="section-num">2</span>
+      <span class="section-title">can no more + 動詞原形（能力・可能性の否定）</span>
+    </div>
+    <p class="section-desc">「〜することは不可能だ」という強い否定。助動詞 <strong>can</strong> と組み合わせて能力の限界を示す。than 以下には物理的に不可能な行為を置くのが定番。</p>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">can + V — 予測</span>
+        <div class="example-en">You <span class="highlight">can no more predict</span> the stock market than you can predict the weather a year from now.</div>
+        <div class="explanation">
+          <div class="structure">S + can no more + V + O + than + S + can + V + O</div>
+          1年後の天気予報が不可能であることを踏み台にして、株式市場の予測も同様に無理だと主張。「can no more ... than ... can」は能力否定の王道パターン。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>1年後の天気を当てられないのと同様に、株価の動きを予測することなんてできっこない。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">can + V — 経済力</span>
+        <div class="example-en">I <span class="highlight">can no more afford</span> a Ferrari than I can fly to the moon.</div>
+        <div class="explanation">
+          <div class="structure">S + can no more + V + O + than + S + can + V</div>
+          「月まで飛ぶ」という荒唐無稽な行為との対比で、経済的な不可能性をユーモラスに表現。日常会話でも使いやすく、親しみやすい例。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>月まで飛んでいくのが無理なのと同じで、フェラーリを買うお金なんて逆立ちしても出てこない。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">can + V — 制御</span>
+        <div class="example-en">You <span class="highlight">can no more control</span> what others think of you than you can control the tides.</div>
+        <div class="explanation">
+          <div class="structure">S + can no more + V + O + than + S + can + V + O</div>
+          「潮の満ち引きを操る」という自然法則上不可能なことを比較に据える。自己啓発的・哲学的な文脈で説得力がある表現。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>潮の満ち引きをコントロールできないのと同様、他人が自分をどう思うかを操ることなどできない。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- Section 3: no more + 一般動詞 -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section" data-theme="orange">
+    <div class="section-header">
+      <span class="section-num">3</span>
+      <span class="section-title">S + no more + 一般動詞（意志・帰属の否定）</span>
+    </div>
+    <p class="section-desc">「〜するつもりは毛頭ない」「〜に属さない」——can なしで動詞を直接否定し、強い意志や断定を表す。フォーマルで文学的な響きを持つ。</p>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">V — 意図</span>
+        <div class="example-en">I <span class="highlight">no more intended</span> to offend you than I intended to hurt myself.</div>
+        <div class="explanation">
+          <div class="structure">S + no more + V(過去形) + O + than + S + V(過去形) + O</div>
+          「自分を傷つけるつもりがない」ことは自明。それとの対比で「あなたを怒らせる意図もなかった」と弁明する。謝罪・釈明の場面で重宝する。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>自分自身を傷つけるつもりがないのと同様、君を怒らせるつもりなんて毛頭なかったんだ。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">V — 帰属</span>
+        <div class="example-en">He <span class="highlight">no more belongs</span> in this office than a shark belongs in a bathtub.</div>
+        <div class="explanation">
+          <div class="structure">S + no more + V + 場所 + than + S + V + 場所</div>
+          「サメが浴槽にいる」という滑稽で不釣り合いな比喩で、人物の場違いさを鮮烈に描写。比喩のインパクトが強いため、スピーチやコラムで映える。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>サメが浴槽にふさわしくないのと同様、彼はこのオフィスには全くの場違いだ。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">V — 理解</span>
+        <div class="example-en">She <span class="highlight">no more understood</span> the lecture than a cat understands algebra.</div>
+        <div class="explanation">
+          <div class="structure">S + no more + V(過去形) + O + than + S + V(現在形) + O</div>
+          「猫に代数学」というユーモラスな比較。理解の完全な欠如を誇張して伝える。than 以下の時制が現在形（一般的事実）になる点にも注意。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>猫に代数学が分からないのと同様に、彼女はその講義をまったく理解していなかった。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- Section 4: A is no more a N than B is -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section" data-theme="rose">
+    <div class="section-header">
+      <span class="section-num">4</span>
+      <span class="section-title">A is no more a N than B is（名詞＝身分・性質の否定）</span>
+    </div>
+    <p class="section-desc">「〜と呼べる代物ではない」——名詞の前に置いて、身分や性質が「本物ではない」と断じる。辛口な批評・ユーモアに向く。伝統的な「クジラ構文」もこの型。</p>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">N — 資質</span>
+        <div class="example-en">He is <span class="highlight">no more a leader</span> than I am a world-class athlete.</div>
+        <div class="explanation">
+          <div class="structure">S + is + no more + a + N + than + S + is + a + N</div>
+          「私が世界的アスリートではない」という自虐的事実を基準に、相手のリーダーシップを否定。自分を引き合いに出す形は会話でも使いやすい。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>私が世界的なアスリートでないのと同様、彼はリーダーと呼べるような器じゃない。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">N — 分類</span>
+        <div class="example-en">A smartphone is <span class="highlight">no more a toy</span> than a computer is.</div>
+        <div class="explanation">
+          <div class="structure">S + is + no more + a + N + than + S + is</div>
+          コンピュータが「玩具でない」ことを前提に、スマートフォンも同等の道具であると主張。カテゴリーの誤認を正す際に有効。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>コンピュータが玩具ではないのと同様、スマートフォンも単なる玩具ではない。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">N — 伝統的クジラ構文</span>
+        <div class="example-en">A whale is <span class="highlight">no more a fish</span> than a horse is.</div>
+        <div class="explanation">
+          <div class="structure">S + is + no more + a + N + than + S + is</div>
+          教科書で有名な原型。「馬が魚でない」のは明白 → 「クジラも同様に魚ではない」。この型の理解がすべての応用の土台になる。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>馬が魚でないのと同様、クジラも魚ではない。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════ -->
+  <!-- Section 5: 文 + no more than 文 -->
+  <!-- ════════════════════════════════════════ -->
+  <div class="section" data-theme="purple">
+    <div class="section-header">
+      <span class="section-num">5</span>
+      <span class="section-title">文(SV), no more than 文(SV)（節の並列）</span>
+    </div>
+    <p class="section-desc">前後に完全な文（節）を並べ、哲学的・説得的な響きを持たせる形。カンマの後に <em>no more than</em> を挟んで2つの命題を対比する。</p>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">SV — 不可能性</span>
+        <div class="example-en">We cannot change the past, <span class="highlight">no more than</span> we can stop time itself.</div>
+        <div class="explanation">
+          <div class="structure">S + V（否定）, no more than + S + V</div>
+          「時間を止めることは不可能」という絶対的前提 → 「過去を変えることも同様に不可能」。スピーチのクライマックスや格言的表現に向く。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>時間を止めることができないのと同様に、私たちは過去を変えることはできない。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">SV — 無視</span>
+        <div class="example-en">The boss didn't listen to my ideas, <span class="highlight">no more than</span> he listened to anyone else's.</div>
+        <div class="explanation">
+          <div class="structure">S + V（否定過去）, no more than + S + V</div>
+          「彼は誰の意見も聞かない」という一般的事実を補強材料に使い、「私の提案も同様」と強調。不満・皮肉の文脈で自然に使える。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>彼は誰の意見も聞かなかった——私の意見に対しても、同様にまったく耳を貸さなかった。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <span class="card-label">SV — 消滅</span>
+        <div class="example-en">Love doesn't disappear overnight, <span class="highlight">no more than</span> a mountain crumbles in a day.</div>
+        <div class="explanation">
+          <div class="structure">S + V（否定）, no more than + S + V</div>
+          「山が一日で崩れない」という自然の摂理との対比。抽象的な概念を具体的なイメージで補強する文学的な用法。
+        </div>
+        <button class="toggle-ja" onclick="toggleTrans(this)"><span class="arrow">▼</span> 和訳</button>
+        <div class="translation"><div class="translation-inner"><div class="ja-label">和訳</div>山が一日で崩れないのと同じように、愛は一夜にして消え去ったりはしない。</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Comparison Table ── -->
+  <div class="comparison">
+    <h3>紛らわしい表現との比較</h3>
+    <table>
+      <tr>
+        <th>表現</th>
+        <th>意味</th>
+        <th>例</th>
+      </tr>
+      <tr>
+        <td>no more ... than</td>
+        <td>「B が〜でないのと同様、A も〜でない」<br>＝ <strong>両方否定</strong></td>
+        <td>He is no more a genius than I am.<br>（私が天才でないのと同様、彼も天才ではない）</td>
+      </tr>
+      <tr>
+        <td>no less ... than</td>
+        <td>「B に劣らず A も〜だ」<br>＝ <strong>両方肯定</strong></td>
+        <td>She is no less talented than her sister.<br>（姉に劣らず、彼女も才能がある）</td>
+      </tr>
+      <tr>
+        <td>not more ... than</td>
+        <td>「B 以上ではない」＝「B と同程度かそれ以下」<br>＝ <strong>程度の比較</strong></td>
+        <td>He is not more diligent than she is.<br>（彼は彼女より勤勉というわけではない）</td>
+      </tr>
+      <tr>
+        <td>not ... any more than</td>
+        <td>no more ... than の <strong>口語的な言い換え</strong><br>＝ 意味は同じ</td>
+        <td>I can't swim any more than a stone can.<br>（石が泳げないのと同じで、私も泳げない）</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ── Tip ── -->
+  <div class="tip-box">
+    <h3>💡 ワンポイント：口語での崩し方</h3>
+    <p>現代の会話では <strong>"not ... any more than ..."</strong> の方が自然に聞こえることが多い。書き言葉では <em>no more ... than</em>、話し言葉では <em>not ... any more than</em> と使い分けるとバランスが良い。</p>
+    <div class="alt-example">
+      "I can't understand quantum physics <strong>any more than</strong> my dog can."<br>
+      <span style="font-family:'Noto Sans JP';font-size:0.85rem;color:var(--text-sub);">（うちの犬に分からないのと同じで、量子物理学なんて私にもさっぱりだ。）</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    no more Idioms Reference — 構文別完全ガイド
+  </div>
+
+</div>
+
+<script>
+function toggleTrans(btn) {
+  const trans = btn.nextElementSibling;
+  const isVisible = trans.classList.contains('visible');
+  trans.classList.toggle('visible');
+  btn.classList.toggle('open');
+}
+
+function showAllTranslations() {
+  document.querySelectorAll('.translation').forEach(t => t.classList.add('visible'));
+  document.querySelectorAll('.toggle-ja').forEach(b => b.classList.add('open'));
+}
+
+function hideAllTranslations() {
+  document.querySelectorAll('.translation').forEach(t => t.classList.remove('visible'));
+  document.querySelectorAll('.toggle-ja').forEach(b => b.classList.remove('open'));
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>that節をとる伝達動詞 ─ 発信内容による分類</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      background-color: #f5f5f5;
+      color: #333;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+      font-size: 1.6em;
+    }
+    h2 {
+      color: #3498db;
+      border-left: 5px solid #3498db;
+      padding-left: 12px;
+      margin-top: 35px;
+      font-size: 1.25em;
+    }
+    h3 {
+      color: #2c3e50;
+      font-size: 1.1em;
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+    .intro {
+      background-color: #e8f4f8;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-bottom: 25px;
+    }
+    .category-box {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .verb-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .verb-tag {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.95em;
+      font-weight: 500;
+    }
+    .verb-tag.high-freq {
+      background-color: #bbdefb;
+      border: 1px solid #1976d2;
+    }
+    .example {
+      background-color: #f8f9fa;
+      border-left: 4px solid #4caf50;
+      padding: 10px 15px;
+      margin: 12px 0;
+      font-size: 0.95em;
+    }
+    .example .jp {
+      color: #666;
+      font-size: 0.9em;
+      margin-top: 4px;
+    }
+    .polysemy-section {
+      background-color: #fff3e0;
+      border: 2px solid #ff9800;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 35px;
+    }
+    .polysemy-section h2 {
+      color: #e65100;
+      border-left: 5px solid #ff9800;
+      margin-top: 0;
+    }
+    .polysemy-item {
+      background-color: #fffde7;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    .polysemy-item h4 {
+      color: #f57c00;
+      margin: 0 0 10px 0;
+      font-size: 1.1em;
+    }
+    .meaning-box {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .meaning {
+      flex: 1;
+      min-width: 280px;
+      background-color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+    }
+    .meaning-label {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .meaning-label.basic {
+      color: #757575;
+    }
+    .meaning-label.that-clause {
+      color: #ff9800;
+    }
+    .note {
+      background-color: #fce4ec;
+      border-radius: 6px;
+      padding: 12px 15px;
+      margin-top: 12px;
+      font-size: 0.95em;
+    }
+    .note-title {
+      color: #c2185b;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .subjunctive-note {
+      background-color: #e8f5e9;
+      border: 1px solid #4caf50;
+      border-radius: 6px;
+      padding: 12px 15px;
+      margin-top: 12px;
+    }
+    .subjunctive-note .title {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+    .freq-legend {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      font-size: 0.9em;
+      color: #666;
+      margin-top: 10px;
+    }
+    .freq-legend span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .freq-box {
+      width: 18px;
+      height: 18px;
+      border-radius: 10px;
+    }
+    .freq-box.high {
+      background-color: #bbdefb;
+      border: 1px solid #1976d2;
+    }
+    .freq-box.normal {
+      background-color: #e3f2fd;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 0.95em;
+    }
+    th {
+      background-color: #3498db;
+      color: #fff;
+      padding: 10px;
+      text-align: left;
+    }
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    .summary-section {
+      background-color: #e8f4f8;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 35px;
+    }
+    .tip {
+      background-color: #e1f5fe;
+      border-left: 4px solid #03a9f4;
+      padding: 12px 15px;
+      margin: 15px 0;
+      font-size: 0.95em;
+    }
+    .tip-title {
+      color: #0277bd;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .appendix-section {
+      background-color: #f3e5f5;
+      border: 1px solid #ce93d8;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 35px;
+    }
+    .appendix-section h2 {
+      color: #7b1fa2;
+      border-left: 5px solid #ab47bc;
+      margin-top: 0;
+    }
+    .appendix-box {
+      background-color: #faf4fc;
+      border-radius: 6px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+  </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>📢 that節をとる伝達動詞 ─ 発信内容による分類</h1>
+
+<div class="intro">
+  <p>「伝達動詞」とは、他者に向けて情報を発信する動詞のこと。ここでは that 節をとる伝達動詞を、<strong>発信する内容の性質</strong>によって分類する。COCA（現代アメリカ英語コーパス）の頻度データに基づく。</p>
+  <div class="freq-legend">
+    <span><span class="freq-box high"></span> 高頻度（3,000回以上）</span>
+    <span><span class="freq-box normal"></span> 中〜低頻度</span>
+  </div>
+</div>
+
+<!-- ===== 1. 事実・情報の伝達 ===== -->
+<h2>1. 事実・情報の伝達</h2>
+<div class="category-box">
+  <p>客観的な事実や情報をそのまま伝える動詞群。中立的なトーンで使われる。</p>
+  
+  <h3>◆ 基本的な発話</h3>
+  <div class="verb-list">
+    <span class="verb-tag high-freq">say</span>
+    <span class="verb-tag high-freq">add</span>
+    <span class="verb-tag">explain</span>
+    <span class="verb-tag">write</span>
+    <span class="verb-tag">state</span>
+    <span class="verb-tag">mention</span>
+    <span class="verb-tag">reply</span>
+    <span class="verb-tag">answer</span>
+  </div>
+  <div class="example">
+    <strong>He said that</strong> he would arrive by noon.<br>
+    <div class="jp">彼は正午までに着くと言った。</div>
+  </div>
+
+  <h3>◆ 公式発表・報告</h3>
+  <div class="verb-list">
+    <span class="verb-tag">announce</span>
+    <span class="verb-tag">report</span>
+    <span class="verb-tag">reveal</span>
+    <span class="verb-tag">confirm</span>
+    <span class="verb-tag">testify</span>
+  </div>
+  <div class="example">
+    <strong>The company announced that</strong> it would lay off 500 workers.<br>
+    <div class="jp">会社は500人を解雇すると発表した。</div>
+  </div>
+
+  <h3>◆ 指摘・コメント</h3>
+  <div class="verb-list">
+    <span class="verb-tag high-freq">note</span>
+    <span class="verb-tag">remark</span>
+    <span class="verb-tag">comment</span>
+    <span class="verb-tag">observe</span>
+  </div>
+  <div class="example">
+    <strong>The report noted that</strong> costs had increased significantly.<br>
+    <div class="jp">報告書はコストが大幅に増加したと述べていた。</div>
+  </div>
+</div>
+
+<!-- ===== 2. 意見・主張の表明 ===== -->
+<h2>2. 意見・主張の表明</h2>
+<div class="category-box">
+  <p>自分の見解や立場を他者に伝える動詞群。論争的な文脈で使われることが多い。</p>
+  
+  <h3>◆ 主張・断言</h3>
+  <div class="verb-list">
+    <span class="verb-tag high-freq">argue</span>
+    <span class="verb-tag">claim</span>
+    <span class="verb-tag">insist</span>
+    <span class="verb-tag">assert</span>
+    <span class="verb-tag">contend</span>
+    <span class="verb-tag">maintain</span>
+    <span class="verb-tag">hold</span>
+  </div>
+  <div class="example">
+    <strong>Scientists argue that</strong> climate change is accelerating.<br>
+    <div class="jp">科学者たちは気候変動が加速していると主張している。</div>
+  </div>
+  
+  <div class="tip">
+    <div class="tip-title">💡 argue / claim / insist の使い分け</div>
+    <strong>argue</strong>: 論拠を示して論理的に主張する<br>
+    <strong>claim</strong>: 証拠なしに主張する（真偽不明のニュアンス）<br>
+    <strong>insist</strong>: 反対を押し切って強く主張する
+  </div>
+
+  <h3>◆ 否定・反論</h3>
+  <div class="verb-list">
+    <span class="verb-tag">deny</span>
+  </div>
+  <div class="example">
+    <strong>He denied that</strong> he had been involved in the scandal.<br>
+    <div class="jp">彼はスキャンダルに関与したことを否定した。</div>
+  </div>
+</div>
+
+<!-- ===== 3. 提案・要求 ===== -->
+<h2>3. 提案・要求</h2>
+<div class="category-box">
+  <p>相手に行動を促したり、何かを求めたりする動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag high-freq">suggest</span>
+    <span class="verb-tag">propose</span>
+    <span class="verb-tag">recommend</span>
+    <span class="verb-tag">demand</span>
+    <span class="verb-tag">ask</span>
+  </div>
+  <div class="example">
+    <strong>The committee proposed that</strong> the project be postponed.<br>
+    <div class="jp">委員会はプロジェクトの延期を提案した。</div>
+  </div>
+  
+  <div class="subjunctive-note">
+    <span class="title">⚠️ 仮定法現在（should / 原形）</span><br>
+    suggest, propose, recommend, demand, ask などの「提案・要求」系動詞は、that節内で<strong>仮定法現在</strong>（動詞の原形、または should + 原形）を用いる。<br><br>
+    He suggested that she <strong><u>go</u></strong> [= should go] to the doctor.<br>
+    （彼は彼女に医者に行くよう提案した）
+  </div>
+</div>
+
+<!-- ===== 4. 警告・注意喚起 ===== -->
+<h2>4. 警告・注意喚起</h2>
+<div class="category-box">
+  <p>リスクや問題を相手に知らせ、注意を促す動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag">warn</span>
+    <span class="verb-tag">caution</span>
+  </div>
+  <div class="example">
+    <strong>The doctor warned that</strong> smoking could lead to cancer.<br>
+    <div class="jp">医者は喫煙が癌につながる可能性があると警告した。</div>
+  </div>
+</div>
+
+<!-- ===== 5. 強調・重点化 ===== -->
+<h2>5. 強調・重点化</h2>
+<div class="category-box">
+  <p>重要なポイントを際立たせて伝える動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag">stress</span>
+    <span class="verb-tag">emphasize</span>
+  </div>
+  <div class="example">
+    <strong>The manager stressed that</strong> safety was the top priority.<br>
+    <div class="jp">マネージャーは安全が最優先事項であると強調した。</div>
+  </div>
+</div>
+
+<!-- ===== 6. 承認・同意 ===== -->
+<h2>6. 承認・同意</h2>
+<div class="category-box">
+  <p>事実を認めたり、相手の意見に同意することを表明する動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag">acknowledge</span>
+    <span class="verb-tag">admit</span>
+    <span class="verb-tag">concede</span>
+    <span class="verb-tag">agree</span>
+    <span class="verb-tag">confess</span>
+  </div>
+  <div class="example">
+    <strong>He acknowledged that</strong> mistakes had been made.<br>
+    <div class="jp">彼は過ちがあったことを認めた。</div>
+  </div>
+  
+  <div class="tip">
+    <div class="tip-title">💡 acknowledge / admit / concede の使い分け</div>
+    <strong>acknowledge</strong>: 事実として認める（中立的）<br>
+    <strong>admit</strong>: 非を認める（やや消極的）<br>
+    <strong>concede</strong>: 議論や交渉で譲歩して認める
+  </div>
+</div>
+
+<!-- ===== 7. 約束・宣言 ===== -->
+<h2>7. 約束・宣言</h2>
+<div class="category-box">
+  <p>将来の行動について約束したり、公式に宣言したりする動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag">promise</span>
+    <span class="verb-tag">declare</span>
+  </div>
+  <div class="example">
+    <strong>She promised that</strong> she would never lie again.<br>
+    <div class="jp">彼女は二度と嘘をつかないと約束した。</div>
+  </div>
+</div>
+
+<!-- ===== 8. 示唆・暗示 ===== -->
+<h2>8. 示唆・暗示</h2>
+<div class="category-box">
+  <p>直接言わずに間接的に意味を伝える動詞群。主語が人以外（証拠・データ等）のこともある。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag high-freq">suggest</span>
+    <span class="verb-tag">indicate</span>
+    <span class="verb-tag">imply</span>
+    <span class="verb-tag">show</span>
+    <span class="verb-tag">prove</span>
+    <span class="verb-tag">demonstrate</span>
+  </div>
+  <div class="example">
+    <strong>The evidence suggests that</strong> he was at the scene.<br>
+    <div class="jp">証拠は彼が現場にいたことを示唆している。</div>
+  </div>
+  
+  <div class="note">
+    <div class="note-title">📌 suggest の二つの用法</div>
+    ① 人が主語 → 「提案する」（仮定法現在を使う）<br>
+    ② 物・証拠が主語 → 「示唆する」（直説法を使う）
+  </div>
+</div>
+
+<!-- ===== 9. 推測・予測の発信 ===== -->
+<h2>9. 推測・予測の発信</h2>
+<div class="category-box">
+  <p>不確実な情報や将来についての見通しを発信する動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag">predict</span>
+    <span class="verb-tag">estimate</span>
+    <span class="verb-tag">speculate</span>
+  </div>
+  <div class="example">
+    <strong>Experts predict that</strong> the economy will recover next year.<br>
+    <div class="jp">専門家は経済が来年回復すると予測している。</div>
+  </div>
+</div>
+
+<!-- ===== 10. 不満・嘆きの表明 ===== -->
+<h2>10. 不満・嘆きの表明</h2>
+<div class="category-box">
+  <p>不満や残念な気持ちを相手に伝える動詞群。</p>
+  
+  <div class="verb-list">
+    <span class="verb-tag">complain</span>
+    <span class="verb-tag">lament</span>
+  </div>
+  <div class="example">
+    <strong>He complained that</strong> the service was too slow.<br>
+    <div class="jp">彼はサービスが遅すぎると不満を述べた。</div>
+  </div>
+</div>
+
+<!-- ===== 多義語セクション ===== -->
+<div class="polysemy-section">
+<h2>⚠️ 注意すべき多義語</h2>
+<p>以下の動詞は基本義と that 節をとる用法で意味が異なる。入試では区別が問われることがある。</p>
+
+<div class="polysemy-item">
+  <h4>observe</h4>
+  <div class="meaning-box">
+    <div class="meaning">
+      <div class="meaning-label basic">● 基本義</div>
+      <strong>観察する、観測する</strong><br>
+      We <u>observed</u> the birds for hours.<br>
+      <span style="color:#666">（私たちは何時間も鳥を観察した）</span>
+    </div>
+    <div class="meaning">
+      <div class="meaning-label that-clause">● that節をとる場合</div>
+      <strong>述べる、コメントする</strong><br>
+      He <u>observed that</u> the market was unstable.<br>
+      <span style="color:#666">（彼は市場が不安定だと述べた）</span>
+    </div>
+  </div>
+  <div class="note">
+    <div class="note-title">📌 ポイント</div>
+    that節が続く場合は「観察する」ではなく「〜と述べる」の意味になる。フォーマルな文章で好まれる表現。
+  </div>
+</div>
+
+<div class="polysemy-item">
+  <h4>maintain</h4>
+  <div class="meaning-box">
+    <div class="meaning">
+      <div class="meaning-label basic">● 基本義</div>
+      <strong>維持する、保つ</strong><br>
+      We must <u>maintain</u> high standards.<br>
+      <span style="color:#666">（高い基準を維持しなければならない）</span>
+    </div>
+    <div class="meaning">
+      <div class="meaning-label that-clause">● that節をとる場合</div>
+      <strong>主張する、言い張る</strong><br>
+      She <u>maintains that</u> she is innocent.<br>
+      <span style="color:#666">（彼女は自分は無実だと主張している）</span>
+    </div>
+  </div>
+  <div class="note">
+    <div class="note-title">📌 ポイント</div>
+    that節が続く場合は「主張する」の意味。反対意見があっても自分の立場を「維持」→「主張し続ける」というイメージ。
+  </div>
+</div>
+
+<div class="polysemy-item">
+  <h4>hold</h4>
+  <div class="meaning-box">
+    <div class="meaning">
+      <div class="meaning-label basic">● 基本義</div>
+      <strong>持つ、握る、開催する</strong><br>
+      She <u>held</u> the baby in her arms.<br>
+      <span style="color:#666">（彼女は赤ちゃんを腕に抱いた）</span>
+    </div>
+    <div class="meaning">
+      <div class="meaning-label that-clause">● that節をとる場合</div>
+      <strong>（意見として）持つ、判断を示す</strong><br>
+      The court <u>held that</u> the law was unconstitutional.<br>
+      <span style="color:#666">（裁判所はその法律が違憲であるとの判断を示した）</span>
+    </div>
+  </div>
+  <div class="note">
+    <div class="note-title">📌 ポイント</div>
+    法律文書や公式な文脈で「判断を下す、見解を持つ」の意味で使われる。
+  </div>
+</div>
+
+<div class="polysemy-item">
+  <h4>note</h4>
+  <div class="meaning-box">
+    <div class="meaning">
+      <div class="meaning-label basic">● 基本義</div>
+      <strong>メモする、気づく</strong><br>
+      Please <u>note</u> the change in schedule.<br>
+      <span style="color:#666">（スケジュールの変更にご注意ください）</span>
+    </div>
+    <div class="meaning">
+      <div class="meaning-label that-clause">● that節をとる場合</div>
+      <strong>述べる、指摘する</strong><br>
+      The report <u>noted that</u> costs had increased.<br>
+      <span style="color:#666">（報告書はコストが増加したと述べていた）</span>
+    </div>
+  </div>
+  <div class="note">
+    <div class="note-title">📌 ポイント</div>
+    that節が続く場合は「注意する」ではなく「指摘する、述べる」の意味。ビジネス・学術文書で頻出。
+  </div>
+</div>
+
+</div>
+
+<!-- ===== 受け止め系（付録） ===== -->
+<div class="appendix-section">
+<h2>📎 参考：受け止め系動詞</h2>
+<p>以下は that 節をとるが、外向けの「伝達」ではなく、情報を内面で受け止める動詞群。頻度は高いが、発信を表す動詞とは性質が異なる。</p>
+
+<div class="appendix-box">
+  <h3>◆ 思考・認識</h3>
+  <div class="verb-list">
+    <span class="verb-tag high-freq">know</span>
+    <span class="verb-tag high-freq">believe</span>
+    <span class="verb-tag high-freq">think</span>
+    <span class="verb-tag high-freq">realize</span>
+    <span class="verb-tag high-freq">see</span>
+    <span class="verb-tag high-freq">find</span>
+    <span class="verb-tag">understand</span>
+    <span class="verb-tag">notice</span>
+    <span class="verb-tag">discover</span>
+    <span class="verb-tag">recognize</span>
+    <span class="verb-tag">learn</span>
+    <span class="verb-tag">remember</span>
+    <span class="verb-tag">forget</span>
+    <span class="verb-tag">assume</span>
+    <span class="verb-tag">suspect</span>
+    <span class="verb-tag">doubt</span>
+    <span class="verb-tag">expect</span>
+  </div>
+  <div class="example">
+    <strong>I realized that</strong> I had made a mistake.<br>
+    <div class="jp">私は自分が間違いを犯したことに気づいた。</div>
+  </div>
+</div>
+
+<div class="appendix-box">
+  <h3>◆ 感情</h3>
+  <div class="verb-list">
+    <span class="verb-tag high-freq">feel</span>
+    <span class="verb-tag">hope</span>
+    <span class="verb-tag">wish</span>
+    <span class="verb-tag">worry</span>
+    <span class="verb-tag">fear</span>
+    <span class="verb-tag">love</span>
+    <span class="verb-tag">like</span>
+    <span class="verb-tag">hate</span>
+  </div>
+  <div class="example">
+    <strong>She hoped that</strong> everything would work out.<br>
+    <div class="jp">彼女はすべてがうまくいくことを願った。</div>
+  </div>
+</div>
+
+<div class="tip">
+  <div class="tip-title">💡 see / find の多義性</div>
+  that 節をとる場合、see は「見る」ではなく「分かる」、find は「見つける」ではなく「〜だと分かる」の意味になる。<br>
+  <strong>I see that</strong> you've been busy.（忙しかったんだね）<br>
+  <strong>We found that</strong> the data was flawed.（データに欠陥があることが分かった）
+</div>
+
+</div>
+
+<!-- ===== まとめ ===== -->
+<div class="summary-section">
+<h2>📋 発信内容別まとめ</h2>
+
+<table>
+  <tr>
+    <th>発信内容</th>
+    <th>代表的な動詞</th>
+  </tr>
+  <tr>
+    <td>事実・情報の伝達</td>
+    <td>say, explain, report, announce, note, observe</td>
+  </tr>
+  <tr>
+    <td>意見・主張の表明</td>
+    <td>argue, claim, insist, assert, maintain, deny</td>
+  </tr>
+  <tr>
+    <td>提案・要求</td>
+    <td>suggest, propose, recommend, demand</td>
+  </tr>
+  <tr>
+    <td>警告・注意喚起</td>
+    <td>warn, caution</td>
+  </tr>
+  <tr>
+    <td>強調・重点化</td>
+    <td>stress, emphasize</td>
+  </tr>
+  <tr>
+    <td>承認・同意</td>
+    <td>acknowledge, admit, concede, agree</td>
+  </tr>
+  <tr>
+    <td>約束・宣言</td>
+    <td>promise, declare</td>
+  </tr>
+  <tr>
+    <td>示唆・暗示</td>
+    <td>suggest, indicate, imply, show</td>
+  </tr>
+  <tr>
+    <td>推測・予測の発信</td>
+    <td>predict, estimate, speculate</td>
+  </tr>
+  <tr>
+    <td>不満・嘆きの表明</td>
+    <td>complain, lament</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <div class="tip-title">📚 入試での注意点</div>
+  ① 多義語（observe, maintain, hold, note など）は文脈から意味を判断<br>
+  ② suggest, propose, demand などは that節内で<strong>仮定法現在</strong>（原形 / should+原形）を使う<br>
+  ③ that は省略可能な場合が多いが、主語が長い場合や誤読を避けるために残すことがある
+</div>
+
+</div>
+
+</body>
+</html>

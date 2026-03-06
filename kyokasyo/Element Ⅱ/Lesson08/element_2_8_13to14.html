@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 8 How We Got to Now with Glass 13-14</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 8 &mdash; How We Got to Now with Glass 13-14</h1>
+
+<!-- ========== 段落 13 ========== -->
+<div class="para-num">13</div>
+
+<!-- ===== 13-① ===== -->
+<details>
+<summary><span class="sent-num">13-①</span> Now, think of that common early-21st-century act: taking a selfie on your phone, and then posting the image on social media that can be seen all around the world.</summary>
+
+<!-- 文脈 -->
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>that common early-21st-century act</strong> → コロン以降の「taking a selfie … and then posting the image …」を予告する前方指示</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 1-①〜12段落のガラスの歴史から、現代の日常的場面へ転換し具体化</div>
+</div>
+
+<!-- 逐語訳 -->
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Now,</span><span class="slash-sep">/</span><span class="slash-ja">さて、</span></div>
+  <div class="slash-line"><span class="slash-en">think of</span><span class="slash-sep">/</span><span class="slash-ja">考えてみなさい</span></div>
+  <div class="slash-line"><span class="slash-en">that common early-21st-century act:</span><span class="slash-sep">/</span><span class="slash-ja">あのありふれた21世紀初頭の行為を:</span></div>
+  <div class="slash-line"><span class="slash-en">taking a selfie</span><span class="slash-sep">/</span><span class="slash-ja">自撮り写真を撮ること</span></div>
+  <div class="slash-line"><span class="slash-en">on your phone,</span><span class="slash-sep">/</span><span class="slash-ja">自分の携帯電話で<span class="slash-core">(撮る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">and then posting</span><span class="slash-sep">/</span><span class="slash-ja">そしてその後投稿すること<span class="slash-core">(行為)</span></span></div>
+  <div class="slash-line"><span class="slash-en">the image</span><span class="slash-sep">/</span><span class="slash-ja">その画像を</span></div>
+  <div class="slash-line"><span class="slash-en">on social media</span><span class="slash-sep">/</span><span class="slash-ja">ソーシャルメディアに<span class="slash-core">(投稿する)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that can be seen</span><span class="slash-sep">/</span><span class="slash-ja">見ることができる<span class="slash-core">(メディア)</span></span></div>
+  <div class="slash-line"><span class="slash-en">all around the world.</span><span class="slash-sep">/</span><span class="slash-ja">世界中で<span class="slash-core">(見られる)</span></span></div>
+</div>
+
+<!-- 文構造 -->
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Now, <ruby><span class="v-marker">think</span><rt>V</rt></ruby> <span class="dim">of</span> that common early-21st-century <ruby>act<rt>O</rt></ruby>: taking a selfie <span class="dim">on your phone</span>, and then posting the image <span class="dim">on social media</span> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">that</span><rt>s'</rt></ruby> <ruby><span class="v-marker">can be seen</span><rt>v'</rt></ruby> <span class="dim">all around the world</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<!-- 述語動詞 -->
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節（命令文）</td><td>―</td><td>think</td><td>考えなさい</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>can be seen</td><td>見ることができる</td></tr>
+  </table>
+</div>
+
+<!-- 準動詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>act ← taking a selfie on your phone</td><td>携帯電話で自撮り写真を撮ること<span class="slash-core">(行為)</span></td><td>名詞的（同格）</td></tr>
+    <tr><td>act ← posting the image on social media</td><td>ソーシャルメディアに画像を投稿すること<span class="slash-core">(行為)</span></td><td>名詞的（同格）</td></tr>
+  </table>
+</div>
+
+<!-- 形容詞句・副詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>taking ← on your phone</td><td>携帯電話で<span class="slash-core">(撮る)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>posting ← on social media</td><td>ソーシャルメディアに<span class="slash-core">(投稿する)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>can be seen ← all around the world</td><td>世界中で<span class="slash-core">(見られる)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ===== 13-② ===== -->
+<details>
+<summary><span class="sent-num">13-②</span> We are so accustomed to such actions, but what we rarely do is think about the way glass supports this whole network: we take pictures through glass lenses, store them on circuit boards made of fiberglass, send them around the world through glass cables, and enjoy them on screens made of glass.</summary>
+
+<!-- 文脈 -->
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>such actions</strong> → 13-①の taking a selfie and posting the image</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this whole network</strong> → コロン以降で具体的に説明される、ガラスを介した一連の仕組み全体</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong>（store / send / enjoy の目的語）→ pictures</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> 「慣れきっている」↔「めったに考えない」の対比（but）</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> コロン以降で「ガラスがネットワークを支える仕組み」を4つの動作で具体化</div>
+</div>
+
+<!-- 逐語訳 -->
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">We</span><span class="slash-sep">/</span><span class="slash-ja">私たちは</span></div>
+  <div class="slash-line"><span class="slash-en">are so accustomed</span><span class="slash-sep">/</span><span class="slash-ja">とても慣れている</span></div>
+  <div class="slash-line"><span class="slash-en">to such actions,</span><span class="slash-sep">/</span><span class="slash-ja">そのような行為に<span class="slash-core">(慣れている)</span></span></div>
+  <div class="slash-line"><span class="slash-en">but</span><span class="slash-sep">/</span><span class="slash-ja">しかし</span></div>
+  <div class="slash-line"><span class="slash-en">what we rarely do</span><span class="slash-sep">/</span><span class="slash-ja">私たちがめったにしないこと</span></div>
+  <div class="slash-line"><span class="slash-en">is</span><span class="slash-sep">/</span><span class="slash-ja">は…である</span></div>
+  <div class="slash-line"><span class="slash-en">think about the way</span><span class="slash-sep">/</span><span class="slash-ja">方法について考えること</span></div>
+  <div class="slash-line"><span class="slash-en">glass supports</span><span class="slash-sep">/</span><span class="slash-ja">ガラスが支える<span class="slash-core">(方法)</span></span></div>
+  <div class="slash-line"><span class="slash-en">this whole network:</span><span class="slash-sep">/</span><span class="slash-ja">このネットワーク全体を:</span></div>
+  <div class="slash-line"><span class="slash-en">we take pictures</span><span class="slash-sep">/</span><span class="slash-ja">私たちは写真を撮り</span></div>
+  <div class="slash-line"><span class="slash-en">through glass lenses,</span><span class="slash-sep">/</span><span class="slash-ja">ガラスのレンズを通して<span class="slash-core">(撮る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">store them</span><span class="slash-sep">/</span><span class="slash-ja">それらを保存し</span></div>
+  <div class="slash-line"><span class="slash-en">on circuit boards</span><span class="slash-sep">/</span><span class="slash-ja">回路基板に<span class="slash-core">(保存する)</span></span></div>
+  <div class="slash-line"><span class="slash-en">made of fiberglass,</span><span class="slash-sep">/</span><span class="slash-ja">ガラス繊維でできた<span class="slash-core">(基板)</span></span></div>
+  <div class="slash-line"><span class="slash-en">send them</span><span class="slash-sep">/</span><span class="slash-ja">それらを送り</span></div>
+  <div class="slash-line"><span class="slash-en">around the world</span><span class="slash-sep">/</span><span class="slash-ja">世界中に<span class="slash-core">(送る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">through glass cables,</span><span class="slash-sep">/</span><span class="slash-ja">ガラスのケーブルを通して<span class="slash-core">(送る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">and enjoy them</span><span class="slash-sep">/</span><span class="slash-ja">そしてそれらを楽しむ</span></div>
+  <div class="slash-line"><span class="slash-en">on screens</span><span class="slash-sep">/</span><span class="slash-ja">画面で<span class="slash-core">(楽しむ)</span></span></div>
+  <div class="slash-line"><span class="slash-en">made of glass.</span><span class="slash-sep">/</span><span class="slash-ja">ガラスでできた<span class="slash-core">(画面)</span></span></div>
+</div>
+
+<!-- 文構造 -->
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>We<rt>S</rt></ruby> <ruby><span class="v-marker">are</span><rt>V</rt></ruby> so <ruby>accustomed<rt>C</rt></ruby> <span class="dim">to such actions</span>, but <span class="noun-cl">[</span><ruby><span class="cl-marker">what</span><rt>S</rt></ruby> <ruby>we<rt>s'</rt></ruby> rarely <ruby><span class="v-marker">do</span><rt>v'</rt></ruby><span class="noun-cl">]</span> <ruby><span class="v-marker">is</span><rt>V</rt></ruby> <ruby>think<rt>C</rt></ruby> <span class="dim">about</span> the <ruby>way<rt>O (think)</rt></ruby> <span class="adj-cl">&lt;</span><span class="omit">∧</span> <ruby>glass<rt>s'</rt></ruby> <ruby><span class="v-marker">supports</span><rt>v'</rt></ruby> this whole <ruby>network<rt>o'</rt></ruby><span class="adj-cl">&gt;</span>: <ruby>we<rt>S</rt></ruby> <ruby><span class="v-marker">take</span><rt>V</rt></ruby> <ruby>pictures<rt>O</rt></ruby> <span class="dim">through glass lenses</span>, <ruby><span class="v-marker">store</span><rt>V</rt></ruby> <ruby>them<rt>O</rt></ruby> <span class="dim">on circuit boards</span> made <span class="dim">of fiberglass</span>, <ruby><span class="v-marker">send</span><rt>V</rt></ruby> <ruby>them<rt>O</rt></ruby> <span class="dim">around the world</span> <span class="dim">through glass cables</span>, and <ruby><span class="v-marker">enjoy</span><rt>V</rt></ruby> <ruby>them<rt>O</rt></ruby> <span class="dim">on screens</span> made <span class="dim">of glass</span>.
+</div>
+
+<!-- 述語動詞 -->
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>are</td><td>…である</td></tr>
+    <tr><td>名詞節</td><td>what</td><td>do</td><td>する</td></tr>
+    <tr><td>主節（擬似分裂文）</td><td>―</td><td>is</td><td>…である</td></tr>
+    <tr><td>形容詞節</td><td>(that) [省略]</td><td>supports</td><td>支える</td></tr>
+    <tr><td>主節（コロン後・並列）</td><td>―</td><td>take</td><td>撮る</td></tr>
+    <tr><td>主節（コロン後・並列）</td><td>―</td><td>store</td><td>保存する</td></tr>
+    <tr><td>主節（コロン後・並列）</td><td>―</td><td>send</td><td>送る</td></tr>
+    <tr><td>主節（コロン後・並列）</td><td>―</td><td>enjoy</td><td>楽しむ</td></tr>
+  </table>
+</div>
+
+<!-- 共通関係 -->
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>, but</td><td>SVC (We are accustomed …) / SVC (what we rarely do is think …)</td></tr>
+    <tr><td>, … , … , and</td><td>take / store / send / enjoy（共通 S: we）</td></tr>
+  </table>
+</div>
+
+<!-- 準動詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>(is の C) think about the way …</td><td>…について考えること</td><td>名詞的（補語）[原形不定詞]</td></tr>
+    <tr><td>circuit boards ← made of fiberglass</td><td>ガラス繊維でできた<span class="slash-core">(基板)</span></td><td>形容詞的（過去分詞）</td></tr>
+    <tr><td>screens ← made of glass</td><td>ガラスでできた<span class="slash-core">(画面)</span></td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<!-- 形容詞句・副詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>are accustomed ← to such actions</td><td>そのような行為に<span class="slash-core">(慣れている)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>take ← through glass lenses</td><td>ガラスのレンズを通して<span class="slash-core">(撮る)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>store ← on circuit boards</td><td>回路基板に<span class="slash-core">(保存する)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>send ← around the world</td><td>世界中に<span class="slash-core">(送る)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>send ← through glass cables</td><td>ガラスのケーブルを通して<span class="slash-core">(送る)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>enjoy ← on screens</td><td>画面で<span class="slash-core">(楽しむ)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ========== 段落 14 ========== -->
+<div class="para-num">14</div>
+
+<!-- ===== 14-① ===== -->
+<details>
+<summary><span class="sent-num">14-①</span> Our lives are surrounded and supported by objects that are based on the ideas and creativity of thousands of people who came before us.</summary>
+
+<!-- 文脈 -->
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>objects</strong> → 本文全体で述べられたガラス製品・発明品（窓ガラス、眼鏡、顕微鏡、望遠鏡、レンズ、ガラス繊維など）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>thousands of people who came before us</strong> → ローマの職人、修道士、グーテンベルク、オランダのレンズ職人、ガリレオ、C. V. ボーイズなど本文に登場した先人たち</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> 13-②「ガラスがネットワーク全体を支える」を、より抽象的に「先人の発想と創造性に基づく物体に囲まれている」と言い換え、本文全体の結論へ</div>
+</div>
+
+<!-- 逐語訳 -->
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Our lives</span><span class="slash-sep">/</span><span class="slash-ja">私たちの生活は</span></div>
+  <div class="slash-line"><span class="slash-en">are surrounded</span><span class="slash-sep">/</span><span class="slash-ja">囲まれ</span></div>
+  <div class="slash-line"><span class="slash-en">and supported</span><span class="slash-sep">/</span><span class="slash-ja">そして支えられている</span></div>
+  <div class="slash-line"><span class="slash-en">by objects</span><span class="slash-sep">/</span><span class="slash-ja">物体によって<span class="slash-core">(囲まれ支えられている)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that are based</span><span class="slash-sep">/</span><span class="slash-ja">基づいている<span class="slash-core">(物体)</span></span></div>
+  <div class="slash-line"><span class="slash-en">on the ideas and creativity</span><span class="slash-sep">/</span><span class="slash-ja">発想と創造性に<span class="slash-core">(基づいている)</span></span></div>
+  <div class="slash-line"><span class="slash-en">of thousands of people</span><span class="slash-sep">/</span><span class="slash-ja">何千もの人々の<span class="slash-core">(発想と創造性)</span></span></div>
+  <div class="slash-line"><span class="slash-en">who came</span><span class="slash-sep">/</span><span class="slash-ja">やって来た<span class="slash-core">(人々)</span></span></div>
+  <div class="slash-line"><span class="slash-en">before us.</span><span class="slash-sep">/</span><span class="slash-ja">私たちの前に<span class="slash-core">(やって来た)</span></span></div>
+</div>
+
+<!-- 文構造 -->
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Our <ruby>lives<rt>S</rt></ruby> <ruby><span class="v-marker">are surrounded</span><rt>V</rt></ruby> and <span class="v-marker">supported</span> <span class="dim">by objects</span> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">that</span><rt>s'</rt></ruby> <ruby><span class="v-marker">are based</span><rt>v'</rt></ruby> <span class="dim">on the ideas and creativity</span> <span class="dim">of thousands of people</span> <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby> <ruby><span class="v-marker">came</span><rt>v'</rt></ruby> <span class="dim">before us</span><span class="adj-cl">&gt;</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<!-- 述語動詞 -->
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>are surrounded and supported</td><td>囲まれ支えられている</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>are based</td><td>基づいている</td></tr>
+    <tr><td>形容詞節</td><td>who</td><td>came</td><td>やって来た</td></tr>
+  </table>
+</div>
+
+<!-- 共通関係 -->
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>surrounded / supported（共通 S: Our lives、共通 by objects）</td></tr>
+    <tr><td>and</td><td>the ideas / creativity（共通 of thousands of people）</td></tr>
+  </table>
+</div>
+
+<!-- 形容詞句・副詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>are surrounded and supported ← by objects</td><td>物体によって<span class="slash-core">(囲まれ支えられている)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>are based ← on the ideas and creativity</td><td>発想と創造性に<span class="slash-core">(基づいている)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>ideas and creativity ← of thousands of people</td><td>何千もの人々の<span class="slash-core">(発想と創造性)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>came ← before us</td><td>私たちの前に<span class="slash-core">(やって来た)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ===== 14-② ===== -->
+<details>
+<summary><span class="sent-num">14-②</span> It is of great interest to put them in perspective and learn how things happened, as shown in this history of glass.</summary>
+
+<!-- 文脈 -->
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>It</strong> → 形式主語（真主語は to put … and learn …）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong> → 14-①の objects（先人の発想に基づく物体）</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this history of glass</strong> → 本文（この文章）自体への自己言及</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> 14-①の結論を受け、ガラスの歴史を通じて学ぶ意義を述べる本文全体のまとめ</div>
+</div>
+
+<!-- 逐語訳 -->
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It</span><span class="slash-sep">/</span><span class="slash-ja">（形式主語）</span></div>
+  <div class="slash-line"><span class="slash-en">is of great interest</span><span class="slash-sep">/</span><span class="slash-ja">とても興味深いことである</span></div>
+  <div class="slash-line"><span class="slash-en">to put them</span><span class="slash-sep">/</span><span class="slash-ja">それらを位置づけること(こと)は</span></div>
+  <div class="slash-line"><span class="slash-en">in perspective</span><span class="slash-sep">/</span><span class="slash-ja">俯瞰的な視野に<span class="slash-core">(位置づける)</span></span></div>
+  <div class="slash-line"><span class="slash-en">and learn</span><span class="slash-sep">/</span><span class="slash-ja">そして学ぶこと<span class="slash-core">(こと)</span></span></div>
+  <div class="slash-line"><span class="slash-en">how things happened,</span><span class="slash-sep">/</span><span class="slash-ja">物事がどのように起きたかを</span></div>
+  <div class="slash-line"><span class="slash-en">as shown</span><span class="slash-sep">/</span><span class="slash-ja">示されているように</span></div>
+  <div class="slash-line"><span class="slash-en">in this history</span><span class="slash-sep">/</span><span class="slash-ja">この歴史の中で<span class="slash-core">(示されている)</span></span></div>
+  <div class="slash-line"><span class="slash-en">of glass.</span><span class="slash-sep">/</span><span class="slash-ja">ガラスの<span class="slash-core">(歴史)</span></span></div>
+</div>
+
+<!-- 文構造 -->
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>形S</rt></ruby> <ruby><span class="v-marker">is</span><rt>V</rt></ruby> <ruby><span class="dim">of great interest</span><rt>C</rt></ruby> <ruby>to put<rt>真S</rt></ruby> them <span class="dim">in perspective</span> and learn <span class="noun-cl">[</span><ruby><span class="cl-marker">how</span><rt></rt></ruby> <ruby>things<rt>s'</rt></ruby> <ruby><span class="v-marker">happened</span><rt>v'</rt></ruby><span class="noun-cl">]</span>, <span class="adv-cl">(</span><ruby><span class="cl-marker">as</span><rt></rt></ruby> <span class="v-marker">shown</span> <span class="dim">in this history</span> <span class="dim">of glass</span><span class="adv-cl">)</span>.
+</div>
+
+<!-- 述語動詞 -->
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is</td><td>…である</td></tr>
+    <tr><td>名詞節</td><td>how</td><td>happened</td><td>起きた</td></tr>
+    <tr><td>副詞節（縮約）</td><td>as</td><td>(is) shown</td><td>示されているように</td></tr>
+  </table>
+</div>
+
+<!-- 共通関係 -->
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>to put … / (to) learn …（共通：真主語を構成する並列不定詞）</td></tr>
+  </table>
+</div>
+
+<!-- 準動詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>（形S → 真S）to put them in perspective and learn how things happened</td><td>それらを俯瞰し物事の経緯を学ぶこと</td><td>名詞的（主語）</td></tr>
+    <tr><td>as shown in this history of glass</td><td>このガラスの歴史で示されているように<span class="slash-core">(興味深い)</span></td><td>副詞的（様態）[分詞構文]</td></tr>
+  </table>
+</div>
+
+<!-- 形容詞句・副詞句 -->
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>is ← of great interest</td><td>とても興味深い<span class="slash-core">(である)</span></td><td>補語（前置詞句）</td></tr>
+    <tr><td>put ← in perspective</td><td>俯瞰的な視野に<span class="slash-core">(位置づける)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>shown ← in this history</td><td>この歴史の中で<span class="slash-core">(示されている)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>history ← of glass</td><td>ガラスの<span class="slash-core">(歴史)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

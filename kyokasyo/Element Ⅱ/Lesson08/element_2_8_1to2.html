@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 8 How We Got to Now with Glass 1&amp;2</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 8 &mdash; How We Got to Now with Glass 1&amp;2</h1>
+
+<!-- ============================================================ -->
+<!-- 段落 1 -->
+<!-- ============================================================ -->
+<div class="para-num">1</div>
+
+<!-- 1-① -->
+<details>
+<summary><span class="sent-num">1-①</span> History allows us to see a world we generally take for granted with fresh eyes.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item">冒頭文。本文全体のテーマ（歴史の意義）を提示する導入。</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">History</span><span class="slash-sep">/</span><span class="slash-ja">歴史は</span></div>
+  <div class="slash-line"><span class="slash-en">allows</span><span class="slash-sep">/</span><span class="slash-ja">可能にする</span></div>
+  <div class="slash-line"><span class="slash-en">us</span><span class="slash-sep">/</span><span class="slash-ja">私たちが</span></div>
+  <div class="slash-line"><span class="slash-en">to see</span><span class="slash-sep">/</span><span class="slash-ja">見ることを</span></div>
+  <div class="slash-line"><span class="slash-en">a world</span><span class="slash-sep">/</span><span class="slash-ja">世界を</span></div>
+  <div class="slash-line"><span class="slash-en">we generally take for granted</span><span class="slash-sep">/</span><span class="slash-ja">私たちが普段当然だと思っている<span class="slash-core">（世界）</span></span></div>
+  <div class="slash-line"><span class="slash-en">with fresh eyes.</span><span class="slash-sep">/</span><span class="slash-ja">新鮮な目で<span class="slash-core">（見る）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>History<rt>S</rt></ruby>
+  <ruby><span class="v-marker">allows</span><rt>V</rt></ruby>
+  <ruby>us<rt>O</rt></ruby>
+  <ruby>to see<rt>C</rt></ruby>
+  a world
+  <span class="adj-cl">&lt;</span><span class="omit">∧</span>
+  <ruby>we<rt>s'</rt></ruby> generally
+  <ruby><span class="v-marker">take for granted</span><rt>v'</rt></ruby>
+  <span class="adj-cl">&gt;</span>
+  <span class="dim">with fresh eyes</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>allows</td><td>可能にする</td></tr>
+    <tr><td>形容詞節</td><td>(that)&#x5B;省略&#x5D;</td><td>take for granted</td><td>当然だと思う</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>us ← to see a world … with fresh eyes</td><td>世界を新鮮な目で見ること<span class="slash-core">（を可能にする）</span></td><td>名詞的（補語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>see ← with fresh eyes</td><td>新鮮な目で<span class="slash-core">（見る）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-② -->
+<details>
+<summary><span class="sent-num">1-②</span> It also shows that innovations have brought about much wider changes in society than we might expect.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>It</strong> → 1-① History</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> also により1-①の主張に追加：歴史は新鮮な視点だけでなく、革新がもたらした広い変化も見せてくれる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It</span><span class="slash-sep">/</span><span class="slash-ja">それ（＝歴史）は</span></div>
+  <div class="slash-line"><span class="slash-en">also shows</span><span class="slash-sep">/</span><span class="slash-ja">また示す</span></div>
+  <div class="slash-line"><span class="slash-en">that</span><span class="slash-sep">/</span><span class="slash-ja">ということを</span></div>
+  <div class="slash-line"><span class="slash-en">innovations</span><span class="slash-sep">/</span><span class="slash-ja">革新が</span></div>
+  <div class="slash-line"><span class="slash-en">have brought about</span><span class="slash-sep">/</span><span class="slash-ja">もたらしてきた</span></div>
+  <div class="slash-line"><span class="slash-en">much wider changes</span><span class="slash-sep">/</span><span class="slash-ja">はるかに広い変化を</span></div>
+  <div class="slash-line"><span class="slash-en">in society</span><span class="slash-sep">/</span><span class="slash-ja">社会における<span class="slash-core">（変化）</span></span></div>
+  <div class="slash-line"><span class="slash-en">than we might expect.</span><span class="slash-sep">/</span><span class="slash-ja">私たちが予想するよりも<span class="slash-core">（広い）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>S</rt></ruby> also
+  <ruby><span class="v-marker">shows</span><rt>V</rt></ruby>
+  <span class="noun-cl">[</span><ruby><span class="cl-marker">that</span><rt>O</rt></ruby>
+  <ruby>innovations<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">have brought about</span><rt>v'</rt></ruby>
+  much wider <ruby>changes<rt>o'</rt></ruby>
+  <span class="dim">in society</span>
+  <span class="adv-cl">(</span><span class="cl-marker">than</span>
+  <ruby>we<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">might expect</span><rt>v'</rt></ruby>
+  <span class="adv-cl">)</span>
+  <span class="noun-cl">]</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>shows</td><td>示す</td></tr>
+    <tr><td>名詞節</td><td>that</td><td>have brought about</td><td>もたらしてきた</td></tr>
+    <tr><td>副詞節</td><td>than</td><td>might expect</td><td>予想するかもしれない</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>changes ← in society</td><td>社会における<span class="slash-core">（変化）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-③ -->
+<details>
+<summary><span class="sent-num">1-③</span> Over 26 million years ago, something happened in the Libyan Desert, a part of the Sahara Desert in Northern Africa.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> Over 26 million years ago で時間を大きく遡り、ガラスの起源の話に入る</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 1-①②の「歴史が見せてくれるもの」の具体例としてガラスの歴史が始まる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Over 26 million years ago,</span><span class="slash-sep">/</span><span class="slash-ja">2600万年以上前に</span></div>
+  <div class="slash-line"><span class="slash-en">something</span><span class="slash-sep">/</span><span class="slash-ja">何かが</span></div>
+  <div class="slash-line"><span class="slash-en">happened</span><span class="slash-sep">/</span><span class="slash-ja">起こった</span></div>
+  <div class="slash-line"><span class="slash-en">in the Libyan Desert,</span><span class="slash-sep">/</span><span class="slash-ja">リビア砂漠で</span></div>
+  <div class="slash-line"><span class="slash-en">a part of the Sahara Desert</span><span class="slash-sep">/</span><span class="slash-ja">サハラ砂漠の一部<span class="slash-core">（であるリビア砂漠）</span></span></div>
+  <div class="slash-line"><span class="slash-en">in Northern Africa.</span><span class="slash-sep">/</span><span class="slash-ja">北アフリカの<span class="slash-core">（サハラ砂漠）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">Over 26 million years ago</span>,
+  <ruby>something<rt>S</rt></ruby>
+  <ruby><span class="v-marker">happened</span><rt>V</rt></ruby>
+  <span class="dim">in the Libyan Desert</span>,
+  a part <span class="dim">of the Sahara Desert</span>
+  <span class="dim">in Northern Africa</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>happened</td><td>起こった</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>happened ← Over 26 million years ago</td><td>2600万年以上前に<span class="slash-core">（起こった）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>happened ← in the Libyan Desert</td><td>リビア砂漠で<span class="slash-core">（起こった）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>the Libyan Desert ← a part of the Sahara Desert in Northern Africa</td><td>北アフリカのサハラ砂漠の一部<span class="slash-core">（であるリビア砂漠）</span></td><td>形容詞句（同格）</td></tr>
+    <tr><td>the Sahara Desert ← in Northern Africa</td><td>北アフリカの<span class="slash-core">（サハラ砂漠）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-④ -->
+<details>
+<summary><span class="sent-num">1-④</span> In the desert, intense heat of about 2,000℃ melted a compound called silica in the sand over a large area of the Libyan Desert.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the desert</strong> → 1-③ the Libyan Desert（a → the の変化：既出の砂漠を指す）</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 1-③「何かが起こった」の具体的内容を説明</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In the desert,</span><span class="slash-sep">/</span><span class="slash-ja">その砂漠で</span></div>
+  <div class="slash-line"><span class="slash-en">intense heat</span><span class="slash-sep">/</span><span class="slash-ja">強烈な熱が</span></div>
+  <div class="slash-line"><span class="slash-en">of about 2,000℃</span><span class="slash-sep">/</span><span class="slash-ja">約2000℃の<span class="slash-core">（熱）</span></span></div>
+  <div class="slash-line"><span class="slash-en">melted</span><span class="slash-sep">/</span><span class="slash-ja">溶かした</span></div>
+  <div class="slash-line"><span class="slash-en">a compound</span><span class="slash-sep">/</span><span class="slash-ja">化合物を</span></div>
+  <div class="slash-line"><span class="slash-en">called silica</span><span class="slash-sep">/</span><span class="slash-ja">シリカと呼ばれる<span class="slash-core">（化合物）</span></span></div>
+  <div class="slash-line"><span class="slash-en">in the sand</span><span class="slash-sep">/</span><span class="slash-ja">砂の中の<span class="slash-core">（化合物）</span></span></div>
+  <div class="slash-line"><span class="slash-en">over a large area</span><span class="slash-sep">/</span><span class="slash-ja">広い範囲にわたって</span></div>
+  <div class="slash-line"><span class="slash-en">of the Libyan Desert.</span><span class="slash-sep">/</span><span class="slash-ja">リビア砂漠の<span class="slash-core">（範囲）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In the desert</span>,
+  intense <ruby>heat<rt>S</rt></ruby>
+  <span class="dim">of about 2,000℃</span>
+  <ruby><span class="v-marker">melted</span><rt>V</rt></ruby>
+  a <ruby>compound<rt>O</rt></ruby>
+  called silica
+  <span class="dim">in the sand</span>
+  <span class="dim">over a large area of the Libyan Desert</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>melted</td><td>溶かした</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>a compound ← called silica</td><td>シリカと呼ばれる<span class="slash-core">（化合物）</span></td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>melted ← In the desert</td><td>その砂漠で<span class="slash-core">（溶かした）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>heat ← of about 2,000℃</td><td>約2000℃の<span class="slash-core">（熱）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>compound ← in the sand</td><td>砂の中の<span class="slash-core">（化合物）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>melted ← over a large area of the Libyan Desert</td><td>リビア砂漠の広い範囲にわたって<span class="slash-core">（溶かした）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 1-⑤ -->
+<details>
+<summary><span class="sent-num">1-⑤</span> This melted sand was what we now call glass.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>This melted sand</strong> → 1-④で述べた、熱で溶けたシリカ（砂）</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> 溶けた砂＝「ガラス」という定義を提示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">This melted sand</span><span class="slash-sep">/</span><span class="slash-ja">この溶けた砂は</span></div>
+  <div class="slash-line"><span class="slash-en">was</span><span class="slash-sep">/</span><span class="slash-ja">であった</span></div>
+  <div class="slash-line"><span class="slash-en">what we now call glass.</span><span class="slash-sep">/</span><span class="slash-ja">私たちが今ガラスと呼ぶもの</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  This melted <ruby>sand<rt>S</rt></ruby>
+  <ruby><span class="v-marker">was</span><rt>V</rt></ruby>
+  <span class="noun-cl">[</span><ruby><span class="cl-marker">what</span><rt>C</rt></ruby>
+  <ruby>we<rt>s'</rt></ruby> now
+  <ruby><span class="v-marker">call</span><rt>v'</rt></ruby>
+  <ruby>glass<rt>c'</rt></ruby><span class="noun-cl">]</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>であった</td></tr>
+    <tr><td>名詞節</td><td>what</td><td>call</td><td>呼ぶ</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ============================================================ -->
+<!-- 段落 2 -->
+<!-- ============================================================ -->
+<div class="para-num">2</div>
+
+<!-- 2-① -->
+<details>
+<summary><span class="sent-num">2-①</span> About ten thousand years ago, someone traveling through the desert stumbled across this glass.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the desert</strong> → 1-③ the Libyan Desert；<strong>this glass</strong> → 1-⑤ glass</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 2600万年前 → 約1万年前へ。時間が大きく進む</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">About ten thousand years ago,</span><span class="slash-sep">/</span><span class="slash-ja">約1万年前に</span></div>
+  <div class="slash-line"><span class="slash-en">someone</span><span class="slash-sep">/</span><span class="slash-ja">誰かが</span></div>
+  <div class="slash-line"><span class="slash-en">traveling through the desert</span><span class="slash-sep">/</span><span class="slash-ja">その砂漠を旅していた<span class="slash-core">（誰か）</span></span></div>
+  <div class="slash-line"><span class="slash-en">stumbled across</span><span class="slash-sep">/</span><span class="slash-ja">偶然見つけた</span></div>
+  <div class="slash-line"><span class="slash-en">this glass.</span><span class="slash-sep">/</span><span class="slash-ja">このガラスを</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">About ten thousand years ago</span>,
+  <ruby>someone<rt>S</rt></ruby>
+  traveling <span class="dim">through the desert</span>
+  <ruby><span class="v-marker">stumbled across</span><rt>V</rt></ruby>
+  this <ruby>glass<rt>O</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>stumbled across</td><td>偶然見つけた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>someone ← traveling through the desert</td><td>その砂漠を旅していた<span class="slash-core">（誰か）</span></td><td>形容詞的（現在分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>stumbled across ← About ten thousand years ago</td><td>約1万年前に<span class="slash-core">（偶然見つけた）</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 2-② -->
+<details>
+<summary><span class="sent-num">2-②</span> It must have impressed everyone who came into contact with it, because it was used to make a brooch in the shape of a beetle.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>It</strong>（文頭）→ 2-① this glass；<strong>it</strong>（contact with it）→ 同；<strong>it</strong>（because it）→ 同</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> because 以下が理由：ブローチに使われたという事実 → ガラスが人々を感動させたに違いないという推論の根拠</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It</span><span class="slash-sep">/</span><span class="slash-ja">それ（＝ガラス）は</span></div>
+  <div class="slash-line"><span class="slash-en">must have impressed</span><span class="slash-sep">/</span><span class="slash-ja">感動させたに違いない</span></div>
+  <div class="slash-line"><span class="slash-en">everyone</span><span class="slash-sep">/</span><span class="slash-ja">すべての人を</span></div>
+  <div class="slash-line"><span class="slash-en">who came into contact</span><span class="slash-sep">/</span><span class="slash-ja">接触した<span class="slash-core">（すべての人）</span></span></div>
+  <div class="slash-line"><span class="slash-en">with it,</span><span class="slash-sep">/</span><span class="slash-ja">それと</span></div>
+  <div class="slash-line"><span class="slash-en">because</span><span class="slash-sep">/</span><span class="slash-ja">なぜなら</span></div>
+  <div class="slash-line"><span class="slash-en">it was used</span><span class="slash-sep">/</span><span class="slash-ja">それは使われたからだ</span></div>
+  <div class="slash-line"><span class="slash-en">to make</span><span class="slash-sep">/</span><span class="slash-ja">作るために</span></div>
+  <div class="slash-line"><span class="slash-en">a brooch</span><span class="slash-sep">/</span><span class="slash-ja">ブローチを</span></div>
+  <div class="slash-line"><span class="slash-en">in the shape of a beetle.</span><span class="slash-sep">/</span><span class="slash-ja">甲虫の形の<span class="slash-core">（ブローチ）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>S</rt></ruby>
+  <ruby><span class="v-marker">must have impressed</span><rt>V</rt></ruby>
+  <ruby>everyone<rt>O</rt></ruby>
+  <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">who</span><rt>s'</rt></ruby>
+  <ruby><span class="v-marker">came into contact</span><rt>v'</rt></ruby>
+  <span class="dim">with it</span><span class="adj-cl">&gt;</span>,
+  <span class="adv-cl">(</span><span class="cl-marker">because</span>
+  <ruby>it<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">was used</span><rt>v'</rt></ruby>
+  to make a brooch
+  <span class="dim">in the shape of a beetle</span><span class="adv-cl">)</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>must have impressed</td><td>感動させたに違いない</td></tr>
+    <tr><td>形容詞節</td><td>who</td><td>came into contact</td><td>接触した</td></tr>
+    <tr><td>副詞節</td><td>because</td><td>was used</td><td>使われた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>was used ← to make a brooch in the shape of a beetle</td><td>甲虫の形のブローチを作るために<span class="slash-core">（使われた）</span></td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>came into contact ← with it</td><td>それと<span class="slash-core">（接触した）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>brooch ← in the shape of a beetle</td><td>甲虫の形の<span class="slash-core">（ブローチ）</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 2-③ -->
+<details>
+<summary><span class="sent-num">2-③</span> It lay there for four thousand years, until explorers found it in 1922 when they discovered the tomb of an Egyptian king, Tutankhamen.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>It</strong>（文頭）→ 2-② a brooch in the shape of a beetle；<strong>it</strong>（found it）→ 同；<strong>they</strong> → explorers</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> for four thousand years → 1922年。ブローチが作られてから発見されるまでの長い時間経過を示す</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It</span><span class="slash-sep">/</span><span class="slash-ja">それ（＝ブローチ）は</span></div>
+  <div class="slash-line"><span class="slash-en">lay</span><span class="slash-sep">/</span><span class="slash-ja">置かれていた</span></div>
+  <div class="slash-line"><span class="slash-en">there</span><span class="slash-sep">/</span><span class="slash-ja">そこに</span></div>
+  <div class="slash-line"><span class="slash-en">for four thousand years,</span><span class="slash-sep">/</span><span class="slash-ja">4000年間</span></div>
+  <div class="slash-line"><span class="slash-en">until</span><span class="slash-sep">/</span><span class="slash-ja">～するまで</span></div>
+  <div class="slash-line"><span class="slash-en">explorers</span><span class="slash-sep">/</span><span class="slash-ja">探検家たちが</span></div>
+  <div class="slash-line"><span class="slash-en">found it</span><span class="slash-sep">/</span><span class="slash-ja">それを見つけた</span></div>
+  <div class="slash-line"><span class="slash-en">in 1922</span><span class="slash-sep">/</span><span class="slash-ja">1922年に</span></div>
+  <div class="slash-line"><span class="slash-en">when</span><span class="slash-sep">/</span><span class="slash-ja">そのとき</span></div>
+  <div class="slash-line"><span class="slash-en">they</span><span class="slash-sep">/</span><span class="slash-ja">彼ら（＝探検家たち）が</span></div>
+  <div class="slash-line"><span class="slash-en">discovered</span><span class="slash-sep">/</span><span class="slash-ja">発見した</span></div>
+  <div class="slash-line"><span class="slash-en">the tomb</span><span class="slash-sep">/</span><span class="slash-ja">墓を</span></div>
+  <div class="slash-line"><span class="slash-en">of an Egyptian king,</span><span class="slash-sep">/</span><span class="slash-ja">エジプトの王の<span class="slash-core">（墓）</span></span></div>
+  <div class="slash-line"><span class="slash-en">Tutankhamen.</span><span class="slash-sep">/</span><span class="slash-ja">ツタンカーメン<span class="slash-core">（＝エジプトの王）</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>S</rt></ruby>
+  <ruby><span class="v-marker">lay</span><rt>V</rt></ruby>
+  there
+  <span class="dim">for four thousand years</span>,
+  <span class="adv-cl">(</span><span class="cl-marker">until</span>
+  <ruby>explorers<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">found</span><rt>v'</rt></ruby>
+  <ruby>it<rt>o'</rt></ruby>
+  <span class="dim">in 1922</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">when</span>
+  <ruby>they<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">discovered</span><rt>v'</rt></ruby>
+  the <ruby>tomb<rt>o'</rt></ruby>
+  <span class="dim">of an Egyptian king</span>, Tutankhamen<span class="adj-cl">&gt;</span><span class="adv-cl">)</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>lay</td><td>置かれていた</td></tr>
+    <tr><td>副詞節</td><td>until</td><td>found</td><td>見つけた</td></tr>
+    <tr><td>形容詞節</td><td>when</td><td>discovered</td><td>発見した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>lay ← for four thousand years</td><td>4000年間<span class="slash-core">（置かれていた）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>found ← in 1922</td><td>1922年に<span class="slash-core">（見つけた）</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>tomb ← of an Egyptian king</td><td>エジプトの王の<span class="slash-core">（墓）</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>an Egyptian king ← Tutankhamen</td><td>ツタンカーメン<span class="slash-core">（＝エジプトの王）</span></td><td>形容詞句（同格）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

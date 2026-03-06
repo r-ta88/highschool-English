@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 7 Putting iPS Cells into Practice 5-7</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 7 Putting iPS Cells into Practice 5-7</h1>
+
+<!-- ==============================
+     段落 5
+     ============================== -->
+<div class="para-num">5</div>
+
+<!-- 5-① -->
+<details>
+<summary><span class="sent-num">5-①</span> One way to create tissue that could be made into body parts is to use human egg cells, which have the ability to grow into any tissue in the body such as hair or muscle.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>tissue</strong> → 4-③ tissue engineering で導入された概念</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 4-③の tissue engineering の具体的方法を提示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">One way</span><span class="slash-sep">/</span><span class="slash-ja">一つの方法は</span></div>
+  <div class="slash-line"><span class="slash-en">to create tissue</span><span class="slash-sep">/</span><span class="slash-ja">組織を作り出す<span class="slash-core">(方法)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that could be made</span><span class="slash-sep">/</span><span class="slash-ja">作ることができる<span class="slash-core">(組織)</span></span></div>
+  <div class="slash-line"><span class="slash-en">into body parts</span><span class="slash-sep">/</span><span class="slash-ja">身体の部位に</span></div>
+  <div class="slash-line"><span class="slash-en">is</span><span class="slash-sep">/</span><span class="slash-ja">〜である</span></div>
+  <div class="slash-line"><span class="slash-en">to use human egg cells,</span><span class="slash-sep">/</span><span class="slash-ja">ヒトの卵細胞を使うことで</span></div>
+  <div class="slash-line"><span class="slash-en">which have the ability</span><span class="slash-sep">/</span><span class="slash-ja">その能力を持っている<span class="slash-core">(卵細胞)</span></span></div>
+  <div class="slash-line"><span class="slash-en">to grow into any tissue</span><span class="slash-sep">/</span><span class="slash-ja">あらゆる組織に成長する<span class="slash-core">(能力)</span></span></div>
+  <div class="slash-line"><span class="slash-en">in the body</span><span class="slash-sep">/</span><span class="slash-ja">体内の<span class="slash-core">(組織)</span></span></div>
+  <div class="slash-line"><span class="slash-en">such as hair or muscle.</span><span class="slash-sep">/</span><span class="slash-ja">例えば髪や筋肉のような</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  One <ruby>way<rt>S</rt></ruby> <span class="dim">to create tissue</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">could be made</span><rt>v'</rt></ruby>
+  <span class="dim">into body parts</span><span class="adj-cl">&gt;</span>
+  <ruby><span class="v-marker">is</span><rt>V</rt></ruby>
+  <ruby>to use<rt>C</rt></ruby> human egg cells,
+  <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">which</span><rt>s'</rt></ruby>
+  <ruby><span class="v-marker">have</span><rt>v'</rt></ruby>
+  the ability <span class="dim">to grow into any tissue in the body such as hair or muscle</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>is</td><td>〜である</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>could be made</td><td>作ることができる</td></tr>
+    <tr><td>形容詞節（非制限）</td><td>which</td><td>have</td><td>持っている</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>way ← to create tissue</td><td>組織を作り出す(方法)</td><td>形容詞的（to不定詞）</td></tr>
+    <tr><td>C = to use human egg cells</td><td>ヒトの卵細胞を使うこと</td><td>名詞的（補語）</td></tr>
+    <tr><td>ability ← to grow into any tissue</td><td>あらゆる組織に成長する(能力)</td><td>形容詞的（to不定詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>could be made ← into body parts</td><td>身体の部位に(作ることができる)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>tissue ← in the body</td><td>体内の(組織)</td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-② -->
+<details>
+<summary><span class="sent-num">5-②</span> This method, however, has some problems.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>This method</strong> → 5-①のヒトの卵細胞を使う方法</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> however により、5-①の方法に対する問題点の提示に転換</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">This method,</span><span class="slash-sep">/</span><span class="slash-ja">この方法は</span></div>
+  <div class="slash-line"><span class="slash-en">however,</span><span class="slash-sep">/</span><span class="slash-ja">しかしながら</span></div>
+  <div class="slash-line"><span class="slash-en">has</span><span class="slash-sep">/</span><span class="slash-ja">持っている</span></div>
+  <div class="slash-line"><span class="slash-en">some problems.</span><span class="slash-sep">/</span><span class="slash-ja">いくつかの問題を</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  This <ruby>method<rt>S</rt></ruby>, however, <ruby><span class="v-marker">has</span><rt>V</rt></ruby> some <ruby>problems<rt>O</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>has</td><td>持っている</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-③ -->
+<details>
+<summary><span class="sent-num">5-③</span> Many think it is wrong to treat human eggs, which are alive, as objects and then "kill" them, even though the purpose is to treat patients.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong> → human eggs</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 5-②の some problems の具体的内容その1（倫理的問題）</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Many</span><span class="slash-sep">/</span><span class="slash-ja">多くの人は</span></div>
+  <div class="slash-line"><span class="slash-en">think</span><span class="slash-sep">/</span><span class="slash-ja">考えている</span></div>
+  <div class="slash-line"><span class="slash-en">it is wrong</span><span class="slash-sep">/</span><span class="slash-ja">間違っていると</span></div>
+  <div class="slash-line"><span class="slash-en">to treat human eggs,</span><span class="slash-sep">/</span><span class="slash-ja">ヒトの卵を扱うことは</span></div>
+  <div class="slash-line"><span class="slash-en">which are alive,</span><span class="slash-sep">/</span><span class="slash-ja">生きている<span class="slash-core">(卵)</span></span></div>
+  <div class="slash-line"><span class="slash-en">as objects</span><span class="slash-sep">/</span><span class="slash-ja">物として</span></div>
+  <div class="slash-line"><span class="slash-en">and then "kill" them,</span><span class="slash-sep">/</span><span class="slash-ja">そしてそれらを「殺す」ことは</span></div>
+  <div class="slash-line"><span class="slash-en">even though the purpose</span><span class="slash-sep">/</span><span class="slash-ja">たとえ目的が</span></div>
+  <div class="slash-line"><span class="slash-en">is to treat patients.</span><span class="slash-sep">/</span><span class="slash-ja">患者を治療することであっても</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>Many<rt>S</rt></ruby>
+  <ruby><span class="v-marker">think</span><rt>V</rt></ruby>
+  <span class="noun-cl">[</span><span class="omit">∧</span>
+  <ruby>it<rt>形s'</rt></ruby>
+  <ruby><span class="v-marker">is</span><rt>v'</rt></ruby>
+  <ruby>wrong<rt>c'</rt></ruby>
+  <ruby>to treat<rt>真s'</rt></ruby> human eggs,
+  <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">which</span><rt>s'</rt></ruby>
+  <ruby><span class="v-marker">are</span><rt>v'</rt></ruby>
+  alive<span class="adj-cl">&gt;</span>,
+  <span class="dim">as objects</span> and then "kill" them<span class="noun-cl">]</span>,
+  <span class="adv-cl">(</span><span class="cl-marker">even though</span>
+  the <ruby>purpose<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">is</span><rt>v'</rt></ruby>
+  <ruby>to treat<rt>c'</rt></ruby> patients<span class="adv-cl">)</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>think</td><td>考えている</td></tr>
+    <tr><td>名詞節</td><td>(that) [省略]</td><td>is</td><td>間違っている</td></tr>
+    <tr><td>形容詞節（非制限）</td><td>which</td><td>are</td><td>〜である</td></tr>
+    <tr><td>副詞節（譲歩）</td><td>even though</td><td>is</td><td>〜である</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>真s' = to treat human eggs as objects and then "kill" them</td><td>ヒトの卵を物として扱い「殺す」こと</td><td>名詞的（主語 — 形式主語 it の真主語）</td></tr>
+    <tr><td>c' = to treat patients</td><td>患者を治療すること</td><td>名詞的（補語）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 5-④ -->
+<details>
+<summary><span class="sent-num">5-④</span> In addition, people fear that this method could lead to human cloning.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this method</strong> → 5-①のヒトの卵細胞を使う方法</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> In addition により、5-③に続く問題点その2（クローン問題）を追加</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 5-②の some problems の具体的内容その2</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In addition,</span><span class="slash-sep">/</span><span class="slash-ja">加えて</span></div>
+  <div class="slash-line"><span class="slash-en">people</span><span class="slash-sep">/</span><span class="slash-ja">人々は</span></div>
+  <div class="slash-line"><span class="slash-en">fear</span><span class="slash-sep">/</span><span class="slash-ja">恐れている</span></div>
+  <div class="slash-line"><span class="slash-en">that this method</span><span class="slash-sep">/</span><span class="slash-ja">この方法が</span></div>
+  <div class="slash-line"><span class="slash-en">could lead to</span><span class="slash-sep">/</span><span class="slash-ja">つながりかねないと</span></div>
+  <div class="slash-line"><span class="slash-en">human cloning.</span><span class="slash-sep">/</span><span class="slash-ja">ヒトのクローン作りに</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In addition</span>,
+  <ruby>people<rt>S</rt></ruby>
+  <ruby><span class="v-marker">fear</span><rt>V</rt></ruby>
+  <span class="noun-cl">[</span><ruby><span class="cl-marker">that</span><rt>O</rt></ruby>
+  this <ruby>method<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">could lead</span><rt>v'</rt></ruby>
+  <span class="dim">to human cloning</span><span class="noun-cl">]</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>fear</td><td>恐れている</td></tr>
+    <tr><td>名詞節</td><td>that</td><td>could lead</td><td>つながりかねない</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>could lead ← to human cloning</td><td>ヒトのクローン作りに(つながりかねない)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- ==============================
+     段落 6
+     ============================== -->
+<div class="para-num">6</div>
+
+<!-- 6-① -->
+<details>
+<summary><span class="sent-num">6-①</span> For years, Dr. Yamanaka and his research team had worked hard to find a different way to create tissue.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>his</strong> → Dr. Yamanaka</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>a different way</strong> → 5-①の卵細胞を使う方法とは異なる方法</div>
+  <div class="context-item"><span class="discourse-tag">対比</span> 第5段落の卵細胞利用法の問題を受け、別の方法の模索へ転換</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">For years,</span><span class="slash-sep">/</span><span class="slash-ja">何年もの間</span></div>
+  <div class="slash-line"><span class="slash-en">Dr. Yamanaka and his research team</span><span class="slash-sep">/</span><span class="slash-ja">山中博士と彼の研究チームは</span></div>
+  <div class="slash-line"><span class="slash-en">had worked hard</span><span class="slash-sep">/</span><span class="slash-ja">懸命に取り組んでいた</span></div>
+  <div class="slash-line"><span class="slash-en">to find</span><span class="slash-sep">/</span><span class="slash-ja">見つけるために<span class="slash-core">(取り組んでいた)</span></span></div>
+  <div class="slash-line"><span class="slash-en">a different way</span><span class="slash-sep">/</span><span class="slash-ja">別の方法を</span></div>
+  <div class="slash-line"><span class="slash-en">to create tissue.</span><span class="slash-sep">/</span><span class="slash-ja">組織を作り出す<span class="slash-core">(方法)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">For years</span>,
+  Dr. Yamanaka and his research <ruby>team<rt>S</rt></ruby>
+  <ruby><span class="v-marker">had worked</span><rt>V</rt></ruby>
+  hard
+  <span class="dim">to find a different way to create tissue</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>had worked</td><td>取り組んでいた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>had worked ← to find a different way</td><td>別の方法を見つけるために(取り組んでいた)</td><td>副詞的（目的）</td></tr>
+    <tr><td>way ← to create tissue</td><td>組織を作り出す(方法)</td><td>形容詞的（to不定詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>had worked ← For years</td><td>何年もの間(取り組んでいた)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 6-② -->
+<details>
+<summary><span class="sent-num">6-②</span> In 2007, they finally succeeded in creating heart muscle tissue from skin cells taken from a person's face.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → 6-① Dr. Yamanaka and his research team</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 6-①の長年の努力の結果として成功を達成</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> In 2007 / finally により時間的進展を明示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In 2007,</span><span class="slash-sep">/</span><span class="slash-ja">2007年に</span></div>
+  <div class="slash-line"><span class="slash-en">they</span><span class="slash-sep">/</span><span class="slash-ja">彼らは</span></div>
+  <div class="slash-line"><span class="slash-en">finally succeeded</span><span class="slash-sep">/</span><span class="slash-ja">ついに成功した</span></div>
+  <div class="slash-line"><span class="slash-en">in creating</span><span class="slash-sep">/</span><span class="slash-ja">作り出すことに</span></div>
+  <div class="slash-line"><span class="slash-en">heart muscle tissue</span><span class="slash-sep">/</span><span class="slash-ja">心臓の筋肉組織を</span></div>
+  <div class="slash-line"><span class="slash-en">from skin cells</span><span class="slash-sep">/</span><span class="slash-ja">皮膚細胞から</span></div>
+  <div class="slash-line"><span class="slash-en">taken from a person's face.</span><span class="slash-sep">/</span><span class="slash-ja">人の顔から採取された<span class="slash-core">(皮膚細胞)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In 2007</span>,
+  <ruby>they<rt>S</rt></ruby>
+  finally <ruby><span class="v-marker">succeeded</span><rt>V</rt></ruby>
+  <span class="dim">in creating heart muscle tissue from skin cells</span>
+  <span class="dim">taken from a person's face</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>succeeded</td><td>成功した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>succeeded in ← creating heart muscle tissue</td><td>心臓の筋肉組織を作り出すこと</td><td>名詞的（前置詞の目的語）</td></tr>
+    <tr><td>skin cells ← taken from a person's face</td><td>人の顔から採取された(皮膚細胞)</td><td>形容詞的（過去分詞）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>succeeded ← In 2007</td><td>2007年に(成功した)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>creating ← from skin cells</td><td>皮膚細胞から(作り出す)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 6-③ -->
+<details>
+<summary><span class="sent-num">6-③</span> The method they used was to first add four specific kinds of genes to the skin cells in order to return them to their original state, a state similar to egg cells.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → Dr. Yamanaka and his research team</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the skin cells</strong> → 6-②の skin cells taken from a person's face</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong> → the skin cells</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> a state similar to egg cells は their original state の言い換え（同格）</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 6-②の成功した方法の具体的手順を説明</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The method</span><span class="slash-sep">/</span><span class="slash-ja">方法は</span></div>
+  <div class="slash-line"><span class="slash-en">they used</span><span class="slash-sep">/</span><span class="slash-ja">彼らが用いた<span class="slash-core">(方法)</span></span></div>
+  <div class="slash-line"><span class="slash-en">was</span><span class="slash-sep">/</span><span class="slash-ja">〜であった</span></div>
+  <div class="slash-line"><span class="slash-en">to first add</span><span class="slash-sep">/</span><span class="slash-ja">最初に加えること</span></div>
+  <div class="slash-line"><span class="slash-en">four specific kinds of genes</span><span class="slash-sep">/</span><span class="slash-ja">4種類の特定の遺伝子を</span></div>
+  <div class="slash-line"><span class="slash-en">to the skin cells</span><span class="slash-sep">/</span><span class="slash-ja">皮膚細胞に</span></div>
+  <div class="slash-line"><span class="slash-en">in order to return them</span><span class="slash-sep">/</span><span class="slash-ja">それらを戻すために<span class="slash-core">(加える)</span></span></div>
+  <div class="slash-line"><span class="slash-en">to their original state,</span><span class="slash-sep">/</span><span class="slash-ja">元の状態に</span></div>
+  <div class="slash-line"><span class="slash-en">a state similar to egg cells.</span><span class="slash-sep">/</span><span class="slash-ja">卵細胞に似た状態（に）</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The <ruby>method<rt>S</rt></ruby>
+  <span class="adj-cl">&lt;</span><span class="omit">∧</span>
+  <ruby>they<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">used</span><rt>v'</rt></ruby><span class="adj-cl">&gt;</span>
+  <ruby><span class="v-marker">was</span><rt>V</rt></ruby>
+  <ruby>to add<rt>C</rt></ruby> four specific kinds <span class="dim">of genes</span>
+  <span class="dim">to the skin cells</span>
+  <span class="dim">in order to return them to their original state</span>,
+  a state <span class="dim">similar to egg cells</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was</td><td>〜であった</td></tr>
+    <tr><td>形容詞節</td><td>(that) [省略]</td><td>used</td><td>用いた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>C = to first add four specific kinds of genes</td><td>4種類の特定の遺伝子を最初に加えること</td><td>名詞的（補語）</td></tr>
+    <tr><td>add ← in order to return them to their original state</td><td>それらを元の状態に戻すために(加える)</td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>add ← to the skin cells</td><td>皮膚細胞に(加える)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>state ← similar to egg cells</td><td>卵細胞に似た(状態)</td><td>形容詞句（形容詞）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 6-④ -->
+<details>
+<summary><span class="sent-num">6-④</span> They then put those cells into a special liquid to make them grow into heart muscle tissue.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>They</strong> → Dr. Yamanaka and his research team</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>those cells</strong> → 6-③で遺伝子を加えて元の状態に戻された細胞</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong> → those cells</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> then により6-③の手順の次のステップ</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">They</span><span class="slash-sep">/</span><span class="slash-ja">彼らは</span></div>
+  <div class="slash-line"><span class="slash-en">then</span><span class="slash-sep">/</span><span class="slash-ja">次に</span></div>
+  <div class="slash-line"><span class="slash-en">put those cells</span><span class="slash-sep">/</span><span class="slash-ja">それらの細胞を入れた</span></div>
+  <div class="slash-line"><span class="slash-en">into a special liquid</span><span class="slash-sep">/</span><span class="slash-ja">特別な液体に</span></div>
+  <div class="slash-line"><span class="slash-en">to make them grow</span><span class="slash-sep">/</span><span class="slash-ja">それらを成長させるために<span class="slash-core">(入れた)</span></span></div>
+  <div class="slash-line"><span class="slash-en">into heart muscle tissue.</span><span class="slash-sep">/</span><span class="slash-ja">心臓の筋肉組織に</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>They<rt>S</rt></ruby>
+  then <ruby><span class="v-marker">put</span><rt>V</rt></ruby>
+  those <ruby>cells<rt>O</rt></ruby>
+  <span class="dim">into a special liquid</span>
+  <span class="dim">to make them grow into heart muscle tissue</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>put</td><td>入れた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>put ← to make them grow into heart muscle tissue</td><td>それらを心臓の筋肉組織に成長させるために(入れた)</td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>put ← into a special liquid</td><td>特別な液体に(入れた)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 6-⑤ -->
+<details>
+<summary><span class="sent-num">6-⑤</span> The four genes they used to "reset" the cells were found among more than 20,000 genes and are now called "Yamanaka Factors."</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>The four genes</strong> → 6-③の four specific kinds of genes</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → Dr. Yamanaka and his research team</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the cells</strong> → 皮膚細胞</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> "reset" は6-③の return them to their original state の言い換え</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The four genes</span><span class="slash-sep">/</span><span class="slash-ja">その4つの遺伝子は</span></div>
+  <div class="slash-line"><span class="slash-en">they used</span><span class="slash-sep">/</span><span class="slash-ja">彼らが使った<span class="slash-core">(遺伝子)</span></span></div>
+  <div class="slash-line"><span class="slash-en">to "reset" the cells</span><span class="slash-sep">/</span><span class="slash-ja">細胞を「リセット」するために<span class="slash-core">(使った)</span></span></div>
+  <div class="slash-line"><span class="slash-en">were found</span><span class="slash-sep">/</span><span class="slash-ja">見つけられた</span></div>
+  <div class="slash-line"><span class="slash-en">among more than 20,000 genes</span><span class="slash-sep">/</span><span class="slash-ja">20,000以上の遺伝子の中から</span></div>
+  <div class="slash-line"><span class="slash-en">and are now called</span><span class="slash-sep">/</span><span class="slash-ja">そして今では呼ばれている</span></div>
+  <div class="slash-line"><span class="slash-en">"Yamanaka Factors."</span><span class="slash-sep">/</span><span class="slash-ja">「山中ファクター」と</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The four <ruby>genes<rt>S</rt></ruby>
+  <span class="adj-cl">&lt;</span><span class="omit">∧</span>
+  <ruby>they<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">used</span><rt>v'</rt></ruby>
+  <span class="dim">to "reset" the cells</span><span class="adj-cl">&gt;</span>
+  <ruby><span class="v-marker">were found</span><rt>V</rt></ruby>
+  <span class="dim">among more than 20,000 genes</span>
+  and <ruby><span class="v-marker">are</span> now <span class="v-marker">called</span><rt>V</rt></ruby>
+  "Yamanaka Factors."
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節①</td><td>―</td><td>were found</td><td>見つけられた</td></tr>
+    <tr><td>主節②</td><td>―</td><td>are called</td><td>呼ばれている</td></tr>
+    <tr><td>形容詞節</td><td>(that) [省略]</td><td>used</td><td>使った</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>were found ... / are now called ...</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>used ← to "reset" the cells</td><td>細胞を「リセット」するために(使った)</td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>were found ← among more than 20,000 genes</td><td>20,000以上の遺伝子の中から(見つけられた)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 6-⑥ -->
+<details>
+<summary><span class="sent-num">6-⑥</span> The initialized cells that can grow into cells of any body part were named iPS cells.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>The initialized cells</strong> → 6-③〜④で遺伝子を加えて初期化された細胞</div>
+  <div class="context-item"><span class="discourse-tag">言い換え</span> initialized は6-⑤の "reset" の言い換え</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The initialized cells</span><span class="slash-sep">/</span><span class="slash-ja">初期化された細胞は</span></div>
+  <div class="slash-line"><span class="slash-en">that can grow</span><span class="slash-sep">/</span><span class="slash-ja">成長することができる<span class="slash-core">(細胞)</span></span></div>
+  <div class="slash-line"><span class="slash-en">into cells</span><span class="slash-sep">/</span><span class="slash-ja">細胞に</span></div>
+  <div class="slash-line"><span class="slash-en">of any body part</span><span class="slash-sep">/</span><span class="slash-ja">あらゆる身体の部位の<span class="slash-core">(細胞)</span></span></div>
+  <div class="slash-line"><span class="slash-en">were named</span><span class="slash-sep">/</span><span class="slash-ja">命名された</span></div>
+  <div class="slash-line"><span class="slash-en">iPS cells.</span><span class="slash-sep">/</span><span class="slash-ja">iPS細胞と</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The initialized <ruby>cells<rt>S</rt></ruby>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">can grow</span><rt>v'</rt></ruby>
+  <span class="dim">into cells of any body part</span><span class="adj-cl">&gt;</span>
+  <ruby><span class="v-marker">were named</span><rt>V</rt></ruby>
+  <ruby>iPS cells<rt>C</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>were named</td><td>命名された</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>can grow</td><td>成長することができる</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>can grow ← into cells of any body part</td><td>あらゆる身体の部位の細胞に(成長する)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- ==============================
+     段落 7
+     ============================== -->
+<div class="para-num">7</div>
+
+<!-- 7-① -->
+<details>
+<summary><span class="sent-num">7-①</span> Dr. Yamanaka's findings enhanced studies in tissue engineering.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Dr. Yamanaka's findings</strong> → 第6段落全体で述べられたiPS細胞の作成方法</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>tissue engineering</strong> → 4-③で導入された用語</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 第6段落の発見が研究を促進したという因果関係</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Dr. Yamanaka's findings</span><span class="slash-sep">/</span><span class="slash-ja">山中博士の発見は</span></div>
+  <div class="slash-line"><span class="slash-en">enhanced</span><span class="slash-sep">/</span><span class="slash-ja">促進した</span></div>
+  <div class="slash-line"><span class="slash-en">studies</span><span class="slash-sep">/</span><span class="slash-ja">研究を</span></div>
+  <div class="slash-line"><span class="slash-en">in tissue engineering.</span><span class="slash-sep">/</span><span class="slash-ja">組織工学における<span class="slash-core">(研究)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Dr. Yamanaka's <ruby>findings<rt>S</rt></ruby>
+  <ruby><span class="v-marker">enhanced</span><rt>V</rt></ruby>
+  <ruby>studies<rt>O</rt></ruby>
+  <span class="dim">in tissue engineering</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>enhanced</td><td>促進した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>studies ← in tissue engineering</td><td>組織工学における(研究)</td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 7-② -->
+<details>
+<summary><span class="sent-num">7-②</span> iPS cells can be used for treating various diseases and injuries by being transplanted into body parts that are damaged or not in good condition.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>iPS cells</strong> → 6-⑥で命名された細胞</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 7-①の enhanced studies の具体的な応用方法</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">iPS cells</span><span class="slash-sep">/</span><span class="slash-ja">iPS細胞は</span></div>
+  <div class="slash-line"><span class="slash-en">can be used</span><span class="slash-sep">/</span><span class="slash-ja">使うことができる</span></div>
+  <div class="slash-line"><span class="slash-en">for treating</span><span class="slash-sep">/</span><span class="slash-ja">治療するために</span></div>
+  <div class="slash-line"><span class="slash-en">various diseases and injuries</span><span class="slash-sep">/</span><span class="slash-ja">さまざまな病気や怪我を</span></div>
+  <div class="slash-line"><span class="slash-en">by being transplanted</span><span class="slash-sep">/</span><span class="slash-ja">移植されることによって</span></div>
+  <div class="slash-line"><span class="slash-en">into body parts</span><span class="slash-sep">/</span><span class="slash-ja">身体の部位に</span></div>
+  <div class="slash-line"><span class="slash-en">that are damaged</span><span class="slash-sep">/</span><span class="slash-ja">損傷した<span class="slash-core">(部位)</span></span></div>
+  <div class="slash-line"><span class="slash-en">or not in good condition.</span><span class="slash-sep">/</span><span class="slash-ja">あるいは良い状態でない<span class="slash-core">(部位)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  iPS <ruby>cells<rt>S</rt></ruby>
+  <ruby><span class="v-marker">can be used</span><rt>V</rt></ruby>
+  <span class="dim">for treating various diseases and injuries</span>
+  <span class="dim">by being transplanted into body parts</span>
+  <span class="adj-cl">&lt;</span><span class="cl-marker">that</span>
+  <ruby><span class="v-marker">are</span><rt>v'</rt></ruby>
+  damaged or not <span class="dim">in good condition</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>can be used</td><td>使うことができる</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>are</td><td>〜である</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>can be used ← for treating various diseases and injuries</td><td>さまざまな病気や怪我を治療すること</td><td>名詞的（前置詞の目的語）</td></tr>
+    <tr><td>can be used ← by being transplanted into body parts</td><td>身体の部位に移植されることによって</td><td>名詞的（前置詞の目的語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>or</td><td>damaged / not in good condition（形容詞節内の補語）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 7-③ -->
+<details>
+<summary><span class="sent-num">7-③</span> For example, if your heart were not working well due to damaged heart muscles, doctors could first collect some of your cells by cutting out a very small section of your skin.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">例示</span> For example により、7-②の応用方法の具体例を提示</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">For example,</span><span class="slash-sep">/</span><span class="slash-ja">例えば</span></div>
+  <div class="slash-line"><span class="slash-en">if your heart</span><span class="slash-sep">/</span><span class="slash-ja">もしあなたの心臓が</span></div>
+  <div class="slash-line"><span class="slash-en">were not working well</span><span class="slash-sep">/</span><span class="slash-ja">うまく機能していなければ</span></div>
+  <div class="slash-line"><span class="slash-en">due to damaged heart muscles,</span><span class="slash-sep">/</span><span class="slash-ja">損傷した心筋のせいで</span></div>
+  <div class="slash-line"><span class="slash-en">doctors</span><span class="slash-sep">/</span><span class="slash-ja">医師たちは</span></div>
+  <div class="slash-line"><span class="slash-en">could first collect</span><span class="slash-sep">/</span><span class="slash-ja">まず採取することができるだろう</span></div>
+  <div class="slash-line"><span class="slash-en">some of your cells</span><span class="slash-sep">/</span><span class="slash-ja">あなたの細胞のいくつかを</span></div>
+  <div class="slash-line"><span class="slash-en">by cutting out</span><span class="slash-sep">/</span><span class="slash-ja">切り取ることによって<span class="slash-core">(採取する)</span></span></div>
+  <div class="slash-line"><span class="slash-en">a very small section</span><span class="slash-sep">/</span><span class="slash-ja">非常に小さな部分を</span></div>
+  <div class="slash-line"><span class="slash-en">of your skin.</span><span class="slash-sep">/</span><span class="slash-ja">あなたの皮膚の<span class="slash-core">(部分)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  For example,
+  <span class="adv-cl">(</span><span class="cl-marker">if</span>
+  your <ruby>heart<rt>s'</rt></ruby>
+  <ruby><span class="v-marker">were</span> not <span class="v-marker">working</span><rt>v'</rt></ruby>
+  well <span class="dim">due to damaged heart muscles</span><span class="adv-cl">)</span>,
+  <ruby>doctors<rt>S</rt></ruby>
+  <ruby><span class="v-marker">could</span> first <span class="v-marker">collect</span><rt>V</rt></ruby>
+  some <span class="dim">of your cells</span>
+  <span class="dim">by cutting out a very small section of your skin</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>could collect</td><td>採取することができるだろう</td></tr>
+    <tr><td>副詞節（条件）</td><td>if</td><td>were working</td><td>機能していなければ</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>could collect ← by cutting out a very small section of your skin</td><td>皮膚の非常に小さな部分を切り取ることによって(採取する)</td><td>名詞的（前置詞の目的語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>were not working ← due to damaged heart muscles</td><td>損傷した心筋のせいで(機能していない)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>some ← of your cells</td><td>あなたの細胞の(いくつか)</td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>section ← of your skin</td><td>皮膚の(部分)</td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 7-④ -->
+<details>
+<summary><span class="sent-num">7-④</span> Next, they would change the skin cells into iPS cells and make them grow into muscle cells.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → 7-③の doctors</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the skin cells</strong> → 7-③で採取された皮膚の細胞</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong> → iPS cells</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> Next により7-③の次のステップ</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Next,</span><span class="slash-sep">/</span><span class="slash-ja">次に</span></div>
+  <div class="slash-line"><span class="slash-en">they would change</span><span class="slash-sep">/</span><span class="slash-ja">彼らは変えるだろう</span></div>
+  <div class="slash-line"><span class="slash-en">the skin cells</span><span class="slash-sep">/</span><span class="slash-ja">皮膚細胞を</span></div>
+  <div class="slash-line"><span class="slash-en">into iPS cells</span><span class="slash-sep">/</span><span class="slash-ja">iPS細胞に</span></div>
+  <div class="slash-line"><span class="slash-en">and make them grow</span><span class="slash-sep">/</span><span class="slash-ja">そしてそれらを成長させるだろう</span></div>
+  <div class="slash-line"><span class="slash-en">into muscle cells.</span><span class="slash-sep">/</span><span class="slash-ja">筋肉細胞に</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Next,
+  <ruby>they<rt>S</rt></ruby>
+  <ruby><span class="v-marker">would change</span><rt>V</rt></ruby>
+  the skin <ruby>cells<rt>O</rt></ruby>
+  <span class="dim">into iPS cells</span>
+  and <ruby><span class="v-marker">make</span><rt>V</rt></ruby>
+  <ruby>them<rt>O</rt></ruby>
+  grow <span class="dim">into muscle cells</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節①</td><td>―</td><td>would change</td><td>変えるだろう</td></tr>
+    <tr><td>主節②</td><td>―</td><td>(would) make</td><td>成長させるだろう</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>would change the skin cells into iPS cells / (would) make them grow into muscle cells</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>would change ← into iPS cells</td><td>iPS細胞に(変える)</td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>grow ← into muscle cells</td><td>筋肉細胞に(成長する)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+<!-- 7-⑤ -->
+<details>
+<summary><span class="sent-num">7-⑤</span> Last, they would transplant them into your heart.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>they</strong> → doctors</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>them</strong> → 7-④で作られた muscle cells</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> Last により7-③〜④に続く最終ステップ</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Last,</span><span class="slash-sep">/</span><span class="slash-ja">最後に</span></div>
+  <div class="slash-line"><span class="slash-en">they would transplant</span><span class="slash-sep">/</span><span class="slash-ja">彼らは移植するだろう</span></div>
+  <div class="slash-line"><span class="slash-en">them</span><span class="slash-sep">/</span><span class="slash-ja">それらを</span></div>
+  <div class="slash-line"><span class="slash-en">into your heart.</span><span class="slash-sep">/</span><span class="slash-ja">あなたの心臓に</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  Last,
+  <ruby>they<rt>S</rt></ruby>
+  <ruby><span class="v-marker">would transplant</span><rt>V</rt></ruby>
+  <ruby>them<rt>O</rt></ruby>
+  <span class="dim">into your heart</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would transplant</td><td>移植するだろう</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>would transplant ← into your heart</td><td>あなたの心臓に(移植する)</td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+</details>
+
+</body>
+</html>

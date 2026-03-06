@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ElementⅡ Lesson 8 How We Got to Now with Glass 9-10</title>
+<style>
+/* ===== Base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  background: #fdfdfd;
+  padding: 2rem 1.5rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2980b9;
+  padding-bottom: .5rem;
+}
+
+/* ===== 番号 ===== */
+.para-num  { color: #2980b9; font-weight: 700; font-size: 1.1rem; margin-top: 1.6rem; }
+.sent-num  { color: #8e44ad; font-weight: 700; }
+
+/* ===== details / summary ===== */
+details {
+  margin: .45rem 0;
+  border-left: 3px solid #ddd;
+  padding-left: .7rem;
+}
+summary {
+  cursor: pointer;
+  list-style: none;
+  line-height: 1.9;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "▶ ";
+  font-size: .7em;
+  color: #aaa;
+  transition: transform .15s;
+}
+details[open] > summary::before { content: "▼ "; }
+
+/* ===== 文脈ボックス ===== */
+.context-box {
+  background: #f0f7ff;
+  border: 1px solid #b8d4e8;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.context-box .label {
+  font-weight: 700;
+  color: #1a56db;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.context-item {
+  font-size: .92rem;
+  line-height: 1.7;
+  margin-left: .2rem;
+}
+.discourse-tag {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #1a56db;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .05rem .45rem;
+  border-radius: 3px;
+  margin-right: .2rem;
+}
+
+/* ===== 逐語訳ボックス ===== */
+.slash-box {
+  background: #f9faf5;
+  border: 1px solid #c8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+}
+.slash-box .label {
+  font-weight: 700;
+  color: #556b2f;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+.slash-line {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-size: .92rem;
+  line-height: 1.7;
+  padding: .05rem 0;
+}
+.slash-en  { color: #333; min-width: 240px; }
+.slash-sep { color: #aaa; }
+.slash-ja  { color: #555; }
+.slash-core { color: #999; font-size: .88em; }
+
+/* ===== 文構造ボックス ===== */
+.structure-box {
+  background: #fffdf0;
+  border: 1px solid #e8d8a0;
+  border-radius: 6px;
+  padding: .6rem .8rem;
+  margin: .5rem 0;
+  line-height: 2.2;
+  font-size: .97rem;
+}
+.structure-box .label {
+  font-weight: 700;
+  color: #8b7000;
+  margin-bottom: .3rem;
+  font-size: .95rem;
+}
+
+/* マーカー */
+.v-marker  { background-color: #FFF3B8; padding: 0 2px; border-radius: 2px; }
+.cl-marker { background-color: #FFD1DC; padding: 0 2px; border-radius: 2px; }
+.omit      { color: #e91e63; font-weight: 700; }
+.dim       { color: #aaa; }
+
+/* 節括弧 */
+.noun-cl { color: #1565c0; font-weight: 700; }
+.adj-cl  { color: #c62828; font-weight: 700; }
+.adv-cl  { color: #2e7d32; font-weight: 700; }
+
+/* ルビ */
+ruby { ruby-align: center; }
+rt {
+  font-size: .65em;
+  font-weight: 700;
+  color: #d35400;
+  letter-spacing: .05em;
+}
+
+/* ===== ミニテーブル ===== */
+.mini-table {
+  margin: .5rem 0;
+  overflow-x: auto;
+}
+.mini-table .tbl-title {
+  font-weight: 700;
+  font-size: .88rem;
+  color: #555;
+  margin-bottom: .25rem;
+}
+.mini-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.mini-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  text-align: left;
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+.mini-table td {
+  padding: .3rem .5rem;
+  border: 1px solid #ddd;
+  vertical-align: top;
+}
+.mini-table tr:nth-child(even) td { background: #fafafa; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 600px) {
+  body { padding: 1rem; font-size: 15px; }
+  .slash-en { min-width: 160px; }
+  .slash-line { flex-wrap: wrap; }
+}
+</style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+
+<h1>ElementⅡ Lesson 8 How We Got to Now with Glass 9-10</h1>
+
+<!-- ========== 段落 9 ========== -->
+<div class="para-num">9</div>
+
+<!-- 9-① -->
+<details>
+<summary><span class="sent-num">9-①</span> About 20 years after the invention of the microscope, Dutch lensmakers invented the telescope.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>the microscope</strong> → 7-③で発明が語られた顕微鏡（the = 既出）</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 顕微鏡の発明（7-③）から約20年後の出来事へ移行</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">About 20 years</span><span class="slash-sep">/</span><span class="slash-ja">約20年</span></div>
+  <div class="slash-line"><span class="slash-en">after the invention</span><span class="slash-sep">/</span><span class="slash-ja">発明の後</span></div>
+  <div class="slash-line"><span class="slash-en">of the microscope,</span><span class="slash-sep">/</span><span class="slash-ja">顕微鏡の<span class="slash-core">(発明)</span></span></div>
+  <div class="slash-line"><span class="slash-en">Dutch lensmakers</span><span class="slash-sep">/</span><span class="slash-ja">オランダのレンズ職人たちが</span></div>
+  <div class="slash-line"><span class="slash-en">invented</span><span class="slash-sep">/</span><span class="slash-ja">発明した</span></div>
+  <div class="slash-line"><span class="slash-en">the telescope.</span><span class="slash-sep">/</span><span class="slash-ja">望遠鏡を</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">About 20 years after the invention of the microscope,</span> Dutch <ruby>lensmakers<rt>S</rt></ruby> <span class="v-marker"><ruby>invented<rt>V</rt></ruby></span> the <ruby>telescope<rt>O</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>invented</td><td>発明した</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>invented ← About 20 years after the invention of the microscope</td><td>顕微鏡の発明の約20年後に<span class="slash-core">(発明した)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>invention ← of the microscope</td><td>顕微鏡の<span class="slash-core">(発明)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 9-② -->
+<details>
+<summary><span class="sent-num">9-②</span> Within a year, Galileo heard of this new invention and changed the original design to make objects look 10 times larger.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>this new invention</strong> → 9-①の the telescope</div>
+  <div class="context-item"><span class="discourse-tag">追加</span> 9-①の発明に続き、ガリレオによる改良を述べる</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">Within a year,</span><span class="slash-sep">/</span><span class="slash-ja">1年以内に</span></div>
+  <div class="slash-line"><span class="slash-en">Galileo</span><span class="slash-sep">/</span><span class="slash-ja">ガリレオは</span></div>
+  <div class="slash-line"><span class="slash-en">heard of</span><span class="slash-sep">/</span><span class="slash-ja">～について聞いた</span></div>
+  <div class="slash-line"><span class="slash-en">this new invention</span><span class="slash-sep">/</span><span class="slash-ja">この新しい発明について</span></div>
+  <div class="slash-line"><span class="slash-en">and changed</span><span class="slash-sep">/</span><span class="slash-ja">そして変えた</span></div>
+  <div class="slash-line"><span class="slash-en">the original design</span><span class="slash-sep">/</span><span class="slash-ja">元の設計を</span></div>
+  <div class="slash-line"><span class="slash-en">to make</span><span class="slash-sep">/</span><span class="slash-ja">～させるために</span></div>
+  <div class="slash-line"><span class="slash-en">objects</span><span class="slash-sep">/</span><span class="slash-ja">物体を</span></div>
+  <div class="slash-line"><span class="slash-en">look 10 times larger.</span><span class="slash-sep">/</span><span class="slash-ja">10倍大きく見える<span class="slash-core">(ようにさせる)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">Within a year,</span> <ruby>Galileo<rt>S</rt></ruby> <span class="v-marker"><ruby>heard<rt>V</rt></ruby></span> <span class="dim">of this new invention</span> and <span class="v-marker"><ruby>changed<rt>V</rt></ruby></span> the original <ruby>design<rt>O</rt></ruby> to make <ruby>objects<rt>o'</rt></ruby> look 10 times <ruby>larger<rt>c'</rt></ruby>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>heard</td><td>聞いた</td></tr>
+    <tr><td>主節</td><td>―</td><td>changed</td><td>変えた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>heard ... / changed ... （S共通: Galileo）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>changed ← to make objects look 10 times larger</td><td>物体を10倍大きく見えるようにするために<span class="slash-core">(変えた)</span></td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>heard ← Within a year</td><td>1年以内に<span class="slash-core">(聞いた)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>heard ← of this new invention</td><td>この新しい発明について<span class="slash-core">(聞いた)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 9-③ -->
+<details>
+<summary><span class="sent-num">9-③</span> In 1610, Galileo used the telescope to observe that moons were moving around Jupiter, which was the first real challenge to the idea that all stars moved around the Earth.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>Galileo</strong> → 9-②のガリレオ／ <strong>the telescope</strong> → 9-①で発明され9-②で改良された望遠鏡</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> 望遠鏡での観察（原因）→ 天動説への最初の挑戦（結果）</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">In 1610,</span><span class="slash-sep">/</span><span class="slash-ja">1610年に</span></div>
+  <div class="slash-line"><span class="slash-en">Galileo</span><span class="slash-sep">/</span><span class="slash-ja">ガリレオは</span></div>
+  <div class="slash-line"><span class="slash-en">used</span><span class="slash-sep">/</span><span class="slash-ja">使った</span></div>
+  <div class="slash-line"><span class="slash-en">the telescope</span><span class="slash-sep">/</span><span class="slash-ja">望遠鏡を</span></div>
+  <div class="slash-line"><span class="slash-en">to observe</span><span class="slash-sep">/</span><span class="slash-ja">観察するために</span></div>
+  <div class="slash-line"><span class="slash-en">that moons</span><span class="slash-sep">/</span><span class="slash-ja">衛星が～ということを</span></div>
+  <div class="slash-line"><span class="slash-en">were moving</span><span class="slash-sep">/</span><span class="slash-ja">動いている</span></div>
+  <div class="slash-line"><span class="slash-en">around Jupiter,</span><span class="slash-sep">/</span><span class="slash-ja">木星の周りを</span></div>
+  <div class="slash-line"><span class="slash-en">which</span><span class="slash-sep">/</span><span class="slash-ja">そしてそのことは</span></div>
+  <div class="slash-line"><span class="slash-en">was</span><span class="slash-sep">/</span><span class="slash-ja">であった</span></div>
+  <div class="slash-line"><span class="slash-en">the first real challenge</span><span class="slash-sep">/</span><span class="slash-ja">最初の本当の挑戦</span></div>
+  <div class="slash-line"><span class="slash-en">to the idea</span><span class="slash-sep">/</span><span class="slash-ja">考えに対する<span class="slash-core">(挑戦)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that all stars</span><span class="slash-sep">/</span><span class="slash-ja">すべての星が～という<span class="slash-core">(考え)</span></span></div>
+  <div class="slash-line"><span class="slash-en">moved</span><span class="slash-sep">/</span><span class="slash-ja">動いた</span></div>
+  <div class="slash-line"><span class="slash-en">around the Earth.</span><span class="slash-sep">/</span><span class="slash-ja">地球の周りを</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">In 1610,</span> <ruby>Galileo<rt>S</rt></ruby> <span class="v-marker"><ruby>used<rt>V</rt></ruby></span> the <ruby>telescope<rt>O</rt></ruby> to observe <span class="noun-cl">[</span><ruby><span class="cl-marker">that</span><rt>o'</rt></ruby> <ruby>moons<rt>s'</rt></ruby> <span class="v-marker"><ruby>were moving<rt>v'</rt></ruby></span> <span class="dim">around Jupiter</span><span class="noun-cl">]</span>, <span class="adj-cl">&lt;</span><ruby><span class="cl-marker">which</span><rt>s'</rt></ruby> <span class="v-marker"><ruby>was<rt>v'</rt></ruby></span> the first real <ruby>challenge<rt>c'</rt></ruby> <span class="dim">to the idea</span> <span class="noun-cl">[</span><ruby><span class="cl-marker">that</span><rt>同格</rt></ruby> all <ruby>stars<rt>s'</rt></ruby> <span class="v-marker"><ruby>moved<rt>v'</rt></ruby></span> <span class="dim">around the Earth</span><span class="noun-cl">]</span><span class="adj-cl">&gt;</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>used</td><td>使った</td></tr>
+    <tr><td>名詞節</td><td>that</td><td>were moving</td><td>動いていた</td></tr>
+    <tr><td>形容詞節（非制限）</td><td>which</td><td>was</td><td>であった</td></tr>
+    <tr><td>名詞節（同格）</td><td>that</td><td>moved</td><td>動いた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>used ← to observe that moons were moving around Jupiter</td><td>衛星が木星の周りを動いていることを観察するために<span class="slash-core">(使った)</span></td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>used ← In 1610</td><td>1610年に<span class="slash-core">(使った)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>were moving ← around Jupiter</td><td>木星の周りを<span class="slash-core">(動いていた)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>challenge ← to the idea</td><td>考えに対する<span class="slash-core">(挑戦)</span></td><td>形容詞句（前置詞句）</td></tr>
+    <tr><td>moved ← around the Earth</td><td>地球の周りを<span class="slash-core">(動いた)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- ========== 段落 10 ========== -->
+<div class="para-num">10</div>
+
+<!-- 10-① -->
+<details>
+<summary><span class="sent-num">10-①</span> The lens would go on to play a very important role in the 19th and 20th centuries.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>The lens</strong> → 段落9で扱われた望遠鏡・顕微鏡に用いられるレンズ（the = 既出）</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 段落9の17世紀から19・20世紀へ移行</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">The lens</span><span class="slash-sep">/</span><span class="slash-ja">レンズは</span></div>
+  <div class="slash-line"><span class="slash-en">would go on</span><span class="slash-sep">/</span><span class="slash-ja">その後も～し続けることになる</span></div>
+  <div class="slash-line"><span class="slash-en">to play</span><span class="slash-sep">/</span><span class="slash-ja">果たすことを</span></div>
+  <div class="slash-line"><span class="slash-en">a very important role</span><span class="slash-sep">/</span><span class="slash-ja">非常に重要な役割を</span></div>
+  <div class="slash-line"><span class="slash-en">in the 19th and 20th centuries.</span><span class="slash-sep">/</span><span class="slash-ja">19世紀と20世紀において</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  The <ruby>lens<rt>S</rt></ruby> <span class="v-marker"><ruby>would go on<rt>V</rt></ruby></span> to play a very important role <span class="dim">in the 19th and 20th centuries</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>would go on</td><td>その後～し続けることになる</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>would go on ← to play a very important role</td><td>非常に重要な役割を果たす<span class="slash-core">(ことになる)</span></td><td>名詞的（go on の補語）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>play ← in the 19th and 20th centuries</td><td>19世紀と20世紀において<span class="slash-core">(果たす)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 10-② -->
+<details>
+<summary><span class="sent-num">10-②</span> It was first used by photographers to focus light on special paper that captured images, then by moviemakers to both record and project moving images for the first time.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>It</strong> → 10-①の The lens</div>
+  <div class="context-item"><span class="discourse-tag">抽象→具体</span> 10-①の「非常に重要な役割」を写真・映画という具体例で説明</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 写真家による使用（先）→ 映画製作者による使用（後）の順</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">It</span><span class="slash-sep">/</span><span class="slash-ja">それ（レンズ）は</span></div>
+  <div class="slash-line"><span class="slash-en">was first used</span><span class="slash-sep">/</span><span class="slash-ja">最初に使われた</span></div>
+  <div class="slash-line"><span class="slash-en">by photographers</span><span class="slash-sep">/</span><span class="slash-ja">写真家によって</span></div>
+  <div class="slash-line"><span class="slash-en">to focus</span><span class="slash-sep">/</span><span class="slash-ja">焦点を合わせるために</span></div>
+  <div class="slash-line"><span class="slash-en">light</span><span class="slash-sep">/</span><span class="slash-ja">光の</span></div>
+  <div class="slash-line"><span class="slash-en">on special paper</span><span class="slash-sep">/</span><span class="slash-ja">特別な紙の上に<span class="slash-core">(焦点を合わせる)</span></span></div>
+  <div class="slash-line"><span class="slash-en">that captured images,</span><span class="slash-sep">/</span><span class="slash-ja">画像を捉える<span class="slash-core">(紙)</span></span></div>
+  <div class="slash-line"><span class="slash-en">then</span><span class="slash-sep">/</span><span class="slash-ja">その後</span></div>
+  <div class="slash-line"><span class="slash-en">by moviemakers</span><span class="slash-sep">/</span><span class="slash-ja">映画製作者によって</span></div>
+  <div class="slash-line"><span class="slash-en">to both record</span><span class="slash-sep">/</span><span class="slash-ja">記録することと</span></div>
+  <div class="slash-line"><span class="slash-en">and project</span><span class="slash-sep">/</span><span class="slash-ja">映し出すことの両方のために</span></div>
+  <div class="slash-line"><span class="slash-en">moving images</span><span class="slash-sep">/</span><span class="slash-ja">動く画像を</span></div>
+  <div class="slash-line"><span class="slash-en">for the first time.</span><span class="slash-sep">/</span><span class="slash-ja">初めて</span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <ruby>It<rt>S</rt></ruby> was first <span class="v-marker"><ruby>used<rt>V</rt></ruby></span> <span class="dim">by photographers</span> to focus light <span class="dim">on special paper</span> <span class="adj-cl">&lt;</span><span class="cl-marker">that</span> <span class="v-marker"><ruby>captured<rt>v'</rt></ruby></span> <ruby>images<rt>o'</rt></ruby><span class="adj-cl">&gt;</span>, then <span class="dim">by moviemakers</span> to both record and project moving images <span class="dim">for the first time</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>was used</td><td>使われた</td></tr>
+    <tr><td>形容詞節</td><td>that</td><td>captured</td><td>捉えた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>, then</td><td>was used by photographers to focus ... / [was used] by moviemakers to both record and project ...（S + V 共通: It was used）</td></tr>
+    <tr><td>both ... and</td><td>record / project（to の目的語的動詞を共有）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>was used ← to focus light on special paper</td><td>特別な紙の上に光の焦点を合わせるために<span class="slash-core">(使われた)</span></td><td>副詞的（目的）</td></tr>
+    <tr><td>[was used] ← to both record and project moving images</td><td>動く画像を記録し映し出すために<span class="slash-core">(使われた)</span></td><td>副詞的（目的）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>was used ← by photographers</td><td>写真家によって<span class="slash-core">(使われた)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>focus ← on special paper</td><td>特別な紙の上に<span class="slash-core">(焦点を合わせる)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>[was used] ← by moviemakers</td><td>映画製作者によって<span class="slash-core">(使われた)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>[was used] ← for the first time</td><td>初めて<span class="slash-core">(使われた)</span></td><td>副詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+<!-- 10-③ -->
+<details>
+<summary><span class="sent-num">10-③</span> After the 1920s, scientists and others began coating glass with a substance which could produce light and firing electrons at it, therefore creating the images of television.</summary>
+
+<div class="context-box">
+  <div class="label">【文脈】</div>
+  <div class="context-item"><span class="discourse-tag">照応</span> <strong>it</strong>（at it）→ この文中の glass</div>
+  <div class="context-item"><span class="discourse-tag">時系列</span> 10-②の写真・映画に続き、1920年代以降のテレビの時代へ</div>
+  <div class="context-item"><span class="discourse-tag">因果</span> ガラスへのコーティング＋電子の発射（原因）→ テレビの映像の誕生（結果）</div>
+</div>
+
+<div class="slash-box">
+  <div class="label">【逐語訳】</div>
+  <div class="slash-line"><span class="slash-en">After the 1920s,</span><span class="slash-sep">/</span><span class="slash-ja">1920年代以降</span></div>
+  <div class="slash-line"><span class="slash-en">scientists and others</span><span class="slash-sep">/</span><span class="slash-ja">科学者たちやその他の人々は</span></div>
+  <div class="slash-line"><span class="slash-en">began</span><span class="slash-sep">/</span><span class="slash-ja">始めた</span></div>
+  <div class="slash-line"><span class="slash-en">coating</span><span class="slash-sep">/</span><span class="slash-ja">塗ることを</span></div>
+  <div class="slash-line"><span class="slash-en">glass</span><span class="slash-sep">/</span><span class="slash-ja">ガラスに</span></div>
+  <div class="slash-line"><span class="slash-en">with a substance</span><span class="slash-sep">/</span><span class="slash-ja">物質で<span class="slash-core">(塗る)</span></span></div>
+  <div class="slash-line"><span class="slash-en">which could produce light</span><span class="slash-sep">/</span><span class="slash-ja">光を生み出すことのできる<span class="slash-core">(物質)</span></span></div>
+  <div class="slash-line"><span class="slash-en">and firing</span><span class="slash-sep">/</span><span class="slash-ja">そして発射することを</span></div>
+  <div class="slash-line"><span class="slash-en">electrons</span><span class="slash-sep">/</span><span class="slash-ja">電子を</span></div>
+  <div class="slash-line"><span class="slash-en">at it,</span><span class="slash-sep">/</span><span class="slash-ja">それ（ガラス）に向かって<span class="slash-core">(発射する)</span></span></div>
+  <div class="slash-line"><span class="slash-en">therefore creating</span><span class="slash-sep">/</span><span class="slash-ja">それゆえに生み出して</span></div>
+  <div class="slash-line"><span class="slash-en">the images</span><span class="slash-sep">/</span><span class="slash-ja">映像を</span></div>
+  <div class="slash-line"><span class="slash-en">of television.</span><span class="slash-sep">/</span><span class="slash-ja">テレビの<span class="slash-core">(映像)</span></span></div>
+</div>
+
+<div class="structure-box">
+  <div class="label">【文構造】</div>
+  <span class="dim">After the 1920s,</span> <ruby>scientists<rt>S</rt></ruby> and others <span class="v-marker"><ruby>began<rt>V</rt></ruby></span> coating glass <span class="dim">with a substance</span> <span class="adj-cl">&lt;</span><span class="cl-marker">which</span> could <span class="v-marker"><ruby>produce<rt>v'</rt></ruby></span> <ruby>light<rt>o'</rt></ruby><span class="adj-cl">&gt;</span> and firing electrons <span class="dim">at it</span>, therefore creating the images <span class="dim">of television</span>.
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">述語動詞</div>
+  <table>
+    <tr><th>機能</th><th>導く語</th><th>述部</th><th>訳</th></tr>
+    <tr><td>主節</td><td>―</td><td>began</td><td>始めた</td></tr>
+    <tr><td>形容詞節</td><td>which</td><td>could produce</td><td>生み出すことができた</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">共通関係</div>
+  <table>
+    <tr><th>接続</th><th>結ばれたもの</th></tr>
+    <tr><td>and</td><td>coating glass with a substance ... / firing electrons at it（began の O 共通）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">準動詞句</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>began → coating glass with a substance which could produce light</td><td>光を生み出せる物質でガラスを塗ること<span class="slash-core">(を始めた)</span></td><td>名詞的（目的語）</td></tr>
+    <tr><td>began → firing electrons at it</td><td>電子をそれに発射すること<span class="slash-core">(を始めた)</span></td><td>名詞的（目的語）</td></tr>
+    <tr><td>（文全体）← therefore creating the images of television</td><td>それゆえにテレビの映像を生み出した</td><td>副詞的（結果）</td></tr>
+  </table>
+</div>
+
+<div class="mini-table">
+  <div class="tbl-title">形容詞句・副詞句（準動詞以外）</div>
+  <table>
+    <tr><th>句と係先</th><th>訳</th><th>用法</th></tr>
+    <tr><td>began ← After the 1920s</td><td>1920年代以降に<span class="slash-core">(始めた)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>coating ← with a substance</td><td>物質で<span class="slash-core">(塗る)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>firing ← at it</td><td>それに向かって<span class="slash-core">(発射する)</span></td><td>副詞句（前置詞句）</td></tr>
+    <tr><td>images ← of television</td><td>テレビの<span class="slash-core">(映像)</span></td><td>形容詞句（前置詞句）</td></tr>
+  </table>
+</div>
+
+</details>
+
+</body>
+</html>

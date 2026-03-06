@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>自由英作文 - English Learning</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Hiragino Kaku Gothic Pro", "Yu Gothic", "Meiryo", sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #333; }
+        h1 {
+            text-align: center;
+            color: #1a1a2e;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.95em;
+            margin-bottom: 2rem;
+        }
+        .uni-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .uni-card {
+            background: white;
+            border-radius: 10px;
+            padding: 24px 20px;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid var(--card-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: block;
+        }
+        .uni-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .uni-name {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: var(--card-color);
+        }
+        .uni-desc {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 6px;
+        }
+    </style>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+</head>
+<body>
+    <div class="page-container">
+        <a href="../index.html" class="back-link">&larr; トップに戻る</a>
+        <h1>自由英作文</h1>
+        <p class="subtitle">大学入試 自由英作文 問題分析</p>
+        <div class="uni-grid">
+            <a href="2025topics.html" class="uni-card" style="--card-color: #7b1fa2;">
+                <div class="uni-name">2025年度 入試問題</div>
+                <div class="uni-desc">大学入試 自由英作文 完全分析</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
