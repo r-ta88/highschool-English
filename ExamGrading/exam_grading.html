@@ -631,6 +631,10 @@ const CONFIG = {
 
 // ===== MSAL =====
 const SCOPES = ["User.Read"];
+const isStandalone = window.navigator.standalone === true
+  || window.matchMedia("(display-mode: standalone)").matches;
+const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
 let msalInstance = new msal.PublicClientApplication({
   auth: {
     clientId: CONFIG.clientId,
@@ -664,6 +668,10 @@ async function getAccessToken() {
     return resp.idToken;
   } catch {
     try {
+      if (isStandalone || isiOS) {
+        await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
+        return null; // page will redirect
+      }
       const resp = await msalInstance.acquireTokenPopup({ scopes: SCOPES, account: accounts[0] });
       state.accessToken = resp.idToken;
       return resp.idToken;
@@ -676,6 +684,10 @@ async function getAccessToken() {
 
 async function login() {
   try {
+    if (isStandalone || isiOS) {
+      await msalInstance.loginRedirect({ scopes: SCOPES });
+      return; // page will redirect
+    }
     await msalInstance.loginPopup({ scopes: SCOPES });
     await initApp();
   } catch (e) {
