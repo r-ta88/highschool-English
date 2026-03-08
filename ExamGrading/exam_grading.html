@@ -667,39 +667,17 @@ async function getAccessToken() {
     state.accessToken = resp.idToken;
     return resp.idToken;
   } catch {
-    try {
-      if (isStandalone || isiOS) {
-        await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
-        return null; // page will redirect
-      }
-      const resp = await msalInstance.acquireTokenPopup({ scopes: SCOPES, account: accounts[0] });
-      state.accessToken = resp.idToken;
-      return resp.idToken;
-    } catch (e2) {
-      console.error("Token acquisition failed:", e2);
-      return null;
-    }
+    await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
+    return null; // page will redirect
   }
 }
 
 async function login() {
-  try {
-    if (isStandalone || isiOS) {
-      await msalInstance.loginRedirect({ scopes: SCOPES });
-      return; // page will redirect
-    }
-    await msalInstance.loginPopup({ scopes: SCOPES });
-    await initApp();
-  } catch (e) {
-    console.error("Popup login failed, trying redirect:", e);
-    msalInstance.loginRedirect({ scopes: SCOPES });
-  }
+  await msalInstance.loginRedirect({ scopes: SCOPES });
 }
 
 function logout() {
-  msalInstance.logoutPopup();
-  showScreen("screen-login");
-  document.getElementById("main-header").style.display = "none";
+  msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href });
 }
 
 async function initApp() {
