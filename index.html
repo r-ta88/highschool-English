@@ -11,32 +11,109 @@
     <div class="container">
         <h1>高校英語</h1>
         <p class="subtitle">English Learning Resources</p>
-        <div class="nav-cards">
-            <a href="Grammar/index.html" class="nav-card" style="--card-color: #2e7d32;">
-                <div class="nav-card-title">文法復習</div>
-                <div class="nav-card-desc">Grammar Review</div>
-            </a>
-            <a href="kaisyaku/index.html" class="nav-card" style="--card-color: #1565c0;">
-                <div class="nav-card-title">英文解釈</div>
-                <div class="nav-card-desc">Reading &amp; Translation</div>
-            </a>
-            <a href="jiyueisaku/index.html" class="nav-card" style="--card-color: #7b1fa2;">
-                <div class="nav-card-title">自由英作</div>
-                <div class="nav-card-desc">Free Writing</div>
-            </a>
-            <a href="kyokasyo/index.html" class="nav-card" style="--card-color: #e65100;">
-                <div class="nav-card-title">教科書</div>
-                <div class="nav-card-desc">Textbook</div>
-            </a>
-            <a href="MarkReadingPractice/reading_practice.html" class="nav-card" style="--card-color: #c62828;">
-                <div class="nav-card-title">マーク式リーディング</div>
-                <div class="nav-card-desc">Mark-style Reading Practice</div>
-            </a>
-            <a href="ExamGrading/exam_grading.html" class="nav-card" style="--card-color: #0d47a1;">
-                <div class="nav-card-title">問題演習</div>
-                <div class="nav-card-desc">Exercise &amp; Auto-Grading</div>
-            </a>
+
+        <div id="signed-out-view">
+            <button class="ms-login-btn" onclick="signIn()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
+                    <rect x="1" y="1" width="10" height="10" fill="#f25022"/>
+                    <rect x="12" y="1" width="10" height="10" fill="#7fba00"/>
+                    <rect x="1" y="12" width="10" height="10" fill="#00a4ef"/>
+                    <rect x="12" y="12" width="10" height="10" fill="#ffb900"/>
+                </svg>
+                Sign in with Microsoft
+            </button>
+        </div>
+
+        <div id="signed-in-view">
+            <p class="welcome-message">Hello, <span id="user-name"></span>!</p>
+            <div class="nav-cards">
+                <a href="Grammar/index.html" class="nav-card" style="--card-color: #2e7d32;">
+                    <div class="nav-card-title">文法復習</div>
+                    <div class="nav-card-desc">Grammar Review</div>
+                </a>
+                <a href="kaisyaku/index.html" class="nav-card" style="--card-color: #1565c0;">
+                    <div class="nav-card-title">英文解釈</div>
+                    <div class="nav-card-desc">Reading &amp; Translation</div>
+                </a>
+                <a href="jiyueisaku/index.html" class="nav-card" style="--card-color: #7b1fa2;">
+                    <div class="nav-card-title">自由英作</div>
+                    <div class="nav-card-desc">Free Writing</div>
+                </a>
+                <a href="kyokasyo/index.html" class="nav-card" style="--card-color: #e65100;">
+                    <div class="nav-card-title">教科書</div>
+                    <div class="nav-card-desc">Textbook</div>
+                </a>
+                <a href="MarkReadingPractice/reading_practice.html" class="nav-card" style="--card-color: #c62828;">
+                    <div class="nav-card-title">マーク式リーディング</div>
+                    <div class="nav-card-desc">Mark-style Reading Practice</div>
+                </a>
+                <a href="ExamGrading/exam_grading.html" class="nav-card" style="--card-color: #0d47a1;">
+                    <div class="nav-card-title">問題演習</div>
+                    <div class="nav-card-desc">Exercise &amp; Auto-Grading</div>
+                </a>
+            </div>
+            <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
         </div>
     </div>
+
+    <script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+    <script>
+    const CLIENT_ID = "8a7cf5e5-ba72-4037-b94d-b5fd94a41641";
+    const TENANT_ID = "da29e79e-284c-4c77-b3c0-9b96ea0c2a81";
+    const SCOPES = ["User.Read"];
+
+    const isStandalone = window.navigator.standalone === true
+      || window.matchMedia("(display-mode: standalone)").matches;
+
+    const msalInstance = new msal.PublicClientApplication({
+      auth: {
+        clientId: CLIENT_ID,
+        authority: `https://login.microsoftonline.com/${TENANT_ID}`,
+        redirectUri: window.location.origin,
+      },
+      cache: { cacheLocation: "localStorage" },
+    });
+
+    async function signIn() {
+      try {
+        if (isStandalone) {
+          await msalInstance.loginRedirect({ scopes: SCOPES });
+        } else {
+          await msalInstance.loginPopup({ scopes: SCOPES });
+          showSignedIn();
+        }
+      } catch (e) {
+        console.error("Sign-in failed:", e);
+      }
+    }
+
+    function signOut() {
+      if (isStandalone) {
+        msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
+      } else {
+        msalInstance.logoutPopup({ postLogoutRedirectUri: window.location.origin });
+      }
+    }
+
+    function showSignedIn() {
+      const accounts = msalInstance.getAllAccounts();
+      if (!accounts.length) return;
+      document.getElementById("user-name").textContent = accounts[0].username || "";
+      document.getElementById("signed-out-view").style.display = "none";
+      document.getElementById("signed-in-view").style.display = "";
+    }
+
+    // Auto-init
+    (async () => {
+      try {
+        const resp = await msalInstance.handleRedirectPromise();
+        if (resp) { showSignedIn(); return; }
+      } catch (e) { console.warn(e); }
+
+      if (msalInstance.getAllAccounts().length > 0) {
+        showSignedIn();
+      }
+    })();
+    </script>
 </body>
 </html>
