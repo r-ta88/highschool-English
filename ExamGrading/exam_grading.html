@@ -633,16 +633,20 @@ const CONFIG = {
 const SCOPES = ["User.Read"];
 const isStandalone = window.navigator.standalone === true
   || window.matchMedia("(display-mode: standalone)").matches;
-const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-let msalInstance = new msal.PublicClientApplication({
-  auth: {
-    clientId: CONFIG.clientId,
-    authority: `https://login.microsoftonline.com/${CONFIG.tenantId}`,
-    redirectUri: window.location.origin,
-  },
-  cache: { cacheLocation: "localStorage" },
-});
+let msalInstance;
+try {
+  msalInstance = new msal.PublicClientApplication({
+    auth: {
+      clientId: CONFIG.clientId,
+      authority: `https://login.microsoftonline.com/${CONFIG.tenantId}`,
+      redirectUri: window.location.origin,
+    },
+    cache: { cacheLocation: "localStorage" },
+  });
+} catch (e) {
+  console.error("MSAL initialization failed:", e);
+}
 
 // ===== STATE =====
 let state = {
@@ -659,25 +663,49 @@ let state = {
 };
 
 // ===== AUTH =====
-async function getAccessToken() {
+async function acquireToken(scopes) {
   const accounts = msalInstance.getAllAccounts();
-  if (accounts.length === 0) return null;
+  if (!accounts.length) throw new Error("Not signed in");
   try {
-    const resp = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accounts[0] });
-    state.accessToken = resp.idToken;
-    return resp.idToken;
+    return await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
   } catch {
-    await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
-    return null; // page will redirect
+    if (isStandalone) {
+      await msalInstance.acquireTokenRedirect({ scopes });
+      throw new Error("Redirecting for token...");
+    }
+    return await msalInstance.acquireTokenPopup({ scopes, account: accounts[0] });
+  }
+}
+
+async function getAccessToken() {
+  try {
+    const res = await acquireToken(SCOPES);
+    state.accessToken = res.idToken;
+    return res.idToken;
+  } catch {
+    return null;
   }
 }
 
 async function login() {
-  await msalInstance.loginRedirect({ scopes: SCOPES });
+  try {
+    if (isStandalone) {
+      await msalInstance.loginRedirect({ scopes: SCOPES });
+    } else {
+      await msalInstance.loginPopup({ scopes: SCOPES });
+    }
+    await initApp();
+  } catch (e) {
+    toast("サインインに失敗しました: " + e.message, "error");
+  }
 }
 
 function logout() {
-  msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href });
+  if (isStandalone) {
+    msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href });
+  } else {
+    msalInstance.logoutPopup({ postLogoutRedirectUri: window.location.href });
+  }
 }
 
 async function initApp() {
