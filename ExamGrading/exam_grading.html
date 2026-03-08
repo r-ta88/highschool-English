@@ -1547,6 +1547,11 @@ function esc(s) {
 
 // ===== AUTO-INIT =====
 (async function() {
+  // Clear stale MSAL interaction state from previous redirect attempts
+  for (const key of Object.keys(sessionStorage)) {
+    if (key.startsWith("msal.")) sessionStorage.removeItem(key);
+  }
+
   // handleRedirectPromise for loginRedirect flow
   try {
     const redirectResp = await msalInstance.handleRedirectPromise();
@@ -1558,7 +1563,7 @@ function esc(s) {
     console.error("Redirect handle error:", e);
   }
 
-  // Check if already signed in (e.g. from top page)
+  // Check if already signed in (e.g. from reading practice or other pages)
   const accounts = msalInstance.getAllAccounts();
   if (accounts.length > 0) {
     await initApp();
