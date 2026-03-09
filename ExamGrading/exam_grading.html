@@ -669,13 +669,40 @@ async function acquireToken(scopes) {
   }
 }
 
-async function getAccessToken() {
+async function getIdToken() {
+  const res = await acquireToken(SCOPES);
+  state.accessToken = res.idToken;
+  return res.idToken;
+}
+
+async function checkAuthSilent() {
   try {
-    const res = await acquireToken(SCOPES);
+    const accounts = msalInstance.getAllAccounts();
+    if (!accounts.length) return false;
+    await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accounts[0] });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function forceRefreshIdToken() {
+  const accounts = msalInstance.getAllAccounts();
+  if (!accounts.length) throw new Error("Not signed in");
+  try {
+    const res = await msalInstance.acquireTokenSilent({
+      scopes: SCOPES,
+      account: accounts[0],
+      forceRefresh: true,
+    });
     state.accessToken = res.idToken;
     return res.idToken;
   } catch {
-    return null;
+    if (isStandalone) {
+      await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
+      throw new Error("Redirecting for token...");
+    }
+    return (await msalInstance.acquireTokenPopup({ scopes: SCOPES, account: accounts[0] })).idToken;
   }
 }
 
@@ -701,8 +728,12 @@ function logout() {
 }
 
 async function initApp() {
-  const token = await getAccessToken();
-  if (!token) return;
+  try {
+    await getIdToken();
+  } catch (e) {
+    toast("認証エラー: " + e.message, "error");
+    return;
+  }
 
   // Get user info
   const me = await apiFetch("/api/me");
@@ -725,12 +756,25 @@ async function initApp() {
 
 // ===== API =====
 async function apiFetch(path, options = {}) {
-  const token = await getAccessToken();
-  const headers = { "Content-Type": "application/json", ...options.headers };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
+  const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
 
   try {
-    const resp = await fetch(`${CONFIG.apiBase}${path}`, { ...options, headers });
+    if (options.auth !== false) {
+      const token = await getIdToken();
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    let resp = await fetch(`${CONFIG.apiBase}${path}`, { ...options, headers });
+    if (resp.status === 401 && options.auth !== false) {
+      try {
+        const freshToken = await forceRefreshIdToken();
+        headers["Authorization"] = `Bearer ${freshToken}`;
+        resp = await fetch(`${CONFIG.apiBase}${path}`, { ...options, headers });
+      } catch {
+        return { error: "セッション期限切れ（再ログインが必要です）" };
+      }
+    }
+
     return await resp.json();
   } catch (e) {
     console.error("API error:", e);
@@ -791,6 +835,12 @@ function toggleTheme() {
 
 // ===== EXAM LIST =====
 async function loadExams() {
+  const authOk = await checkAuthSilent();
+  if (!authOk) {
+    toast("セッションが切れています。再ログインしてください。", "error");
+    return;
+  }
+
   const classFilter = document.getElementById("filter-class").value;
   const path = classFilter ? `/api/exam/exams?class_id=${encodeURIComponent(classFilter)}` : "/api/exam/exams";
   const data = await apiFetch(path);
@@ -812,8 +862,9 @@ async function loadExams() {
 function renderExamList() {
   const classFilter = document.getElementById("filter-class").value;
   const grid = document.getElementById("exam-grid");
-  let exams = state.exams;
+  let exams = [...state.exams];
   if (classFilter) exams = exams.filter(e => e.class_id === classFilter);
+  exams.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ja"));
 
   grid.innerHTML = exams.map(e => {
     const sub = e.my_submission;
@@ -853,6 +904,22 @@ function renderExamList() {
 
 // ===== OPEN EXAM =====
 async function openExam(examId) {
+  const authOk = await checkAuthSilent();
+  if (!authOk) {
+    toast("セッションが切れています。再ログインしてください。", "error");
+    try {
+      if (isStandalone) {
+        await msalInstance.loginRedirect({ scopes: SCOPES });
+        return;
+      } else {
+        await msalInstance.loginPopup({ scopes: SCOPES });
+      }
+    } catch (e) {
+      toast("ログインに失敗しました: " + e.message, "error");
+      return;
+    }
+  }
+
   showLoading();
   const data = await apiFetch(`/api/exam/exams/${examId}`);
   hideLoading();
@@ -994,6 +1061,27 @@ function updateProgress() {
 
 // ===== SUBMIT =====
 async function submitExam() {
+  const authOk = await checkAuthSilent();
+  if (!authOk) {
+    toast("セッションが切れています。先に再ログインしてください。", "error");
+    try {
+      if (isStandalone) {
+        await msalInstance.loginRedirect({ scopes: SCOPES });
+        return;
+      } else {
+        await msalInstance.loginPopup({ scopes: SCOPES });
+      }
+      const authOkAfter = await checkAuthSilent();
+      if (!authOkAfter) {
+        toast("再ログインに失敗しました。もう一度お試しください。", "error");
+        return;
+      }
+    } catch (e) {
+      toast("ログインに失敗しました: " + e.message, "error");
+      return;
+    }
+  }
+
   const total = state.currentQuestions.length;
   const answered = Object.keys(state.answers).filter(k => state.answers[k] && state.answers[k].trim()).length;
 
