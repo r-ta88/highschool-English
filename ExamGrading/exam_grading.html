@@ -254,7 +254,7 @@ body {
 .choice-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .choice-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
   padding: 8px 12px;
   border: 1px solid var(--border);
@@ -270,6 +270,20 @@ body {
   font-weight: 500;
 }
 .choice-item input { accent-color: var(--accent); }
+.choice-copy {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.choice-label {
+  min-width: 1.8em;
+  color: var(--text-dimmer);
+  font-weight: 600;
+}
+.choice-text {
+  flex: 1;
+}
 
 /* Text inputs */
 .answer-input {
@@ -389,6 +403,11 @@ body {
 
 /* ===== STUDENT DETAIL ===== */
 .detail-wrap {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+.admin-wrap {
   flex: 1;
   overflow-y: auto;
   padding: 24px;
@@ -537,7 +556,7 @@ body {
   border: none !important;
 }
 </style>
-<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});</script>
+<script>document.addEventListener("gesturestart",e=>e.preventDefault());document.addEventListener("touchstart",e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});window.addEventListener("pageshow",e=>{if(e.persisted)window.location.reload();});</script>
 </head>
 <body>
 
@@ -562,6 +581,7 @@ body {
       <select id="filter-class" onchange="renderExamList()" style="padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;background:var(--surface);color:var(--text);">
         <option value="">全クラス</option>
       </select>
+      <button class="header-btn" id="btn-pa-admin" style="display:none;" onclick="openPaAdminEntrance()">PA Admin入口</button>
       <button class="header-btn primary" id="btn-create-exam" style="display:none;" onclick="showCreateExam()">+ 新規問題</button>
     </div>
     <div class="exam-grid" id="exam-grid"></div>
@@ -605,6 +625,11 @@ body {
   <div class="detail-wrap" id="detail-content"></div>
 </div>
 
+<!-- SCREEN: PA ADMIN -->
+<div class="screen" id="screen-pa-admin">
+  <div class="admin-wrap" id="pa-admin-content"></div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -623,9 +648,6 @@ const CONFIG = {
 
 // ===== MSAL =====
 const SCOPES = ["User.Read"];
-const isStandalone = window.navigator.standalone === true
-  || window.matchMedia("(display-mode: standalone)").matches;
-
 let msalInstance;
 try {
   msalInstance = new msal.PublicClientApplication({
@@ -645,6 +667,7 @@ let state = {
   accessToken: null,
   user: null,
   isTeacher: false,
+  isPaAdmin: false,
   exams: [],
   currentExam: null,
   currentQuestions: [],
@@ -655,83 +678,42 @@ let state = {
 };
 
 // ===== AUTH =====
-async function acquireToken(scopes) {
+async function getAccessToken(forceRefresh = false) {
   const accounts = msalInstance.getAllAccounts();
-  if (!accounts.length) throw new Error("Not signed in");
-  try {
-    return await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
-  } catch {
-    if (isStandalone) {
-      await msalInstance.acquireTokenRedirect({ scopes });
-      throw new Error("Redirecting for token...");
-    }
-    return await msalInstance.acquireTokenPopup({ scopes, account: accounts[0] });
-  }
-}
-
-async function getIdToken() {
-  const res = await acquireToken(SCOPES);
-  state.accessToken = res.idToken;
-  return res.idToken;
-}
-
-async function checkAuthSilent() {
-  try {
-    const accounts = msalInstance.getAllAccounts();
-    if (!accounts.length) return false;
-    await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accounts[0] });
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-async function forceRefreshIdToken() {
-  const accounts = msalInstance.getAllAccounts();
-  if (!accounts.length) throw new Error("Not signed in");
+  if (!accounts.length) return null;
   try {
     const res = await msalInstance.acquireTokenSilent({
-      scopes: SCOPES,
-      account: accounts[0],
-      forceRefresh: true,
+      scopes: SCOPES, account: accounts[0], forceRefresh,
     });
     state.accessToken = res.idToken;
     return res.idToken;
   } catch {
-    if (isStandalone) {
-      await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
-      throw new Error("Redirecting for token...");
+    try {
+      const res = await msalInstance.acquireTokenPopup({ scopes: SCOPES, account: accounts[0] });
+      state.accessToken = res.idToken;
+      return res.idToken;
+    } catch {
+      return null;
     }
-    return (await msalInstance.acquireTokenPopup({ scopes: SCOPES, account: accounts[0] })).idToken;
   }
 }
 
 async function login() {
   try {
-    if (isStandalone) {
-      await msalInstance.loginRedirect({ scopes: SCOPES });
-    } else {
-      await msalInstance.loginPopup({ scopes: SCOPES });
-    }
-    await initApp();
+    await msalInstance.loginRedirect({ scopes: SCOPES });
   } catch (e) {
     toast("サインインに失敗しました: " + e.message, "error");
   }
 }
 
 function logout() {
-  if (isStandalone) {
-    msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.href });
-  } else {
-    msalInstance.logoutPopup({ postLogoutRedirectUri: window.location.href });
-  }
+  msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin });
 }
 
 async function initApp() {
-  try {
-    await getIdToken();
-  } catch (e) {
-    toast("認証エラー: " + e.message, "error");
+  const token = await getAccessToken();
+  if (!token) {
+    window.location.href = window.location.origin;
     return;
   }
 
@@ -743,11 +725,15 @@ async function initApp() {
   }
   state.user = me;
   state.isTeacher = me.is_teacher;
+  state.isPaAdmin = !!me.is_pa_admin;
 
   document.getElementById("main-header").style.display = "flex";
   document.getElementById("user-badge").textContent = me.username || me.upn;
   if (state.isTeacher) {
     document.getElementById("btn-create-exam").style.display = "";
+  }
+  if (state.isPaAdmin) {
+    document.getElementById("btn-pa-admin").style.display = "";
   }
 
   await loadExams();
@@ -756,25 +742,20 @@ async function initApp() {
 
 // ===== API =====
 async function apiFetch(path, options = {}) {
-  const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
+  let token = await getAccessToken();
+  const headers = { "Content-Type": "application/json", ...options.headers };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
 
   try {
-    if (options.auth !== false) {
-      const token = await getIdToken();
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
     let resp = await fetch(`${CONFIG.apiBase}${path}`, { ...options, headers });
-    if (resp.status === 401 && options.auth !== false) {
-      try {
-        const freshToken = await forceRefreshIdToken();
-        headers["Authorization"] = `Bearer ${freshToken}`;
+    if (resp.status === 401) {
+      // Token expired — force refresh and retry
+      token = await getAccessToken(true);
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
         resp = await fetch(`${CONFIG.apiBase}${path}`, { ...options, headers });
-      } catch {
-        return { error: "セッション期限切れ（再ログインが必要です）" };
       }
     }
-
     return await resp.json();
   } catch (e) {
     console.error("API error:", e);
@@ -835,12 +816,6 @@ function toggleTheme() {
 
 // ===== EXAM LIST =====
 async function loadExams() {
-  const authOk = await checkAuthSilent();
-  if (!authOk) {
-    toast("セッションが切れています。再ログインしてください。", "error");
-    return;
-  }
-
   const classFilter = document.getElementById("filter-class").value;
   const path = classFilter ? `/api/exam/exams?class_id=${encodeURIComponent(classFilter)}` : "/api/exam/exams";
   const data = await apiFetch(path);
@@ -864,7 +839,7 @@ function renderExamList() {
   const grid = document.getElementById("exam-grid");
   let exams = [...state.exams];
   if (classFilter) exams = exams.filter(e => e.class_id === classFilter);
-  exams.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ja", { numeric: true }));
+  exams.sort((a, b) => String(a.title || "").localeCompare(String(b.title || ""), "ja"));
 
   grid.innerHTML = exams.map(e => {
     const sub = e.my_submission;
@@ -904,22 +879,6 @@ function renderExamList() {
 
 // ===== OPEN EXAM =====
 async function openExam(examId) {
-  const authOk = await checkAuthSilent();
-  if (!authOk) {
-    toast("セッションが切れています。再ログインしてください。", "error");
-    try {
-      if (isStandalone) {
-        await msalInstance.loginRedirect({ scopes: SCOPES });
-        return;
-      } else {
-        await msalInstance.loginPopup({ scopes: SCOPES });
-      }
-    } catch (e) {
-      toast("ログインに失敗しました: " + e.message, "error");
-      return;
-    }
-  }
-
   showLoading();
   const data = await apiFetch(`/api/exam/exams/${examId}`);
   hideLoading();
@@ -962,62 +921,75 @@ function renderExamTake() {
   const qContainer = document.getElementById("take-questions");
   qContainer.innerHTML = questions.map(q => {
     let inputHtml = "";
+    const renderedChoices = getRenderedChoices(q);
 
     if (q.q_type === "MC") {
-      const choices = parseChoices(q.choices_json);
-      inputHtml = isTeacherPreview
-        ? `<ul class="choice-list">${choices.map((c) => `
-        <li class="choice-item">
-          <span>${esc(c)}</span>
-        </li>
-      `).join("")}</ul>`
-        : `<ul class="choice-list">${choices.map((c, i) => `
+      if (isTeacherPreview) {
+        inputHtml = `<ul class="choice-list">${renderedChoices.choices.map((choice) => `
+          <li class="choice-item">
+            <span class="choice-copy">
+              <span class="choice-label">${esc(choice.label)}</span>
+              <span class="choice-text">${esc(choice.text)}</span>
+            </span>
+          </li>
+        `).join("")}</ul>`;
+      } else {
+      inputHtml = `<ul class="choice-list">${renderedChoices.choices.map((choice, i) => `
         <li class="choice-item" onclick="selectMC(${q.question_id}, '${i + 1}', this)">
           <input type="radio" name="q${q.question_id}" value="${i + 1}">
-          <span>${esc(c)}</span>
+          <span class="choice-copy">
+            <span class="choice-label">${esc(choice.label)}</span>
+            <span class="choice-text">${esc(choice.text)}</span>
+          </span>
         </li>
       `).join("")}</ul>`;
+      }
     } else if (q.q_type === "MMC") {
-      const choices = parseChoices(q.choices_json);
-      const maxSel = q.max_select || choices.length;
-      inputHtml = isTeacherPreview
-        ? `<ul class="choice-list" data-max="${maxSel}" data-qid="${q.question_id}">${choices.map((c) => `
-        <li class="choice-item">
-          <span>${esc(c)}</span>
-        </li>
-      `).join("")}</ul>`
-        : `<ul class="choice-list" data-max="${maxSel}" data-qid="${q.question_id}">${choices.map((c, i) => `
+      const maxSel = q.max_select || renderedChoices.choices.length;
+      if (isTeacherPreview) {
+        inputHtml = `<ul class="choice-list" data-max="${maxSel}" data-qid="${q.question_id}">${renderedChoices.choices.map((choice) => `
+          <li class="choice-item">
+            <span class="choice-copy">
+              <span class="choice-label">${esc(choice.label)}</span>
+              <span class="choice-text">${esc(choice.text)}</span>
+            </span>
+          </li>
+        `).join("")}</ul>`;
+      } else {
+      inputHtml = `<ul class="choice-list" data-max="${maxSel}" data-qid="${q.question_id}">${renderedChoices.choices.map((choice, i) => `
         <li class="choice-item" onclick="selectMMC(${q.question_id}, '${i + 1}', this, ${maxSel})">
           <input type="checkbox" value="${i + 1}">
-          <span>${esc(c)}</span>
+          <span class="choice-copy">
+            <span class="choice-label">${esc(choice.label)}</span>
+            <span class="choice-text">${esc(choice.text)}</span>
+          </span>
         </li>
       `).join("")}</ul>`;
+      }
     } else if (q.q_type === "FAWT") {
       inputHtml = `<input class="answer-input" type="text" placeholder="${isTeacherPreview ? "短答記述問題" : "4語以内で回答"}"
         ${isTeacherPreview ? "readonly" : ""}
         oninput="onTextAnswer(${q.question_id}, this.value)"
         data-qid="${q.question_id}">
-        <div class="word-count" id="wc-${q.question_id}">${isTeacherPreview ? "短答記述" : "0 words"}</div>`;
+        <div class="word-count" id="wc-${q.question_id}">${isTeacherPreview ? "短答記述" : "0字"}</div>`;
     } else if (q.q_type === "WT") {
       inputHtml = `<textarea class="answer-input" rows="4" placeholder="${isTeacherPreview ? "記述式問題" : "記述回答を入力"}"
         ${isTeacherPreview ? "readonly" : ""}
         oninput="onTextAnswer(${q.question_id}, this.value)"
         data-qid="${q.question_id}"></textarea>
-        <div class="word-count" id="wc-${q.question_id}">${isTeacherPreview ? "記述式" : "0 words"}</div>`;
+        <div class="word-count" id="wc-${q.question_id}">${isTeacherPreview ? "記述式" : "0字"}</div>`;
     }
 
     return `
       <div class="q-block" id="qblock-${q.question_id}">
         <div class="q-label">Q${q.q_order} <span class="q-type-badge">${q.q_type}</span> (${q.points}点)</div>
-        <div class="q-html">${q.q_html || ""}</div>
+        <div class="q-html">${renderedChoices.promptHtml}</div>
         ${inputHtml}
-        ${isTeacherPreview && q.correct_answer ? `<div class="result-feedback"><strong>模範解答:</strong> ${esc(q.correct_answer)}</div>` : ""}
-        ${isTeacherPreview && q.rubric ? `<div class="result-feedback"><strong>採点基準:</strong><div style="white-space:pre-wrap;margin-top:6px;">${esc(q.rubric)}</div></div>` : ""}
-        ${isTeacherPreview && q.explanation ? `<div class="result-feedback"><strong>解説:</strong><div style="white-space:pre-wrap;margin-top:6px;">${esc(q.explanation)}</div></div>` : ""}
       </div>
     `;
   }).join("");
 
+  normalizeRenderedChoiceBlocks();
   configureTakeScreenControls();
   updateProgress();
 }
@@ -1025,12 +997,22 @@ function renderExamTake() {
 function configureTakeScreenControls() {
   const progressEl = document.getElementById("take-progress");
   const submitBtn = document.getElementById("btn-exam-submit");
+  const submitBar = submitBtn.parentElement;
+  const oldTeacherBtns = submitBar.querySelectorAll(".teacher-preview-btn");
+  oldTeacherBtns.forEach(el => el.remove());
 
   if (state.isTeacher) {
     progressEl.textContent = "教員用プレビュー";
     submitBtn.textContent = "ダッシュボード";
     submitBtn.disabled = false;
     submitBtn.onclick = () => openDashboard(state.currentExam.exam_id);
+    if (state.isPaAdmin) {
+      const adminBtn = document.createElement("button");
+      adminBtn.className = "header-btn teacher-preview-btn";
+      adminBtn.textContent = "採点基準入口";
+      adminBtn.onclick = () => openAdminEditor(state.currentExam.exam_id);
+      submitBar.insertBefore(adminBtn, submitBtn);
+    }
   } else {
     submitBtn.textContent = "提出する";
     submitBtn.onclick = submitExam;
@@ -1043,6 +1025,100 @@ function parseChoices(choicesJson) {
     const parsed = typeof choicesJson === "string" ? JSON.parse(choicesJson) : choicesJson;
     return Array.isArray(parsed) ? parsed : [];
   } catch { return []; }
+}
+
+function getRenderedChoices(q) {
+  const rawChoices = parseChoices(q.choices_json);
+  const extracted = splitQuestionHtmlAndChoices(q.q_html || "");
+  const extractedChoices = extracted.choices;
+  const useExtractedChoices = extractedChoices.length > 0 && (
+    rawChoices.length === 0 ||
+    rawChoices.every(isChoiceLabelOnly) ||
+    rawChoices.length === extractedChoices.length
+  );
+
+  const renderedChoices = (useExtractedChoices ? extractedChoices : rawChoices.map((choice, i) => ({
+    label: toChoiceLabel(rawChoices[i], i),
+    text: isChoiceLabelOnly(choice) ? `選択肢${i + 1}` : choice
+  })));
+
+  return {
+    promptHtml: useExtractedChoices ? extracted.promptHtml : (q.q_html || ""),
+    choices: renderedChoices
+  };
+}
+
+function splitQuestionHtmlAndChoices(qHtml) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`<div>${qHtml}</div>`, "text/html");
+  const root = doc.body.firstElementChild;
+  if (!root) return { promptHtml: qHtml, choices: [] };
+
+  const choices = [];
+  [...root.children].forEach(node => {
+    const text = (node.textContent || "").replace(/\u00a0/g, " ").trim();
+    const match = text.match(/^([①-⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳])\s*(.+)$/);
+    if (!match) return;
+    choices.push({
+      label: match[1],
+      text: match[2].trim()
+    });
+    node.remove();
+  });
+
+  return {
+    promptHtml: root.innerHTML.trim(),
+    choices
+  };
+}
+
+function isChoiceLabelOnly(choice) {
+  return /^[①-⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]$/.test(String(choice || "").trim());
+}
+
+function toChoiceLabel(choice, index) {
+  return isChoiceLabelOnly(choice) ? String(choice).trim() : `${index + 1}.`;
+}
+
+function normalizeRenderedChoiceBlocks() {
+  document.querySelectorAll("#take-questions .q-block").forEach(block => {
+    const badge = block.querySelector(".q-type-badge");
+    const qType = badge ? badge.textContent.trim() : "";
+    if (qType !== "MC" && qType !== "MMC") return;
+
+    const qHtml = block.querySelector(".q-html");
+    const list = block.querySelector(".choice-list");
+    if (!qHtml || !list) return;
+
+    [...qHtml.querySelectorAll("p")].forEach(p => {
+      const text = (p.textContent || "").replace(/\u00a0/g, " ").trim();
+      if (/^[①-⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]\s+/.test(text)) {
+        p.remove();
+      }
+    });
+
+    const labels = [...qHtml.querySelectorAll("li, div, span")];
+    labels.forEach(node => {
+      const text = (node.textContent || "").replace(/\u00a0/g, " ").trim();
+      if (/^[①-⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]\s+/.test(text) && !node.closest(".choice-list")) {
+        node.remove();
+      }
+    });
+
+    if (!list.querySelector(".choice-text") || [...list.querySelectorAll(".choice-text")].every(el => !el.textContent.trim() || /^選択肢\d+$/.test(el.textContent.trim()))) {
+      const extracted = splitQuestionHtmlAndChoices(qHtml.innerHTML || "");
+      if (extracted.choices.length) {
+        [...list.querySelectorAll(".choice-item")].forEach((item, index) => {
+          const choice = extracted.choices[index];
+          if (!choice) return;
+          const labelEl = item.querySelector(".choice-label") || item.querySelector("span");
+          const textEl = item.querySelector(".choice-text") || labelEl?.nextElementSibling;
+          if (labelEl) labelEl.textContent = choice.label;
+          if (textEl) textEl.textContent = choice.text;
+        });
+      }
+    }
+  });
 }
 
 function selectMC(qid, value, el) {
@@ -1079,11 +1155,18 @@ function selectMMC(qid, value, el, maxSelect) {
 
 function onTextAnswer(qid, value) {
   state.answers[qid] = value;
-  const words = value.trim().split(/\s+/).filter(w => w.length > 0);
+  const chars = countAnswerChars(value);
   const wcEl = document.getElementById(`wc-${qid}`);
-  if (wcEl) wcEl.textContent = `${words.length} words`;
+  if (wcEl) wcEl.textContent = `${chars}字`;
   document.getElementById(`qblock-${qid}`).classList.toggle("answered", value.trim().length > 0);
   updateProgress();
+}
+
+function countAnswerChars(value) {
+  const compact = String(value || "").replace(/\s+/g, "");
+  let count = [...compact].length;
+  if (compact.endsWith("。")) count -= 1;
+  return Math.max(0, count);
 }
 
 function updateProgress() {
@@ -1097,27 +1180,6 @@ function updateProgress() {
 
 // ===== SUBMIT =====
 async function submitExam() {
-  const authOk = await checkAuthSilent();
-  if (!authOk) {
-    toast("セッションが切れています。先に再ログインしてください。", "error");
-    try {
-      if (isStandalone) {
-        await msalInstance.loginRedirect({ scopes: SCOPES });
-        return;
-      } else {
-        await msalInstance.loginPopup({ scopes: SCOPES });
-      }
-      const authOkAfter = await checkAuthSilent();
-      if (!authOkAfter) {
-        toast("再ログインに失敗しました。もう一度お試しください。", "error");
-        return;
-      }
-    } catch (e) {
-      toast("ログインに失敗しました: " + e.message, "error");
-      return;
-    }
-  }
-
   const total = state.currentQuestions.length;
   const answered = Object.keys(state.answers).filter(k => state.answers[k] && state.answers[k].trim()).length;
 
@@ -1128,6 +1190,7 @@ async function submitExam() {
   const answers = state.currentQuestions.map(q => ({
     question_id: q.question_id,
     answer: state.answers[q.question_id] || "",
+    char_count: (q.q_type === "WT" || q.q_type === "FAWT") ? countAnswerChars(state.answers[q.question_id] || "") : null,
   }));
 
   showLoading();
@@ -1199,7 +1262,7 @@ async function showResults(examId) {
           <div class="label">得点:</div>
           <div>${a.final_score != null ? `${a.final_score}/${a.points}` : '<span style="color:var(--orange);">AI採点待ち</span>'}</div>
         </div>
-        ${a.ai_feedback ? `<div class="result-feedback">${esc(a.ai_feedback)}</div>` : ""}
+        ${a.ai_feedback && !a.ai_feedback.startsWith("⚠") ? `<div class="result-feedback">${esc(a.ai_feedback)}</div>` : ""}
         ${a.explanation ? `<div class="result-feedback"><strong>解説:</strong> ${a.explanation}</div>` : ""}
       </div>
     `;
@@ -1267,6 +1330,7 @@ async function openDashboard(examId) {
         <h2 style="flex:1;">${esc(exam.title)} - ダッシュボード</h2>
         <button class="header-btn primary" onclick="triggerGrade(${examId})">AI採点実行</button>
         <button class="header-btn" onclick="toggleOpen(${examId})">${exam.is_open ? '非公開にする' : '公開する'}</button>
+        ${state.isPaAdmin ? `<button class="header-btn" onclick="openAdminEditor(${examId})">PA Admin編集</button>` : ""}
       </div>
 
       <!-- Summary stats -->
@@ -1303,6 +1367,7 @@ async function openDashboard(examId) {
         ${statsData.question_stats.map(qs => {
           const rate = qs.answer_count > 0 ? Math.round((qs.full_marks_count / qs.answer_count) * 100) : 0;
           const chartId = `chart-q-${qs.question_id}`;
+          const fullQ = (state.currentQuestions || []).find(q => q.question_id === qs.question_id) || {};
           return `
             <div class="card qstat-card">
               <div class="qstat-header">
@@ -1310,8 +1375,13 @@ async function openDashboard(examId) {
                 <span class="q-type-badge">${qs.q_type}</span>
                 <span class="qstat-rate" style="color:${rate >= 70 ? 'var(--green)' : rate >= 40 ? 'var(--orange)' : 'var(--red)'};">${rate}% 正答率</span>
                 <span style="font-size:12px;color:var(--text-dimmer);">平均 ${qs.avg_score != null ? qs.avg_score.toFixed(1) : "-"}/${qs.points}</span>
-                ${(qs.q_type === "FAWT" || qs.q_type === "WT") ? `<button class="header-btn" onclick="aiSummary(${examId}, ${qs.question_id})" style="margin-left:auto;font-size:11px;">AI分析</button>` : ""}
+                ${state.isPaAdmin ? `<button class="header-btn" onclick="openAdminEditor(${examId})" style="margin-left:auto;font-size:11px;">採点基準確認/編集</button>` : ""}
+                ${(qs.q_type === "FAWT" || qs.q_type === "WT") ? `<button class="header-btn" onclick="aiSummary(${examId}, ${qs.question_id})" style="font-size:11px;">AI分析</button>` : ""}
               </div>
+              <div class="result-feedback" style="margin-bottom:8px;"><strong>問題:</strong><div style="margin-top:6px;">${fullQ.q_html || "(設問本文なし)"}</div></div>
+              ${fullQ.correct_answer ? `<div class="result-feedback"><strong>模範解答:</strong> ${esc(fullQ.correct_answer)}</div>` : ""}
+              ${fullQ.rubric ? `<div class="result-feedback"><strong>採点基準:</strong><div style="white-space:pre-wrap;margin-top:6px;">${esc(fullQ.rubric)}</div></div>` : ""}
+              ${fullQ.explanation ? `<div class="result-feedback"><strong>解説:</strong><div style="white-space:pre-wrap;margin-top:6px;">${esc(fullQ.explanation)}</div></div>` : ""}
               ${qs.choice_distribution ? `<div class="chart-container" style="max-width:300px;"><canvas id="${chartId}"></canvas></div>` : ""}
               <div id="summary-${qs.question_id}" style="display:none;" class="result-feedback"></div>
             </div>
@@ -1479,10 +1549,23 @@ function showStudentDetail(submission) {
     html += `
       <div class="card result-q ${cls}" style="margin-bottom:12px;">
         <div class="q-label">Q${a.q_order} <span class="q-type-badge">${a.q_type}</span> (${a.max_points}点)</div>
+        <div class="q-html" style="margin-bottom:10px;">${a.q_html || ""}</div>
         <div class="result-answer">
           <div class="label">回答:</div>
           <div>${esc(a.student_answer || "(未回答)")}</div>
         </div>
+        ${a.correct_answer ? `
+        <div class="result-answer">
+          <div class="label">模範解答:</div>
+          <div>${esc(a.correct_answer)}</div>
+        </div>` : ""}
+        ${a.rubric ? `
+        <div class="result-feedback"><strong>採点基準:</strong><div style="white-space:pre-wrap;margin-top:6px;">${esc(a.rubric)}</div></div>` : ""}
+        ${(a.q_type === "WT" || a.q_type === "FAWT") ? `
+        <div class="result-answer">
+          <div class="label">機械カウント文字数:</div>
+          <div>${a.student_char_count != null ? a.student_char_count + "字" : "未計測"}</div>
+        </div>` : ""}
         <div class="result-answer">
           <div class="label">得点: ${a.final_score != null ? a.final_score : "未採点"} / ${a.max_points}</div>
           <div class="score-override">
@@ -1490,7 +1573,8 @@ function showStudentDetail(submission) {
             <button onclick="overrideScore(${a.answer_id}, ${a.max_points})">上書き</button>
           </div>
         </div>
-        ${a.ai_feedback ? `<div class="result-feedback">${esc(a.ai_feedback)}</div>` : ""}
+        ${a.ai_feedback ? `<div class="result-feedback"><strong>AIフィードバック:</strong> ${esc(a.ai_feedback)}</div>` : ""}
+        ${a.explanation ? `<div class="result-feedback"><strong>解説:</strong><div style="white-space:pre-wrap;margin-top:6px;">${esc(a.explanation)}</div></div>` : ""}
       </div>
     `;
   }
@@ -1597,6 +1681,136 @@ async function createExam() {
   await loadExams();
 }
 
+function openPaAdminEntrance() {
+  const exams = [...state.exams].sort((a, b) =>
+    String(a.class_id || "").localeCompare(String(b.class_id || "")) ||
+    String(a.title || "").localeCompare(String(b.title || ""))
+  );
+
+  document.getElementById("pa-admin-content").innerHTML = `
+    <div style="max-width:1200px;margin:0 auto;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <h2 style="flex:1;">PA Admin 専用入口</h2>
+        <span style="font-size:12px;color:var(--text-dimmer);">採点基準・模範解答・設問本文を確認 / 編集</span>
+      </div>
+      <div class="exam-grid">
+        ${exams.map(e => `
+          <div class="card">
+            <div class="exam-card-title">${esc(e.title)}</div>
+            <div class="exam-card-meta">${esc(e.class_id)} | ${e.q_count || 0}問 | ${e.total_points}点</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span class="badge ${e.is_open ? 'badge-open' : 'badge-closed'}">${e.is_open ? '公開中' : '非公開'}</span>
+              <button class="header-btn" onclick="openExam(${e.exam_id})">問題確認</button>
+              <button class="header-btn" onclick="openAdminEditor(${e.exam_id})">採点基準編集</button>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+  showScreen("screen-pa-admin");
+}
+
+async function openAdminEditor(examId) {
+  showLoading();
+  const data = await apiFetch(`/api/exam/exams/${examId}`);
+  hideLoading();
+  if (data.error) {
+    toast(data.error, "error");
+    return;
+  }
+
+  state.currentExam = data.exam;
+  state.currentQuestions = data.questions;
+
+  const exam = state.currentExam;
+  const questions = [...state.currentQuestions].sort((a, b) => a.q_order - b.q_order);
+
+  document.getElementById("pa-admin-content").innerHTML = `
+    <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <h2 style="flex:1;">PA Admin 編集 - ${esc(exam.title)}</h2>
+          <button class="header-btn" onclick="openPaAdminEntrance()">一覧へ戻る</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 180px 180px 180px;gap:12px;">
+          <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">タイトル</div><input id="pa-exam-title" class="answer-input" value="${escAttr(exam.title || "")}"></label>
+          <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">配点合計</div><input id="pa-exam-total" class="answer-input" type="number" value="${exam.total_points ?? 100}"></label>
+          <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">モード</div><input id="pa-exam-mode" class="answer-input" value="${escAttr(exam.exam_mode || "class")}"></label>
+          <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">公開</div><select id="pa-exam-open" class="answer-input"><option value="1" ${exam.is_open ? "selected" : ""}>公開</option><option value="0" ${exam.is_open ? "" : "selected"}>非公開</option></select></label>
+        </div>
+        <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">本文HTML</div><textarea id="pa-exam-passage" class="answer-input" rows="10">${escTextarea(exam.passage_html || "")}</textarea></label>
+        <div style="margin-top:12px;"><button class="header-btn primary" onclick="saveExamMeta(${exam.exam_id})">本文・基本情報を保存</button></div>
+      </div>
+      ${questions.map(q => `
+        <div class="card">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="font-weight:700;">Q${q.q_order}</div>
+            <span class="q-type-badge">${esc(q.q_type)}</span>
+            <span style="font-size:12px;color:var(--text-dimmer);">${q.points}点</span>
+          </div>
+          <div style="display:grid;grid-template-columns:120px 120px 1fr 1fr;gap:12px;">
+            <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">順番</div><input id="q-order-${q.question_id}" class="answer-input" type="number" value="${q.q_order}"></label>
+            <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">配点</div><input id="q-points-${q.question_id}" class="answer-input" type="number" value="${q.points}"></label>
+            <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">形式</div><input id="q-type-${q.question_id}" class="answer-input" value="${escAttr(q.q_type || "")}"></label>
+            <label><div style="font-size:12px;font-weight:600;margin-bottom:4px;">max_select</div><input id="q-max-${q.question_id}" class="answer-input" type="number" value="${q.max_select ?? ""}"></label>
+          </div>
+          <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">設問HTML</div><textarea id="q-html-${q.question_id}" class="answer-input" rows="5">${escTextarea(q.q_html || "")}</textarea></label>
+          <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">模範解答 / 正答</div><textarea id="q-answer-${q.question_id}" class="answer-input" rows="3">${escTextarea(q.correct_answer || "")}</textarea></label>
+          <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">採点基準 rubric</div><textarea id="q-rubric-${q.question_id}" class="answer-input" rows="6">${escTextarea(q.rubric || "")}</textarea></label>
+          <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">解説 explanation</div><textarea id="q-expl-${q.question_id}" class="answer-input" rows="4">${escTextarea(q.explanation || "")}</textarea></label>
+          <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">choices_json</div><textarea id="q-choices-${q.question_id}" class="answer-input" rows="3">${escTextarea(q.choices_json || "")}</textarea></label>
+          <label style="display:block;margin-top:12px;"><div style="font-size:12px;font-weight:600;margin-bottom:4px;">AI model</div><input id="q-model-${q.question_id}" class="answer-input" value="${escAttr(q.ai_model || "")}"></label>
+          <div style="margin-top:12px;"><button class="header-btn primary" onclick="saveQuestionEdit(${q.question_id})">この設問を保存</button></div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+  showScreen("screen-pa-admin");
+}
+
+async function saveExamMeta(examId) {
+  const result = await apiFetch(`/api/exam/exams/${examId}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      title: document.getElementById("pa-exam-title").value,
+      total_points: parseInt(document.getElementById("pa-exam-total").value || "100", 10),
+      exam_mode: document.getElementById("pa-exam-mode").value,
+      is_open: parseInt(document.getElementById("pa-exam-open").value, 10),
+      passage_html: document.getElementById("pa-exam-passage").value,
+    }),
+  });
+  if (result.error) {
+    toast(result.error, "error");
+    return;
+  }
+  toast("基本情報を保存しました", "success");
+  await loadExams();
+}
+
+async function saveQuestionEdit(questionId) {
+  const result = await apiFetch(`/api/exam/questions/${questionId}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      q_order: parseInt(document.getElementById(`q-order-${questionId}`).value || "0", 10),
+      points: parseInt(document.getElementById(`q-points-${questionId}`).value || "0", 10),
+      q_type: document.getElementById(`q-type-${questionId}`).value,
+      max_select: document.getElementById(`q-max-${questionId}`).value === "" ? null : parseInt(document.getElementById(`q-max-${questionId}`).value, 10),
+      q_html: document.getElementById(`q-html-${questionId}`).value,
+      correct_answer: document.getElementById(`q-answer-${questionId}`).value,
+      rubric: document.getElementById(`q-rubric-${questionId}`).value,
+      explanation: document.getElementById(`q-expl-${questionId}`).value,
+      choices_json: document.getElementById(`q-choices-${questionId}`).value,
+      ai_model: document.getElementById(`q-model-${questionId}`).value,
+    }),
+  });
+  if (result.error) {
+    toast(result.error, "error");
+    return;
+  }
+  toast("設問を保存しました", "success");
+}
+
 // ===== UNDERLINE NUMBERING =====
 function numberPassageUnderlines() {
   const pane = document.getElementById("take-passage");
@@ -1659,6 +1873,12 @@ function esc(s) {
   const d = document.createElement("div");
   d.textContent = s;
   return d.innerHTML;
+}
+function escAttr(s) {
+  return esc(s);
+}
+function escTextarea(s) {
+  return String(s ?? "").replace(/<\/textarea/gi, "&lt;/textarea");
 }
 
 // ===== AUTO-INIT =====
