@@ -693,6 +693,8 @@ async function getAccessToken(forceRefresh = false) {
       state.accessToken = res.idToken;
       return res.idToken;
     } catch {
+      // Popup also failed — redirect for re-auth
+      await msalInstance.acquireTokenRedirect({ scopes: SCOPES });
       return null;
     }
   }
