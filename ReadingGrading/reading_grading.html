@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Reading採点">
+<title>共通テストReading 採点記録</title>
+<script src="https://alcdn.msauth.net/browser/2.35.0/js/msal-browser.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface2: #f0f2f5;
+  --border: #e0e4ea;
+  --text: #1a2233;
+  --text-dim: #4a5568;
+  --text-dimmer: #8a94a6;
+  --accent: #c2185b;
+  --accent-dim: #ad1457;
+  --accent-glow: rgba(194,24,91,0.12);
+  --green: #16a34a;
+  --green-dim: rgba(22,163,74,0.12);
+  --red: #dc2626;
+  --red-dim: rgba(220,38,38,0.12);
+  --orange: #ea580c;
+  --orange-dim: rgba(234,88,12,0.10);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface2: #334155;
+  --border: #475569;
+  --text: #f1f5f9;
+  --text-dim: #cbd5e1;
+  --text-dimmer: #94a3b8;
+  --accent: #f472b6;
+  --accent-dim: #ec4899;
+  --accent-glow: rgba(244,114,182,0.18);
+  --green: #4ade80;
+  --green-dim: rgba(74,222,128,0.18);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.18);
+  --orange: #fb923c;
+  --orange-dim: rgba(251,146,60,0.15);
+  --shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-title { font-size: 16px; font-weight: 700; color: var(--accent); }
+.header-spacer { flex: 1; }
+.header-btn {
+  padding: 6px 14px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.header-btn:hover { background: var(--surface2); }
+.header-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.header-btn.primary:hover { background: var(--accent-dim); }
+.user-badge { font-size: 12px; color: var(--text-dimmer); padding: 4px 10px; background: var(--surface2); border-radius: 20px; }
+
+.screen { display: none; flex: 1; }
+.screen.active { display: flex; flex-direction: column; }
+
+.login-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.login-card { text-align: center; padding: 48px; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); max-width: 400px; }
+.login-card h1 { font-size: 24px; margin-bottom: 8px; }
+.login-card p { color: var(--text-dim); margin-bottom: 24px; }
+.btn-login { padding: 12px 32px; font-size: 15px; font-weight: 600; border: none; border-radius: var(--radius-sm); background: var(--accent); color: #fff; cursor: pointer; }
+.btn-login:hover { background: var(--accent-dim); }
+
+.list-wrap { flex: 1; padding: 20px; }
+.exam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; max-width: 1100px; margin: 0 auto; }
+.exam-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.exam-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.exam-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.exam-card-meta { font-size: 12px; color: var(--text-dimmer); margin-bottom: 12px; }
+.exam-card-footer { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-graded { background: var(--accent-glow); color: var(--accent); }
+.badge-todo { background: var(--surface2); color: var(--text-dimmer); }
+.score-display { font-size: 14px; font-weight: 700; color: var(--accent); }
+
+.take-wrap { flex: 1; padding: 20px; max-width: 900px; margin: 0 auto; width: 100%; }
+.take-header { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
+.take-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.take-meta { font-size: 12px; color: var(--text-dimmer); }
+.score-banner {
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  box-shadow: var(--shadow);
+}
+.score-banner-num { font-size: 24px; font-weight: 800; }
+
+.main-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.main-block h2 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+}
+
+.q-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  flex-wrap: wrap;
+}
+.q-row:last-child { border-bottom: none; }
+.q-label-text {
+  flex: 0 0 auto;
+  min-width: 70px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.q-group-badge {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+.q-group-fix { background: var(--orange-dim); color: var(--orange); }
+.q-group-flex { background: var(--accent-glow); color: var(--accent); }
+
+.choice-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+.choice-btn {
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.choice-btn:hover { background: var(--accent-glow); border-color: var(--accent); }
+.choice-btn.selected {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.choice-btn.correct {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.choice-btn.incorrect {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+.choice-btn.show-correct {
+  border: 2px dashed var(--green);
+  color: var(--green);
+}
+
+.q-result-mark {
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 8px;
+}
+.q-result-mark.ok { color: var(--green); }
+.q-result-mark.ng { color: var(--red); }
+
+.action-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 0;
+  position: sticky;
+  bottom: 0;
+  background: var(--bg);
+}
+.btn {
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: var(--surface2); }
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.primary:hover { background: var(--accent-dim); }
+.btn.primary:disabled { background: var(--text-dimmer); border-color: var(--text-dimmer); cursor: not-allowed; }
+
+.empty-msg { text-align: center; padding: 60px 20px; color: var(--text-dimmer); font-size: 14px; }
+.draft-pill {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--orange-dim);
+  color: var(--orange);
+  margin-left: 6px;
+}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="header">
+  <div class="header-title">Reading 採点記録</div>
+  <div class="header-spacer"></div>
+  <span class="user-badge" id="user-badge"></span>
+  <button class="header-btn" id="theme-toggle" title="テーマ切替">🌓</button>
+  <button class="header-btn" id="back-btn" style="display:none;" onclick="goBack()">← 一覧</button>
+  <button class="header-btn" id="signout-btn" style="display:none;" onclick="signOut()">Sign Out</button>
+</header>
+
+<!-- LOGIN -->
+<div class="screen" id="screen-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>Reading 採点記録</h1>
+      <p>共通テスト形式リーディングの採点・記録</p>
+      <button class="btn-login" onclick="signIn()">Sign in with Microsoft</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM LIST -->
+<div class="screen" id="screen-list">
+  <div class="list-wrap">
+    <div class="exam-grid" id="exam-grid">
+      <div class="empty-msg">読み込み中…</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAKE / RESULT -->
+<div class="screen" id="screen-take">
+  <div class="take-wrap">
+    <div class="take-header">
+      <div class="take-title" id="take-title"></div>
+      <div class="take-meta" id="take-meta"></div>
+    </div>
+    <div id="score-banner-wrap"></div>
+    <div id="questions-wrap"></div>
+    <div class="action-bar">
+      <button class="btn" id="reset-btn" onclick="resetAnswers()">クリア</button>
+      <button class="btn primary" id="submit-btn" onclick="submitExam()">提出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = "https://vocab-api.ryotishi.workers.dev";
+const CLIENT_ID = "8a7cf5e5-ba72-4037-b94d-b5fd94a41641";
+const TENANT_ID = "da29e79e-284c-4c77-b3c0-9b96ea0c2a81";
+const SCOPES = ["User.Read"];
+const MAX_CHOICES = 5;
+
+const msalInstance = new msal.PublicClientApplication({
+  auth: {
+    clientId: CLIENT_ID,
+    authority: `https://login.microsoftonline.com/${TENANT_ID}`,
+    redirectUri: window.location.origin + window.location.pathname,
+  },
+  cache: { cacheLocation: "localStorage" },
+});
+
+const state = {
+  exams: [],
+  currentExam: null,        // { exam, questions }
+  answers: {},              // question_id -> 1..5 or null
+  resultMode: false,        // true after submit, shows correct/incorrect
+  resultData: null,         // submission detail returned by /submissions/mine
+};
+
+// ---------- AUTH ----------
+async function getToken() {
+  const accounts = msalInstance.getAllAccounts();
+  if (!accounts.length) return null;
+  try {
+    const res = await msalInstance.acquireTokenSilent({ scopes: SCOPES, account: accounts[0] });
+    return res.idToken;
+  } catch (e) {
+    console.warn("acquireTokenSilent failed:", e);
+    try {
+      const res = await msalInstance.acquireTokenPopup({ scopes: SCOPES });
+      return res.idToken;
+    } catch (e2) {
+      console.error("popup failed:", e2);
+      return null;
+    }
+  }
+}
+
+async function signIn() {
+  try { await msalInstance.loginRedirect({ scopes: SCOPES }); }
+  catch (e) { console.error(e); alert("Sign-in failed"); }
+}
+
+function signOut() {
+  msalInstance.logoutRedirect({ postLogoutRedirectUri: window.location.origin + window.location.pathname });
+}
+
+async function api(path, opts = {}) {
+  const token = await getToken();
+  if (!token) throw new Error("not signed in");
+  const headers = { "Authorization": `Bearer ${token}`, "Content-Type": "application/json", ...(opts.headers || {}) };
+  const res = await fetch(`${API_BASE}${path}`, { ...opts, headers });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`${res.status}: ${text}`);
+  }
+  return res.json();
+}
+
+// ---------- SCREEN ROUTING ----------
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("back-btn").style.display = (id === "screen-take") ? "" : "none";
+}
+
+function goBack() {
+  state.currentExam = null;
+  state.answers = {};
+  state.resultMode = false;
+  state.resultData = null;
+  loadExamList();
+  showScreen("screen-list");
+}
+
+// ---------- EXAM LIST ----------
+async function loadExamList() {
+  const grid = document.getElementById("exam-grid");
+  grid.innerHTML = `<div class="empty-msg">読み込み中…</div>`;
+  try {
+    const exams = await api("/api/kyoute/exams");
+    state.exams = exams;
+    if (!exams.length) {
+      grid.innerHTML = `<div class="empty-msg">公開中の試験はまだありません</div>`;
+      return;
+    }
+    grid.innerHTML = "";
+    for (const e of exams) {
+      const card = document.createElement("div");
+      card.className = "exam-card";
+      const sub = e.my_submission;
+      const scoreHtml = sub
+        ? `<span class="badge badge-graded">採点済</span><span class="score-display">${sub.total_score} / ${sub.total_possible}</span>`
+        : `<span class="badge badge-todo">未提出</span>`;
+      card.innerHTML = `
+        <div class="exam-card-title">${escapeHtml(e.title)}</div>
+        <div class="exam-card-meta">${escapeHtml(e.book_id)} / ${escapeHtml(e.sub_book_id)} / ${e.sub_sub_book_id} ・ 満点 ${e.total_points}</div>
+        <div class="exam-card-footer">${scoreHtml}</div>
+      `;
+      card.addEventListener("click", () => openExam(e.exam_id));
+      grid.appendChild(card);
+    }
+  } catch (e) {
+    console.error(e);
+    grid.innerHTML = `<div class="empty-msg">読み込み失敗: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+// ---------- TAKE EXAM ----------
+async function openExam(examId) {
+  try {
+    // Load exam + questions
+    const data = await api(`/api/kyoute/exams/${examId}`);
+    state.currentExam = data;
+
+    // If already submitted, load existing answers
+    let mine = null;
+    try {
+      mine = await api(`/api/kyoute/submissions/mine?exam_id=${examId}`);
+    } catch (e) { console.warn(e); }
+
+    state.answers = {};
+    state.resultMode = false;
+    state.resultData = null;
+
+    if (mine && mine.submission) {
+      // Pre-fill from saved submission, show result mode
+      for (const a of mine.answers) {
+        state.answers[a.question_id] = a.student_answer;
+      }
+      state.resultMode = true;
+      state.resultData = mine;
+    } else {
+      // Try draft from localStorage
+      const draft = loadDraft(examId);
+      if (draft) state.answers = draft;
+    }
+
+    renderTake();
+    showScreen("screen-take");
+  } catch (e) {
+    console.error(e);
+    alert("試験の読み込みに失敗しました: " + e.message);
+  }
+}
+
+function renderTake() {
+  const { exam, questions } = state.currentExam;
+  document.getElementById("take-title").textContent = exam.title;
+  const draftMark = (!state.resultMode && hasDraft(exam.exam_id)) ? `<span class="draft-pill">途中保存あり</span>` : "";
+  document.getElementById("take-meta").innerHTML = `${escapeHtml(exam.book_id)} / ${escapeHtml(exam.sub_book_id)} / ${exam.sub_sub_book_id} ・ 満点 ${exam.total_points}${draftMark}`;
+
+  // Score banner
+  const banner = document.getElementById("score-banner-wrap");
+  if (state.resultMode && state.resultData?.submission) {
+    const s = state.resultData.submission;
+    banner.innerHTML = `
+      <div class="score-banner">
+        <span>得点</span>
+        <span><span class="score-banner-num">${s.total_score}</span> / ${s.total_possible}</span>
+      </div>
+    `;
+  } else {
+    banner.innerHTML = "";
+  }
+
+  // Questions grouped by main_no
+  const wrap = document.getElementById("questions-wrap");
+  wrap.innerHTML = "";
+
+  const byMain = {};
+  for (const q of questions) {
+    if (!byMain[q.main_no]) byMain[q.main_no] = [];
+    byMain[q.main_no].push(q);
+  }
+
+  // Build a per-question correctness map (only in resultMode)
+  const correctMap = {}; // qid -> { is_correct, correct_answer }
+  if (state.resultMode && state.resultData?.answers) {
+    // Use grading logic re-computed from full data so it matches server
+    const fullQs = state.resultData.answers; // includes correct_answer
+    const ansMap = {};
+    for (const a of fullQs) ansMap[a.question_id] = a.student_answer;
+    // Group + grade locally to mark per-question
+    const groups = {};
+    const ungrouped = [];
+    for (const q of fullQs) {
+      if (q.group_id == null) ungrouped.push(q);
+      else (groups[q.group_id] = groups[q.group_id] || []).push(q);
+    }
+    for (const q of ungrouped) {
+      correctMap[q.question_id] = { is_correct: ansMap[q.question_id] === q.correct_answer, correct_answer: q.correct_answer };
+    }
+    for (const gid in groups) {
+      const qs = groups[gid];
+      const fixOk = qs.filter(q => q.judge === "fix").every(q => ansMap[q.question_id] === q.correct_answer);
+      const flexQs = qs.filter(q => q.judge === "flex");
+      let flexOk = true;
+      if (flexQs.length) {
+        const corr = flexQs.map(q => q.correct_answer).slice().sort((a,b)=>a-b);
+        const stud = flexQs.map(q => ansMap[q.question_id] ?? -999).slice().sort((a,b)=>a-b);
+        flexOk = corr.length === stud.length && corr.every((v,i) => v === stud[i]);
+      }
+      const ok = fixOk && flexOk;
+      for (const q of qs) correctMap[q.question_id] = { is_correct: ok, correct_answer: q.correct_answer };
+    }
+  }
+
+  for (const main of Object.keys(byMain).sort((a,b) => +a - +b)) {
+    const block = document.createElement("div");
+    block.className = "main-block";
+    const groupedSubNos = {};
+    block.innerHTML = `<h2>大問 ${main}</h2>`;
+    for (const q of byMain[main]) {
+      const row = document.createElement("div");
+      row.className = "q-row";
+
+      let badge = "";
+      if (q.judge === "fix") badge = `<span class="q-group-badge q-group-fix">連続正解 G${q.group_id}</span>`;
+      else if (q.judge === "flex") badge = `<span class="q-group-badge q-group-flex">順不同 G${q.group_id}</span>`;
+
+      // result mark
+      let mark = "";
+      if (state.resultMode && correctMap[q.question_id]) {
+        const r = correctMap[q.question_id];
+        mark = r.is_correct
+          ? `<span class="q-result-mark ok">✓</span>`
+          : `<span class="q-result-mark ng">✗</span>`;
+      }
+
+      row.innerHTML = `<span class="q-label-text">問${q.sub_no}-${q.sub_sub_no} (${q.score}点)${badge}</span>`;
+
+      // choice buttons
+      const cb = document.createElement("div");
+      cb.className = "choice-buttons";
+      for (let i = 1; i <= MAX_CHOICES; i++) {
+        const btn = document.createElement("button");
+        btn.className = "choice-btn";
+        btn.textContent = i;
+        btn.dataset.qid = q.question_id;
+        btn.dataset.val = i;
+        if (state.answers[q.question_id] === i) btn.classList.add("selected");
+
+        if (state.resultMode && correctMap[q.question_id]) {
+          const r = correctMap[q.question_id];
+          if (state.answers[q.question_id] === i) {
+            btn.classList.add(r.is_correct ? "correct" : "incorrect");
+            btn.classList.remove("selected");
+          } else if (i === r.correct_answer) {
+            btn.classList.add("show-correct");
+          }
+        }
+
+        btn.addEventListener("click", () => selectAnswer(q.question_id, i));
+        cb.appendChild(btn);
+      }
+      row.appendChild(cb);
+
+      if (mark) {
+        const m = document.createElement("span");
+        m.innerHTML = mark;
+        row.appendChild(m);
+      }
+
+      block.appendChild(row);
+    }
+    wrap.appendChild(block);
+  }
+
+  // Submit button label
+  document.getElementById("submit-btn").textContent = state.resultMode ? "再採点（訂正提出）" : "提出";
+}
+
+function selectAnswer(qid, val) {
+  if (state.answers[qid] === val) {
+    state.answers[qid] = null;  // toggle off
+  } else {
+    state.answers[qid] = val;
+  }
+  if (!state.resultMode) saveDraft(state.currentExam.exam.exam_id, state.answers);
+  // re-render only this row's buttons
+  document.querySelectorAll(`.choice-btn[data-qid="${qid}"]`).forEach(btn => {
+    btn.classList.toggle("selected", state.answers[qid] === parseInt(btn.dataset.val));
+  });
+  // If in result mode, the user is editing for resubmission — clear result marks and re-render
+  if (state.resultMode) {
+    state.resultMode = false;
+    state.resultData = null;
+    renderTake();
+  }
+}
+
+function resetAnswers() {
+  if (!confirm("すべての解答をクリアします。よろしいですか？")) return;
+  state.answers = {};
+  if (state.currentExam) {
+    clearDraft(state.currentExam.exam.exam_id);
+    state.resultMode = false;
+    state.resultData = null;
+    renderTake();
+  }
+}
+
+async function submitExam() {
+  if (!state.currentExam) return;
+  const examId = state.currentExam.exam.exam_id;
+  const answers = state.currentExam.questions.map(q => ({
+    question_id: q.question_id,
+    answer: state.answers[q.question_id] ?? null,
+  }));
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "送信中…";
+  try {
+    const res = await api(`/api/kyoute/exams/${examId}/submit`, {
+      method: "POST",
+      body: JSON.stringify({ answers }),
+    });
+    clearDraft(examId);
+    // Reload submission to show result
+    const mine = await api(`/api/kyoute/submissions/mine?exam_id=${examId}`);
+    state.resultMode = true;
+    state.resultData = mine;
+    for (const a of mine.answers) state.answers[a.question_id] = a.student_answer;
+    renderTake();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (e) {
+    console.error(e);
+    alert("提出失敗: " + e.message);
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+// ---------- LOCAL DRAFT ----------
+function draftKey(examId) { return `kyoute-draft-${examId}`; }
+function saveDraft(examId, answers) {
+  try { localStorage.setItem(draftKey(examId), JSON.stringify(answers)); } catch {}
+}
+function loadDraft(examId) {
+  try {
+    const s = localStorage.getItem(draftKey(examId));
+    return s ? JSON.parse(s) : null;
+  } catch { return null; }
+}
+function clearDraft(examId) {
+  try { localStorage.removeItem(draftKey(examId)); } catch {}
+}
+function hasDraft(examId) {
+  try { return localStorage.getItem(draftKey(examId)) != null; } catch { return false; }
+}
+
+// ---------- UTILS ----------
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+// ---------- THEME ----------
+const THEME_KEY = "kyoute-theme";
+function applyTheme(t) {
+  document.body.dataset.theme = t;
+  localStorage.setItem(THEME_KEY, t);
+}
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  applyTheme(document.body.dataset.theme === "dark" ? "light" : "dark");
+});
+applyTheme(localStorage.getItem(THEME_KEY) || "light");
+
+// ---------- INIT ----------
+(async () => {
+  try {
+    const resp = await msalInstance.handleRedirectPromise();
+    if (resp) initSignedIn();
+  } catch (e) { console.warn(e); }
+
+  if (msalInstance.getAllAccounts().length > 0) {
+    initSignedIn();
+  } else {
+    showScreen("screen-login");
+  }
+})();
+
+function initSignedIn() {
+  const acct = msalInstance.getAllAccounts()[0];
+  document.getElementById("user-badge").textContent = acct.username || "";
+  document.getElementById("signout-btn").style.display = "";
+  loadExamList();
+  showScreen("screen-list");
+}
+</script>
+</body>
+</html>
